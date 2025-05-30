@@ -98,8 +98,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>  <span class="c1"># TODO: should we change to NMRlipids&#39; logger?</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.databankLibrary</span><span class="w"> </span><span class="kn">import</span> <span class="n">loadMappingFile</span>
-
 <span class="n">bond_len_max</span> <span class="o">=</span> <span class="mf">1.5</span>  <span class="c1"># in A, max distance between atoms for reasonable OP calculation</span>
 <span class="n">bond_len_max_sq</span> <span class="o">=</span> <span class="n">bond_len_max</span><span class="o">**</span><span class="mi">2</span>
 
@@ -115,19 +113,21 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">resname</span><span class="p">,</span> <span class="n">atom_A_name</span><span class="p">,</span> <span class="n">atom_B_name</span><span class="p">,</span> <span class="n">M_atom_A_name</span><span class="p">,</span> <span class="n">M_atom_B_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">resname</span><span class="p">,</span> <span class="n">atom_name_a</span><span class="p">,</span> <span class="n">atom_name_b</span><span class="p">,</span>
+        <span class="n">univ_atom_name_a</span><span class="p">,</span> <span class="n">univ_atom_name_b</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        it doesn&#39;t matter which comes first,</span>
 <span class="sd">        atom A or B, for OP calculation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resname</span> <span class="o">=</span> <span class="n">resname</span>  <span class="c1"># name of residue atoms are in</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">atAname</span> <span class="o">=</span> <span class="n">atom_A_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">atBname</span> <span class="o">=</span> <span class="n">atom_B_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">M_atAname</span> <span class="o">=</span> <span class="n">M_atom_A_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">M_atBname</span> <span class="o">=</span> <span class="n">M_atom_B_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aname_a</span> <span class="o">=</span> <span class="n">atom_name_a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aname_b</span> <span class="o">=</span> <span class="n">atom_name_b</span>
+        <span class="c1"># TODO: consider removing these two variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_aname_a</span> <span class="o">=</span> <span class="n">univ_atom_name_a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_aname_b</span> <span class="o">=</span> <span class="n">univ_atom_name_b</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">M_atom_A_name</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">M_atom_B_name</span>
+            <span class="n">univ_atom_name_a</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">univ_atom_name_b</span>
         <span class="p">)</span>  <span class="c1"># generic name of atom A and atom B</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -160,7 +160,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">selection</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">calc_OP</span><span class="p">(</span><span class="n">atoms</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_OP</span><span class="p">(</span><span class="n">atoms</span><span class="p">):</span>  <span class="c1"># noqa: N802 (API)</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        calculates Order Parameter according to equation</span>
 <span class="sd">        S = 1/2 * (3*cos(theta)^2 -1)</span>
@@ -179,11 +179,11 @@
                 <span class="sa">f</span><span class="s2">&quot;long: </span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s2">!</span><span class="se">\n</span><span class="s2">PBC removed???&quot;</span>
             <span class="p">)</span>
         <span class="n">cos2</span> <span class="o">=</span> <span class="n">vec</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">d2</span>
-        <span class="n">S</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mf">3.0</span> <span class="o">*</span> <span class="n">cos2</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">S</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mf">3.0</span> <span class="o">*</span> <span class="n">cos2</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_avg_std_OP</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_avg_std_OP</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: N802 (API)</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Provides average and stddev of all OPs in self.traj</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -191,7 +191,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">traj</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">traj</span><span class="p">))</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_avg_std_stem_OP</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_avg_std_stem_OP</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: N802 (API)</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Provides average and stddev of all OPs in self.traj</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -209,7 +209,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">traj</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">read_trajs_calc_OPs</span><span class="p">(</span><span class="n">ordPars</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">trajs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_trajs_calc_OPs</span><span class="p">(</span>  <span class="c1"># noqa: N802 (API)</span>
+        <span class="n">op_obj_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">OrderParameter</span><span class="p">],</span> <span class="n">top</span><span class="p">,</span> <span class="n">trajs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :meta private:</span>
 
@@ -232,123 +233,123 @@
     <span class="c1"># make atom selections for each OP and store it as its attribute for later use</span>
     <span class="c1"># in trajectory</span>
     <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="n">improperOPs</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">ordPars</span><span class="p">:</span>
+    <span class="n">improper_ops</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">op_obj_list</span><span class="p">:</span>
         <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="c1"># selection = pairs of atoms, split-by residues</span>
-        <span class="n">selStr</span> <span class="o">=</span> <span class="s2">&quot;resname </span><span class="si">{rnm}</span><span class="s2"> and name </span><span class="si">{atA}</span><span class="s2"> </span><span class="si">{atB}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">rnm</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">resname</span><span class="p">,</span> <span class="n">atA</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">atAname</span><span class="p">,</span> <span class="n">atB</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">atBname</span><span class="p">)</span>
-        <span class="n">selection</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="n">selStr</span><span class="p">)</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;residue&quot;</span><span class="p">)</span>
+        <span class="n">sel_str</span> <span class="o">=</span> <span class="s2">&quot;resname </span><span class="si">{rnm}</span><span class="s2"> and name </span><span class="si">{atA}</span><span class="s2"> </span><span class="si">{atB}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">rnm</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">resname</span><span class="p">,</span> <span class="n">atA</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">aname_a</span><span class="p">,</span> <span class="n">atB</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">aname_b</span><span class="p">)</span>
+        <span class="n">selection</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="n">sel_str</span><span class="p">)</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;residue&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">selection</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Selection is empty: [</span><span class="si">{</span><span class="n">selStr</span><span class="si">}</span><span class="s2">]. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Selection is empty: [</span><span class="si">{</span><span class="n">sel_str</span><span class="si">}</span><span class="s2">]. &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;Check carefully residue name and names in the mapping file.&quot;</span><span class="p">)</span>
-            <span class="n">improperOPs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">improper_ops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
             <span class="k">continue</span>
 
         <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">:</span>
             <span class="c1"># check if we have only 2 atoms (A &amp; B) selected</span>
             <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">n_atoms</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">atA</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">atAname</span>
-                <span class="n">atB</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">atBname</span>
+                <span class="n">at_a</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">atAname</span>
+                <span class="n">at_b</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">atBname</span>
                 <span class="n">nat</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">n_atoms</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">atA</span><span class="p">,</span> <span class="n">atB</span><span class="p">,</span> <span class="n">nat</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">at_a</span><span class="p">,</span> <span class="n">at_b</span><span class="p">,</span> <span class="n">nat</span><span class="p">)</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Selection &gt;&gt; name </span><span class="si">{</span><span class="n">atA</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">atB</span><span class="si">}</span><span class="s2"> &lt;&lt; &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Selection &gt;&gt; name </span><span class="si">{</span><span class="n">at_a</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">at_b</span><span class="si">}</span><span class="s2"> &lt;&lt; &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;contains </span><span class="si">{</span><span class="n">nat</span><span class="si">}</span><span class="s2"> atoms, but should contain exactly 2!&quot;</span><span class="p">)</span>
-                <span class="n">improperOPs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                <span class="n">improper_ops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
                 <span class="k">continue</span>
 
         <span class="n">op</span><span class="o">.</span><span class="n">selection</span> <span class="o">=</span> <span class="n">selection</span>
 
     <span class="c1"># remove OPs, which are incorrect</span>
-    <span class="n">improperOPs</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">improperOPs</span><span class="p">:</span>
-        <span class="k">del</span> <span class="n">ordPars</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">improper_ops</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">improper_ops</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">op_obj_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
     <span class="c1"># go through trajectory frame-by-frame</span>
-    <span class="n">Nframes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">trajectory</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">ordPars</span><span class="p">:</span>
+    <span class="n">n_frames</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">trajectory</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">op_obj_list</span><span class="p">:</span>
         <span class="c1"># print(op.selection)</span>
-        <span class="n">Nres</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">selection</span><span class="p">)</span>
-        <span class="n">op</span><span class="o">.</span><span class="n">traj</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">Nres</span>
+        <span class="n">n_res</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">selection</span><span class="p">)</span>
+        <span class="n">op</span><span class="o">.</span><span class="n">traj</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_res</span>
 
     <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">trajectory</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">ordPars</span><span class="p">:</span>  <span class="c1"># .values():</span>
-            <span class="n">Nres</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">selection</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Nres</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">op_obj_list</span><span class="p">:</span>  <span class="c1"># .values():</span>
+            <span class="n">n_res</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">selection</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_res</span><span class="p">):</span>
                 <span class="n">residue</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">selection</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">S</span> <span class="o">=</span> <span class="n">OrderParameter</span><span class="o">.</span><span class="n">calc_OP</span><span class="p">(</span><span class="n">residue</span><span class="p">)</span>
-                <span class="n">op</span><span class="o">.</span><span class="n">traj</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">traj</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">S</span> <span class="o">/</span> <span class="n">Nframes</span>
+                <span class="n">opval</span> <span class="o">=</span> <span class="n">OrderParameter</span><span class="o">.</span><span class="n">calc_OP</span><span class="p">(</span><span class="n">residue</span><span class="p">)</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">traj</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">traj</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">opval</span> <span class="o">/</span> <span class="n">n_frames</span>
 
 
 <div class="viewcode-block" id="parse_op_input">
 <a class="viewcode-back" href="../../OrderParameter.html#DatabankLib.databankop.parse_op_input">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">parse_op_input</span><span class="p">(</span><span class="n">mapping_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lipid_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_op_input</span><span class="p">(</span><span class="n">mapping_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">lipid_resname</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Form pair-list of all OPs which should be calculated</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        mapping_file (str): mapping file name</span>
-<span class="sd">        lipid_name (str): lipid name (residue name)</span>
+<span class="sd">        mapping_dict (dict): mapping dictionary</span>
+<span class="sd">        lipid_resname (str): lipid name (residue name)</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        array: List of OrderParameter instances</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ordPars</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">atomC</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">atomH</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">resname</span> <span class="o">=</span> <span class="n">lipid_name</span>
-    <span class="n">mapping_dict</span> <span class="o">=</span> <span class="n">loadMappingFile</span><span class="p">(</span><span class="n">mapping_file</span><span class="p">)</span>
+    <span class="n">opvals</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">atom_c</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">atom_h</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">resname</span> <span class="o">=</span> <span class="n">lipid_resname</span>
 
-    <span class="n">regexp1_H</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_[A-Z0-9]*C[0-9]*H[0-9]*_M&quot;</span><span class="p">)</span>
-    <span class="n">regexp2_H</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_G[0-9]*H[0-9]*_M&quot;</span><span class="p">)</span>
-    <span class="n">regexp3_H</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_C[0-9]*H[0-9]*_M&quot;</span><span class="p">)</span>
-    <span class="n">regexp1_C</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_[A-Z0-9]*C[0-9]*_M&quot;</span><span class="p">)</span>
-    <span class="n">regexp2_C</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_G[0-9]{1,2}_M&quot;</span><span class="p">)</span>
-    <span class="n">regexp3_C</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_C[0-9]{1,2}_M&quot;</span><span class="p">)</span>
+    <span class="n">regexp1_h</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_[A-Z0-9]*C[0-9]*H[0-9]*_M&quot;</span><span class="p">)</span>
+    <span class="n">regexp2_h</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_G[0-9]*H[0-9]*_M&quot;</span><span class="p">)</span>
+    <span class="n">regexp3_h</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_C[0-9]*H[0-9]*_M&quot;</span><span class="p">)</span>
+    <span class="n">regexp1_c</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_[A-Z0-9]*C[0-9]*_M&quot;</span><span class="p">)</span>
+    <span class="n">regexp2_c</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_G[0-9]{1,2}_M&quot;</span><span class="p">)</span>
+    <span class="n">regexp3_c</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_C[0-9]{1,2}_M&quot;</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">mapping_key</span> <span class="ow">in</span> <span class="n">mapping_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">mapping_key</span> <span class="ow">in</span> <span class="n">mapping_dict</span><span class="p">:</span>
         <span class="k">if</span> <span class="p">(</span>
-            <span class="n">regexp1_C</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="n">regexp2_C</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="n">regexp3_C</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">)</span>
+            <span class="n">regexp1_c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">regexp2_c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">regexp3_c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">)</span>
         <span class="p">):</span>
-            <span class="n">atomC</span> <span class="o">=</span> <span class="p">[</span><span class="n">mapping_key</span><span class="p">,</span> <span class="n">mapping_dict</span><span class="p">[</span><span class="n">mapping_key</span><span class="p">][</span><span class="s2">&quot;ATOMNAME&quot;</span><span class="p">]]</span>
+            <span class="n">atom_c</span> <span class="o">=</span> <span class="p">[</span><span class="n">mapping_key</span><span class="p">,</span> <span class="n">mapping_dict</span><span class="p">[</span><span class="n">mapping_key</span><span class="p">][</span><span class="s2">&quot;ATOMNAME&quot;</span><span class="p">]]</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">resname</span> <span class="o">=</span> <span class="n">mapping_dict</span><span class="p">[</span><span class="n">mapping_key</span><span class="p">][</span><span class="s2">&quot;RESIDUE&quot;</span><span class="p">]</span>
             <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
                 <span class="k">pass</span>
-            <span class="n">atomH</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">atom_h</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">elif</span> <span class="p">(</span>
-            <span class="n">regexp1_H</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="n">regexp2_H</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="n">regexp3_H</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">)</span>
+            <span class="n">regexp1_h</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">regexp2_h</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">regexp3_h</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">)</span>
         <span class="p">):</span>
-            <span class="n">atomH</span> <span class="o">=</span> <span class="p">[</span><span class="n">mapping_key</span><span class="p">,</span> <span class="n">mapping_dict</span><span class="p">[</span><span class="n">mapping_key</span><span class="p">][</span><span class="s2">&quot;ATOMNAME&quot;</span><span class="p">]]</span>
+            <span class="n">atom_h</span> <span class="o">=</span> <span class="p">[</span><span class="n">mapping_key</span><span class="p">,</span> <span class="n">mapping_dict</span><span class="p">[</span><span class="n">mapping_key</span><span class="p">][</span><span class="s2">&quot;ATOMNAME&quot;</span><span class="p">]]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">atomC</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">atomH</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">atom_c</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">atom_h</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="k">if</span> <span class="n">atomH</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">atomC</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">atom_h</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">atom_c</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Cannot define carbon for the hydrogen </span><span class="si">{</span><span class="n">atomH</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">atomH</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot define carbon for the hydrogen </span><span class="si">{</span><span class="n">atom_h</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">atom_h</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
                 <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
             <span class="k">continue</span>
-        <span class="k">if</span> <span class="n">atomH</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">atomC</span><span class="p">):</span>
-            <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">atomC</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">atomH</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">atomC</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">atomH</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="n">atom_h</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">atom_c</span><span class="p">):</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">atom_c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">atom_h</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">atom_c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">atom_h</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
             <span class="n">op</span> <span class="o">=</span> <span class="n">OrderParameter</span><span class="p">(</span><span class="n">resname</span><span class="p">,</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">items</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">items</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-            <span class="n">ordPars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">ordPars</span></div>
+            <span class="n">opvals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">opvals</span></div>
 
 
 
 <div class="viewcode-block" id="find_OP">
 <a class="viewcode-back" href="../../OrderParameter.html#DatabankLib.databankop.find_OP">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">find_OP</span><span class="p">(</span><span class="n">inp_fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">top_fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">traj_fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lipid_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_OP</span><span class="p">(</span>  <span class="c1"># noqa: N802 (API)</span>
+        <span class="n">mdict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">top_fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">traj_fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lipid_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Externally used funcion for computing OP values.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        inp_fname (_type_): mapping file</span>
+<span class="sd">        mdict (_type_): mapping dict</span>
 <span class="sd">        top_fname (_type_): TPR file</span>
 <span class="sd">        traj_fname (_type_): TRAJ file</span>
 <span class="sd">        lipid_name (_type_): lipid name (residue name)</span>
@@ -356,9 +357,9 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        ordPars: list of OrderParameter instances</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ordPars</span> <span class="o">=</span> <span class="n">parse_op_input</span><span class="p">(</span><span class="n">inp_fname</span><span class="p">,</span> <span class="n">lipid_name</span><span class="p">)</span>
-    <span class="n">read_trajs_calc_OPs</span><span class="p">(</span><span class="n">ordPars</span><span class="p">,</span> <span class="n">top_fname</span><span class="p">,</span> <span class="n">traj_fname</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">ordPars</span></div>
+    <span class="n">op_pairs</span> <span class="o">=</span> <span class="n">parse_op_input</span><span class="p">(</span><span class="n">mdict</span><span class="p">,</span> <span class="n">lipid_name</span><span class="p">)</span>
+    <span class="n">read_trajs_calc_OPs</span><span class="p">(</span><span class="n">op_pairs</span><span class="p">,</span> <span class="n">top_fname</span><span class="p">,</span> <span class="n">traj_fname</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">op_pairs</span></div>
 
 </pre></div>
 

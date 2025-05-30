@@ -80,117 +80,109 @@
 <span class="c1"># coding: utf-8</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">IO</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib</span><span class="w"> </span><span class="kn">import</span> <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">NMLDB_EXP_PATH</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">initialize_databank</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.databankLibrary</span><span class="w"> </span><span class="kn">import</span> <span class="n">lipids_dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">System</span><span class="p">,</span> <span class="n">initialize_databank</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.databankLibrary</span><span class="w"> </span><span class="kn">import</span> <span class="n">lipids_set</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;__name__&quot;</span><span class="p">)</span>
 
-<span class="n">lipid_numbers_list</span> <span class="o">=</span> <span class="n">lipids_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>   <span class="c1"># should contain all lipid names</span>
+<span class="c1"># TODO: move ions list into Data</span>
 <span class="n">ions_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POT&#39;</span><span class="p">,</span> <span class="s1">&#39;SOD&#39;</span><span class="p">,</span> <span class="s1">&#39;CLA&#39;</span><span class="p">,</span> <span class="s1">&#39;CAL&#39;</span><span class="p">]</span>  <span class="c1"># should contain names of all ions</span>
 
 <span class="n">LIP_CONC_REL_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.15</span>   <span class="c1"># relative acceptable error for determination</span>
 <span class="c1"># of the hydration in ssNMR # noqa</span>
 
 
-<div class="viewcode-block" id="Simulation">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.Simulation">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Simulation</span><span class="p">:</span>
+<div class="viewcode-block" id="SearchSystem">
+<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearchSystem</span><span class="p">:</span>
 
-    <span class="n">readme</span><span class="p">:</span> <span class="nb">dict</span>
-    <span class="n">indexingPath</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">system</span><span class="p">:</span> <span class="nb">dict</span>
+    <span class="n">idx_path</span><span class="p">:</span> <span class="nb">str</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readme</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">readme</span> <span class="o">=</span> <span class="n">readme</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">indexingPath</span> <span class="o">=</span> <span class="n">readme</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">:</span> <span class="n">System</span> <span class="o">=</span> <span class="n">readme</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idx_path</span> <span class="o">=</span> <span class="n">readme</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Simulation.getLipids">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.Simulation.getLipids">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">getLipids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecules</span><span class="o">=</span><span class="n">lipid_numbers_list</span><span class="p">):</span>
-        <span class="n">lipids</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">:</span>
-                <span class="n">lipids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<div class="viewcode-block" id="SearchSystem.get_lipids">
+<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.get_lipids">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_lipids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecules</span><span class="o">=</span><span class="n">lipids_set</span><span class="p">):</span>
+        <span class="n">lipids</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">lipids</span></div>
 
 
-<div class="viewcode-block" id="Simulation.getIons">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.Simulation.getIons">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">getIons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ions</span><span class="p">):</span>
-        <span class="n">simIons</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">ions</span><span class="p">:</span>
-                <span class="n">simIons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">simIons</span></div>
+<div class="viewcode-block" id="SearchSystem.get_ions">
+<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.get_ions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ions</span><span class="p">):</span>
+        <span class="n">sim_ions</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ions</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">sim_ions</span></div>
 
 
     <span class="c1"># fraction of each lipid with respect to total amount of lipids (only for lipids!)</span>
-<div class="viewcode-block" id="Simulation.molarFraction">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.Simulation.molarFraction">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">molarFraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">molecules</span><span class="o">=</span><span class="n">lipid_numbers_list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="n">sum_lipids</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">number</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">][</span><span class="n">molecule</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">])</span>
-
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">:</span>
-                <span class="n">sum_lipids</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">])</span>
-
-        <span class="k">return</span> <span class="n">number</span> <span class="o">/</span> <span class="n">sum_lipids</span></div>
+<div class="viewcode-block" id="SearchSystem.molar_fraction">
+<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.molar_fraction">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">molar_fraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">molecules</span><span class="o">=</span><span class="n">lipids_set</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="n">cmps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">]</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cmps</span><span class="p">[</span><span class="n">molecule</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">])</span>
+        <span class="n">all_counts</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;COUNT&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cmps</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">number</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="n">all_counts</span><span class="p">))</span></div>
 
 
     <span class="c1"># concentration of other molecules than lipids</span>
     <span class="c1"># change name to ionConcentration()</span>
 
-<div class="viewcode-block" id="Simulation.ionConcentration">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.Simulation.ionConcentration">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">ionConcentration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">exp_counter_ions</span><span class="p">):</span>
-        <span class="n">lipids1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getLipids</span><span class="p">()</span>
+<div class="viewcode-block" id="SearchSystem.ion_conc">
+<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.ion_conc">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ion_conc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">exp_counter_ions</span><span class="p">):</span>
+        <span class="n">lipids1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lipids</span><span class="p">()</span>
         <span class="n">c_water</span> <span class="o">=</span> <span class="mf">55.5</span>
-        <span class="n">N_water</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">][</span><span class="s1">&#39;SOL&#39;</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">]</span>
+        <span class="n">n_water</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">][</span><span class="s1">&#39;SOL&#39;</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">]</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">N_molecule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">][</span><span class="n">molecule</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">]</span>  <span class="c1"># number of ions</span>
+            <span class="n">n_molecule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">][</span><span class="n">molecule</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">]</span>  <span class="c1"># number of ions</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="n">N_molecule</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">n_molecule</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="n">lipids2</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="n">exp_counter_ions</span> <span class="ow">and</span> <span class="n">N_molecule</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">exp_counter_ions</span> <span class="ow">and</span> <span class="n">n_molecule</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">lipid</span> <span class="ow">in</span> <span class="n">lipids1</span><span class="p">:</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">molecule</span> <span class="ow">in</span> <span class="n">exp_counter_ions</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span>
                         <span class="n">lipid</span> <span class="o">==</span> <span class="n">exp_counter_ions</span><span class="p">[</span><span class="n">molecule</span><span class="p">]):</span>
-                    <span class="n">N_lipid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">][</span><span class="n">lipid</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">]</span>
-                    <span class="n">lipids2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">N_lipid</span><span class="p">))</span>
+                    <span class="n">n_lipid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">][</span><span class="n">lipid</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">]</span>
+                    <span class="n">lipids2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">n_lipid</span><span class="p">))</span>
 
-        <span class="n">N_molecule</span> <span class="o">=</span> <span class="n">N_molecule</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">lipids2</span><span class="p">)</span>
-        <span class="n">c_molecule</span> <span class="o">=</span> <span class="p">(</span><span class="n">N_molecule</span> <span class="o">*</span> <span class="n">c_water</span><span class="p">)</span> <span class="o">/</span> <span class="n">N_water</span>
+        <span class="n">n_molecule</span> <span class="o">=</span> <span class="n">n_molecule</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">lipids2</span><span class="p">)</span>
+        <span class="n">c_molecule</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_molecule</span> <span class="o">*</span> <span class="n">c_water</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_water</span>
 
         <span class="k">return</span> <span class="n">c_molecule</span></div>
 
 
-<div class="viewcode-block" id="Simulation.totalLipidConcentration">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.Simulation.totalLipidConcentration">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">totalLipidConcentration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">lipids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getLipids</span><span class="p">()</span>
+<div class="viewcode-block" id="SearchSystem.total_lipid_conc">
+<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.total_lipid_conc">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">total_lipid_conc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">c_water</span> <span class="o">=</span> <span class="mf">55.5</span>
-        <span class="n">N_water</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">][</span><span class="s1">&#39;SOL&#39;</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">]</span>
-        <span class="n">N_lipids</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">lipid</span> <span class="ow">in</span> <span class="n">lipids</span><span class="p">:</span>
-            <span class="n">N_lipids</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">][</span><span class="n">lipid</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">])</span>
+        <span class="n">n_water</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">][</span><span class="s1">&#39;SOL&#39;</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">]</span>
+        <span class="n">n_lipids</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">lipid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lipids</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">n_lipids</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">][</span><span class="n">lipid</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">e</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">N_water</span> <span class="o">/</span> <span class="n">N_lipids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">25</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">n_water</span> <span class="o">/</span> <span class="n">n_lipids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">25</span><span class="p">:</span>
                 <span class="n">tot_lipid_c</span> <span class="o">=</span> <span class="s1">&#39;full hydration&#39;</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">tot_lipid_c</span> <span class="o">=</span> <span class="p">(</span><span class="n">N_lipids</span> <span class="o">*</span> <span class="n">c_water</span><span class="p">)</span> <span class="o">/</span> <span class="n">N_water</span>
+                <span class="n">tot_lipid_c</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_lipids</span> <span class="o">*</span> <span class="n">c_water</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_water</span>
         <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Division by zero when determining lipid concentration!&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tot_lipid_c</span></div>
 </div>
 
@@ -201,55 +193,49 @@
 <div class="viewcode-block" id="Experiment">
 <a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.Experiment">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Experiment</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readme</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">molname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dataPath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exptype</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readme</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">molname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exptype</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">readme</span> <span class="o">=</span> <span class="n">readme</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">molname</span> <span class="o">=</span> <span class="n">molname</span>    <span class="c1"># &lt;- the dictionary about existence of data files</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dataPath</span> <span class="o">=</span> <span class="n">dataPath</span>  <span class="c1"># .... for particular lipids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataPath</span> <span class="o">=</span> <span class="n">data_path</span>  <span class="c1"># .... for particular lipids</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exptype</span> <span class="o">=</span> <span class="n">exptype</span>
 
-<div class="viewcode-block" id="Experiment.getLipids">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.Experiment.getLipids">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">getLipids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecules</span><span class="o">=</span><span class="n">lipid_numbers_list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="n">lipids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;MOLAR_FRACTIONS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="n">lipids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                <span class="k">continue</span>
+<div class="viewcode-block" id="Experiment.get_lipids">
+<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.Experiment.get_lipids">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_lipids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecules</span><span class="o">=</span><span class="n">lipids_set</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">lipids</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;MOLAR_FRACTIONS&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">lipids</span></div>
 
 
-<div class="viewcode-block" id="Experiment.getIons">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.Experiment.getIons">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">getIons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="n">expIons</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="viewcode-block" id="Experiment.get_ions">
+<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.Experiment.get_ions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">exp_ions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">ions</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;ION_CONCENTRATIONS&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">expIons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                    <span class="n">exp_ions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;COUNTER_IONS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="n">expIons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;COUNTER_IONS&#39;</span><span class="p">]:</span>
+                    <span class="n">exp_ions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
                 <span class="k">continue</span>
-        <span class="k">return</span> <span class="n">expIons</span></div>
+        <span class="k">return</span> <span class="n">exp_ions</span></div>
 </div>
 
 
 
-<div class="viewcode-block" id="loadSimulations">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.loadSimulations">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">loadSimulations</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Simulation</span><span class="p">]:</span>
+<div class="viewcode-block" id="load_simulations">
+<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.load_simulations">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_simulations</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SearchSystem</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates the list of Simulation objects. Go through all README.yaml files.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">systems</span> <span class="o">=</span> <span class="n">initialize_databank</span><span class="p">()</span>
-    <span class="n">simulations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Simulation</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">simulations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SearchSystem</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="n">systems</span><span class="p">:</span>
         <span class="c1"># conditions of exclusions</span>
@@ -259,88 +245,92 @@
         <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
             <span class="k">pass</span>
 
-        <span class="n">simulations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Simulation</span><span class="p">(</span><span class="n">system</span><span class="p">))</span>
+        <span class="n">simulations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SearchSystem</span><span class="p">(</span><span class="n">system</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">simulations</span></div>
 
 
 
-<div class="viewcode-block" id="loadExperiments">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.loadExperiments">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">loadExperiments</span><span class="p">(</span><span class="n">experimentType</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Experiment</span><span class="p">]:</span>
+<div class="viewcode-block" id="load_experiments">
+<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.load_experiments">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_experiments</span><span class="p">(</span><span class="n">exp_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Experiment</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Loops over the experiment entries in the experiment databank and read experiment</span>
 <span class="sd">    readme and order parameter files into objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">experimentType</span> <span class="o">==</span> <span class="s1">&#39;OrderParameters&#39;</span><span class="p">:</span>
-        <span class="n">dataFile</span> <span class="o">=</span> <span class="s1">&#39;_Order_Parameters.json&#39;</span>
-    <span class="k">elif</span> <span class="n">experimentType</span> <span class="o">==</span> <span class="s1">&#39;FormFactors&#39;</span><span class="p">:</span>
-        <span class="n">dataFile</span> <span class="o">=</span> <span class="s1">&#39;_FormFactor.json&#39;</span>
+    <span class="k">if</span> <span class="n">exp_type</span> <span class="o">==</span> <span class="s1">&#39;OrderParameters&#39;</span><span class="p">:</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="s1">&#39;_Order_Parameters.json&#39;</span>
+    <span class="k">elif</span> <span class="n">exp_type</span> <span class="o">==</span> <span class="s1">&#39;FormFactors&#39;</span><span class="p">:</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="s1">&#39;_FormFactor.json&#39;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
             <span class="s2">&quot;Only OrderParameters and FormFactors types are implemented.&quot;</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Build experiments [</span><span class="si">%s</span><span class="s2">] index...&quot;</span> <span class="o">%</span> <span class="n">experimentType</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="n">rmIdx</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Build experiments [</span><span class="si">%s</span><span class="s2">] index...&quot;</span> <span class="o">%</span> <span class="n">exp_type</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">rm_idx</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_EXP_PATH</span><span class="p">,</span> <span class="n">experimentType</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_EXP_PATH</span><span class="p">,</span> <span class="n">exp_type</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">subdir</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">fn</span> <span class="o">==</span> <span class="s1">&#39;README.yaml&#39;</span><span class="p">:</span>
-                <span class="n">rmIdx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subdir</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> READMEs loaded.&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">rmIdx</span><span class="p">))</span>
+                <span class="n">rm_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subdir</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> READMEs loaded.&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">rm_idx</span><span class="p">))</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading data for each experiment.&quot;</span><span class="p">)</span>
     <span class="n">experiments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Experiment</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">subdir</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">rmIdx</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Experiment&#39;</span><span class="p">):</span>
-        <span class="n">READMEfilepathExperiment</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subdir</span><span class="p">,</span> <span class="s1">&#39;README.yaml&#39;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">READMEfilepathExperiment</span><span class="p">)</span> <span class="k">as</span> <span class="n">yaml_file_exp</span><span class="p">:</span>
-            <span class="n">readmeExp</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">yaml_file_exp</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">subdir</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">rm_idx</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Experiment&#39;</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">exp_readme_fp</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subdir</span><span class="p">,</span> <span class="s1">&#39;README.yaml&#39;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">exp_readme_fp</span><span class="p">)</span> <span class="k">as</span> <span class="n">yaml_file_exp</span><span class="p">:</span>
+                <span class="n">exp_readme</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">yaml_file_exp</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="ne">PermissionError</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Problems while accessing README.yaml in: </span><span class="si">{</span><span class="n">subdir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">continue</span>
 
         <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">subdir</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">dataFile</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
                 <span class="n">molecule_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-                <span class="k">if</span> <span class="n">experimentType</span> <span class="o">==</span> <span class="s2">&quot;OrderParameters&quot;</span><span class="p">:</span>
-                    <span class="n">molecule_name</span> <span class="o">=</span> <span class="n">fname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">dataFile</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">experimentType</span> <span class="o">==</span> <span class="s2">&quot;FormFactors&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">exp_type</span> <span class="o">==</span> <span class="s2">&quot;OrderParameters&quot;</span><span class="p">:</span>
+                    <span class="n">molecule_name</span> <span class="o">=</span> <span class="n">fname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">exp_type</span> <span class="o">==</span> <span class="s2">&quot;FormFactors&quot;</span><span class="p">:</span>
                     <span class="n">molecule_name</span> <span class="o">=</span> <span class="s1">&#39;system&#39;</span>
                 <span class="n">experiments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Experiment</span><span class="p">(</span>
-                    <span class="n">readmeExp</span><span class="p">,</span> <span class="n">molecule_name</span><span class="p">,</span> <span class="n">subdir</span><span class="p">,</span> <span class="n">experimentType</span><span class="p">))</span>
+                    <span class="n">exp_readme</span><span class="p">,</span> <span class="n">molecule_name</span><span class="p">,</span> <span class="n">subdir</span><span class="p">,</span> <span class="n">exp_type</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">experiments</span></div>
 
 
 
-<div class="viewcode-block" id="findPairs">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.findPairs">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">findPairs</span><span class="p">(</span><span class="n">experiments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Experiment</span><span class="p">],</span> <span class="n">simulations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Simulation</span><span class="p">]):</span>
+<div class="viewcode-block" id="find_pairs">
+<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.find_pairs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_pairs</span><span class="p">(</span><span class="n">experiments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Experiment</span><span class="p">],</span> <span class="n">simulations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SearchSystem</span><span class="p">]):</span>
     <span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">simulation</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">simulations</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Simulation&#39;</span><span class="p">):</span>
-        <span class="n">sim_lipids</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">getLipids</span><span class="p">()</span>
-        <span class="n">sim_total_lipid_concentration</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">totalLipidConcentration</span><span class="p">()</span>
-        <span class="n">sim_ions</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">getIons</span><span class="p">(</span><span class="n">ions_list</span><span class="p">)</span>
-        <span class="n">t_sim</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;TEMPERATURE&#39;</span><span class="p">]</span>
+        <span class="n">sim_lipids</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">get_lipids</span><span class="p">()</span>
+        <span class="n">sim_total_lipid_concentration</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">total_lipid_conc</span><span class="p">()</span>
+        <span class="n">sim_ions</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">get_ions</span><span class="p">(</span><span class="n">ions_list</span><span class="p">)</span>
+        <span class="n">t_sim</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;TEMPERATURE&#39;</span><span class="p">]</span>
 
         <span class="c1"># calculate molar fractions from simulation</span>
         <span class="n">sim_molar_fractions</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">lipid</span> <span class="ow">in</span> <span class="n">sim_lipids</span><span class="p">:</span>
-            <span class="n">sim_molar_fractions</span><span class="p">[</span><span class="n">lipid</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">molarFraction</span><span class="p">(</span><span class="n">lipid</span><span class="p">)</span>
+            <span class="n">sim_molar_fractions</span><span class="p">[</span><span class="n">lipid</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">molar_fraction</span><span class="p">(</span><span class="n">lipid</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">experiment</span> <span class="ow">in</span> <span class="n">experiments</span><span class="p">:</span>
 
             <span class="c1"># check lipid composition matches the simulation</span>
-            <span class="n">exp_lipids</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">getLipids</span><span class="p">()</span>
+            <span class="n">exp_lipids</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get_lipids</span><span class="p">()</span>
 
             <span class="n">exp_total_lipid_concentration</span> <span class="o">=</span> \
                 <span class="n">experiment</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;TOTAL_LIPID_CONCENTRATION&#39;</span><span class="p">]</span>
-            <span class="n">exp_ions</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">getIons</span><span class="p">(</span><span class="n">ions_list</span><span class="p">)</span>
+            <span class="n">exp_ions</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get_ions</span><span class="p">(</span><span class="n">ions_list</span><span class="p">)</span>
             <span class="n">exp_counter_ions</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;COUNTER_IONS&#39;</span><span class="p">]</span>
 
             <span class="c1"># calculate simulation ion concentrations</span>
             <span class="n">sim_concentrations</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="n">ions_list</span><span class="p">:</span>
-                <span class="n">sim_concentrations</span><span class="p">[</span><span class="n">molecule</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">ionConcentration</span><span class="p">(</span>
+                <span class="n">sim_concentrations</span><span class="p">[</span><span class="n">molecule</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">ion_conc</span><span class="p">(</span>
                     <span class="n">molecule</span><span class="p">,</span> <span class="n">exp_counter_ions</span><span class="p">)</span>
 
             <span class="c1"># continue if lipid compositions are the same</span>
@@ -397,35 +387,35 @@
                             <span class="n">start</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_EXP_PATH</span><span class="p">,</span> <span class="n">experiment</span><span class="o">.</span><span class="n">exptype</span><span class="p">))</span>
                         <span class="k">if</span> <span class="n">experiment</span><span class="o">.</span><span class="n">exptype</span> <span class="o">==</span> <span class="s2">&quot;OrderParameters&quot;</span><span class="p">:</span>
                             <span class="n">lipid</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">molname</span>
-                            <span class="n">simulation</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">][</span><span class="s1">&#39;ORDERPARAMETER&#39;</span><span class="p">][</span><span class="n">lipid</span><span class="p">][</span><span class="n">exp_doi</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_path</span> <span class="c1"># noqa</span>
+                            <span class="n">simulation</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">][</span><span class="s1">&#39;ORDERPARAMETER&#39;</span><span class="p">][</span><span class="n">lipid</span><span class="p">][</span><span class="n">exp_doi</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_path</span> <span class="c1"># noqa</span>
                         <span class="k">elif</span> <span class="n">experiment</span><span class="o">.</span><span class="n">exptype</span> <span class="o">==</span> <span class="s2">&quot;FormFactors&quot;</span><span class="p">:</span>
-                            <span class="n">simulation</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">][</span><span class="s1">&#39;FORMFACTOR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_path</span>
+                            <span class="n">simulation</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">][</span><span class="s1">&#39;FORMFACTOR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_path</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">continue</span>
 
         <span class="c1"># sorting experiment lists to keep experimental order strict</span>
-        <span class="k">for</span> <span class="n">_lipid</span> <span class="ow">in</span> <span class="n">simulation</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">][</span><span class="s1">&#39;ORDERPARAMETER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">unsortDict</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">][</span><span class="s1">&#39;ORDERPARAMETER&#39;</span><span class="p">][</span><span class="n">_lipid</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">unsortDict</span><span class="p">):</span>
+        <span class="n">cur_exp</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">_lipid</span> <span class="ow">in</span> <span class="n">cur_exp</span><span class="p">[</span><span class="s1">&#39;ORDERPARAMETER&#39;</span><span class="p">]:</span>
+            <span class="n">unsort_dict</span> <span class="o">=</span> <span class="n">cur_exp</span><span class="p">[</span><span class="s1">&#39;ORDERPARAMETER&#39;</span><span class="p">][</span><span class="n">_lipid</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">unsort_dict</span><span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="n">sortDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unsortDict</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
-            <span class="n">simulation</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">][</span><span class="s1">&#39;ORDERPARAMETER&#39;</span><span class="p">][</span><span class="n">_lipid</span><span class="p">]</span> <span class="o">=</span> <span class="n">sortDict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">sort_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unsort_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+            <span class="n">cur_exp</span><span class="p">[</span><span class="s1">&#39;ORDERPARAMETER&#39;</span><span class="p">][</span><span class="n">_lipid</span><span class="p">]</span> <span class="o">=</span> <span class="n">sort_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-        <span class="n">outfileDICT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">simulation</span><span class="o">.</span><span class="n">indexingPath</span><span class="p">,</span> <span class="s1">&#39;README.yaml&#39;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfileDICT</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;path&quot;</span> <span class="ow">in</span> <span class="n">simulation</span><span class="o">.</span><span class="n">readme</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="k">del</span> <span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">])</span>
-            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">readme</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">outfile_dict</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">simulation</span><span class="o">.</span><span class="n">idx_path</span><span class="p">,</span> <span class="s1">&#39;README.yaml&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile_dict</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;path&quot;</span> <span class="ow">in</span> <span class="n">simulation</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">del</span> <span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">])</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">readme</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">pairs</span></div>
 
 
 
-<div class="viewcode-block" id="logPairs">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.logPairs">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">logPairs</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">fd</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="log_pairs">
+<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.log_pairs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">log_pairs</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">fd</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Write found correspondences into log file.</span>
 
@@ -434,11 +424,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
-        <span class="n">sim</span><span class="p">:</span> <span class="n">Simulation</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">sim</span><span class="p">:</span> <span class="n">SearchSystem</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">exp</span><span class="p">:</span> <span class="n">Experiment</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-        <span class="n">sysn</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;SYSTEM&#39;</span><span class="p">]</span>
-        <span class="n">simp</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">indexingPath</span>
+        <span class="n">sysn</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;SYSTEM&#39;</span><span class="p">]</span>
+        <span class="n">simp</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">idx_path</span>
 
         <span class="n">expp</span> <span class="o">=</span> <span class="n">exp</span><span class="o">.</span><span class="n">dataPath</span>
         <span class="n">expd</span> <span class="o">=</span> <span class="n">exp</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;DOI&#39;</span><span class="p">]</span>
@@ -465,36 +455,36 @@
 <span class="sd">    Main program function. Not for exporting.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">simulations</span> <span class="o">=</span> <span class="n">loadSimulations</span><span class="p">()</span>
+    <span class="n">simulations</span> <span class="o">=</span> <span class="n">load_simulations</span><span class="p">()</span>
 
     <span class="c1"># clear all EXPERIMENT sections in all simulations</span>
     <span class="c1"># TODO: check if EXPERIMENT section changed and trigger the action!</span>
     <span class="k">for</span> <span class="n">simulation</span> <span class="ow">in</span> <span class="n">simulations</span><span class="p">:</span>
-        <span class="n">simulation</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">simulation</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">][</span><span class="s1">&#39;ORDERPARAMETER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">simulation</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">][</span><span class="s1">&#39;FORMFACTOR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">lipid</span> <span class="ow">in</span> <span class="n">simulation</span><span class="o">.</span><span class="n">getLipids</span><span class="p">():</span>
-            <span class="n">simulation</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">][</span><span class="s1">&#39;ORDERPARAMETER&#39;</span><span class="p">][</span><span class="n">lipid</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">simulation</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">simulation</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">][</span><span class="s1">&#39;ORDERPARAMETER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">simulation</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">][</span><span class="s1">&#39;FORMFACTOR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">lipid</span> <span class="ow">in</span> <span class="n">simulation</span><span class="o">.</span><span class="n">get_lipids</span><span class="p">():</span>
+            <span class="n">simulation</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;EXPERIMENT&#39;</span><span class="p">][</span><span class="s1">&#39;ORDERPARAMETER&#39;</span><span class="p">][</span><span class="n">lipid</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="n">outfileDICT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">simulation</span><span class="o">.</span><span class="n">indexingPath</span><span class="p">,</span> <span class="s1">&#39;README.yaml&#39;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfileDICT</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">readme</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">readme_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">simulation</span><span class="o">.</span><span class="n">idx_path</span><span class="p">,</span> <span class="s1">&#39;README.yaml&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">readme_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">readme</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">experimentsOrderParameters</span> <span class="o">=</span> <span class="n">loadExperiments</span><span class="p">(</span><span class="s1">&#39;OrderParameters&#39;</span><span class="p">)</span>
-    <span class="n">experimentsFormFactors</span> <span class="o">=</span> <span class="n">loadExperiments</span><span class="p">(</span><span class="s1">&#39;FormFactors&#39;</span><span class="p">)</span>
+    <span class="n">experiments_op</span> <span class="o">=</span> <span class="n">load_experiments</span><span class="p">(</span><span class="s1">&#39;OrderParameters&#39;</span><span class="p">)</span>
+    <span class="n">experiments_ff</span> <span class="o">=</span> <span class="n">load_experiments</span><span class="p">(</span><span class="s1">&#39;FormFactors&#39;</span><span class="p">)</span>
 
     <span class="c1"># Pair each simulation with an experiment with the closest matching temperature</span>
     <span class="c1"># and composition</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;search-databank-pairs.log&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">logf</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Scanning simulation-experiment pairs among order parameter experiments.&quot;</span><span class="p">)</span>
-        <span class="n">pairsOP</span> <span class="o">=</span> <span class="n">findPairs</span><span class="p">(</span><span class="n">experimentsOrderParameters</span><span class="p">,</span> <span class="n">simulations</span><span class="p">)</span>
+        <span class="n">pairs_op</span> <span class="o">=</span> <span class="n">find_pairs</span><span class="p">(</span><span class="n">experiments_op</span><span class="p">,</span> <span class="n">simulations</span><span class="p">)</span>
         <span class="n">logf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;=== OP PAIRS ===</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">logPairs</span><span class="p">(</span><span class="n">pairsOP</span><span class="p">,</span> <span class="n">logf</span><span class="p">)</span>
+        <span class="n">log_pairs</span><span class="p">(</span><span class="n">pairs_op</span><span class="p">,</span> <span class="n">logf</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Scanning simulation-experiment pairs among form factor experiments.&quot;</span><span class="p">)</span>
-        <span class="n">pairsFF</span> <span class="o">=</span> <span class="n">findPairs</span><span class="p">(</span><span class="n">experimentsFormFactors</span><span class="p">,</span> <span class="n">simulations</span><span class="p">)</span>
+        <span class="n">pairs_ff</span> <span class="o">=</span> <span class="n">find_pairs</span><span class="p">(</span><span class="n">experiments_ff</span><span class="p">,</span> <span class="n">simulations</span><span class="p">)</span>
         <span class="n">logf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;=== FF PAIRS ===</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">logPairs</span><span class="p">(</span><span class="n">pairsFF</span><span class="p">,</span> <span class="n">logf</span><span class="p">)</span>
+        <span class="n">log_pairs</span><span class="p">(</span><span class="n">pairs_ff</span><span class="p">,</span> <span class="n">logf</span><span class="p">)</span>
 
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    for pair in pairsFF:</span>
@@ -505,8 +495,8 @@
 <span class="sd">        print(pair[1].readme)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found order parameter data for &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pairsOP</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; pairs&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found form factor data for &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pairsFF</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; pairs&quot;</span><span class="p">)</span></div>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found order parameter data for &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pairs_op</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; pairs&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found form factor data for &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pairs_ff</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; pairs&quot;</span><span class="p">)</span></div>
 
 
 
