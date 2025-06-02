@@ -1,0 +1,7 @@
+Scripts.DatabankLib.settings.molecules module
+=============================================
+
+.. automodule:: Scripts.DatabankLib.settings.molecules
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,7 @@
+Scripts.BuildDatabank.searchDATABANK module
+===========================================
+
+.. automodule:: Scripts.BuildDatabank.searchDATABANK
+   :members:
+   :show-inheritance:
+   :undoc-members:

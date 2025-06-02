@@ -1,0 +1,7 @@
+Scripts.AnalyzeDatabank.calcAPL module
+======================================
+
+.. automodule:: Scripts.AnalyzeDatabank.calcAPL
+   :members:
+   :show-inheritance:
+   :undoc-members:

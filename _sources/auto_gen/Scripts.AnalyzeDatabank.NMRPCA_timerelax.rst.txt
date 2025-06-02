@@ -1,0 +1,7 @@
+Scripts.AnalyzeDatabank.NMRPCA\_timerelax module
+================================================
+
+.. automodule:: Scripts.AnalyzeDatabank.NMRPCA_timerelax
+   :members:
+   :show-inheritance:
+   :undoc-members:

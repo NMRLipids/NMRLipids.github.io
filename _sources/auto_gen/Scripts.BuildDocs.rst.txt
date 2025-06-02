@@ -1,0 +1,13 @@
+
+
+Scripts.BuildDocs
+=================
+.. py:module:: Scripts.BuildDocs
+
+Subfolders
+-----------
+
+.. toctree::
+   :maxdepth: 1
+
+   Scripts.BuildDocs.source

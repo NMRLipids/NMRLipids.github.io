@@ -1,0 +1,7 @@
+Scripts.BuildDatabank.QualityEvaluation module
+==============================================
+
+.. automodule:: Scripts.BuildDatabank.QualityEvaluation
+   :members:
+   :show-inheritance:
+   :undoc-members:

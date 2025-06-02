@@ -1,0 +1,21 @@
+
+
+Scripts.DatabankLib.settings
+============================
+Python files
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   Scripts.DatabankLib.settings.dic_lipids_UA
+   Scripts.DatabankLib.settings.engines
+   Scripts.DatabankLib.settings.molecules
+
+Module contents
+---------------
+
+.. automodule:: Scripts.DatabankLib.settings
+   :members:
+   :show-inheritance:
+   :undoc-members:

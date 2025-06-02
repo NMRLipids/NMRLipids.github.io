@@ -1,0 +1,7 @@
+Scripts.BuildDatabank.AddData module
+====================================
+
+.. automodule:: Scripts.BuildDatabank.AddData
+   :members:
+   :show-inheritance:
+   :undoc-members:

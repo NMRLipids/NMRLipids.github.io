@@ -1,0 +1,7 @@
+Scripts.updateGUI.GUI\_DB\_Update module
+========================================
+
+.. automodule:: Scripts.updateGUI.GUI_DB_Update
+   :members:
+   :show-inheritance:
+   :undoc-members:

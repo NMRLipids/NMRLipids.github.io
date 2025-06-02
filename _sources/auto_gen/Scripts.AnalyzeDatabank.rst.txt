@@ -1,0 +1,18 @@
+
+
+Scripts.AnalyzeDatabank
+=======================
+.. py:module:: Scripts.AnalyzeDatabank
+
+Python files
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   Scripts.AnalyzeDatabank.NMRPCA_timerelax
+   Scripts.AnalyzeDatabank.calcAPL
+   Scripts.AnalyzeDatabank.calcOrderParameters
+   Scripts.AnalyzeDatabank.calc_FormFactors
+   Scripts.AnalyzeDatabank.calc_thickness
+   Scripts.AnalyzeDatabank.template

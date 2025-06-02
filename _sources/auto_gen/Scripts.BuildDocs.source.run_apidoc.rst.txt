@@ -1,0 +1,7 @@
+Scripts.BuildDocs.source.run\_apidoc module
+===========================================
+
+.. automodule:: Scripts.BuildDocs.source.run_apidoc
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scripts.DatabankLib.form_factor module &mdash; NMRlipids databank 4.9.2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=10ee5b61"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Scripts.DatabankLib.jpyroutines module" href="Scripts.DatabankLib.jpyroutines.html" />
+    <link rel="prev" title="Scripts.DatabankLib.databankop module" href="Scripts.DatabankLib.databankop.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NMRlipids databank
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User information:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../listOfFiles.html">List and descriptions of NMRlipids databank files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../READMEcontent.html">User input and content of README.yaml files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../addingData.html">Adding simulations into the NMRlipids databank</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../addingExpData.html">Adding experimental data into the NMRlipids databank</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../moleculesAndMapping.html">Universal molecule and atom names</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../databankLibrary.html">NMRlipids databank API functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exampleAndTutorials.html">Examples and tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Structure</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../Overview.html">Project structure</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../Overview.html#databanklib">DatabankLib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Overview.html#analyzedatabank">AnalyzeDatabank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Overview.html#builddatabank">BuildDatabank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Overview.html#updategui">updateGUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Overview.html#tests">tests</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../Overview.html#repository-folder-structure">Repository folder structure</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="Scripts.html">Scripts</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="Scripts.html#subfolders">Subfolders</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NMRlipids databank</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Overview.html">Project structure</a></li>
+          <li class="breadcrumb-item"><a href="Scripts.html">Scripts</a></li>
+          <li class="breadcrumb-item"><a href="Scripts.DatabankLib.html">Scripts.DatabankLib</a></li>
+      <li class="breadcrumb-item active">Scripts.DatabankLib.form_factor module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/auto_gen/Scripts.DatabankLib.form_factor.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-Scripts.DatabankLib.form_factor">
+<span id="scripts-databanklib-form-factor-module"></span><h1>Scripts.DatabankLib.form_factor module<a class="headerlink" href="#module-Scripts.DatabankLib.form_factor" title="Link to this heading"></a></h1>
+<p>Module form_factor serves for bilayer form factor calculations.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.form_factor.NumpyArrayEncoder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.form_factor.</span></span><span class="sig-name descname"><span class="pre">NumpyArrayEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/form_factor.html#NumpyArrayEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.form_factor.NumpyArrayEncoder" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CompactJSONEncoder</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.form_factor.NumpyArrayEncoder.encode">
+<span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/form_factor.html#NumpyArrayEncoder.encode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.form_factor.NumpyArrayEncoder.encode" title="Link to this definition"></a></dt>
+<dd><p>Encode JSON object <em>o</em> with respect to single line lists.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.form_factor.FormFactor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.form_factor.</span></span><span class="sig-name descname"><span class="pre">FormFactor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Scripts.DatabankLib.core.html#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><span class="pre">System</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'electron'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/form_factor.html#FormFactor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.form_factor.FormFactor" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Calculates form factors from density profiles.</p>
+<p>Further development will include thickness of the membrane
+from the intersection of lipid density and water density.
+Already enables to calculate electrom/mass/number densities</p>
+<p>Density could be calculated only from the final form factor profile
+- testing is needed to see stability for rare species.</p>
+<p>Examination of FF error spikes is needed!</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.form_factor.FormFactor.get_electrons">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_electrons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapping_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/form_factor.html#FormFactor.get_electrons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.form_factor.FormFactor.get_electrons" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.form_factor.FormFactor.residue_electrons_all">
+<span class="sig-name descname"><span class="pre">residue_electrons_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/form_factor.html#FormFactor.residue_electrons_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.form_factor.FormFactor.residue_electrons_all" title="Link to this definition"></a></dt>
+<dd><p>Return list of electrons</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.form_factor.FormFactor.assign_electrons">
+<span class="sig-name descname"><span class="pre">assign_electrons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/form_factor.html#FormFactor.assign_electrons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.form_factor.FormFactor.assign_electrons" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.form_factor.FormFactor.calculate_weight">
+<span class="sig-name descname"><span class="pre">calculate_weight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/form_factor.html#FormFactor.calculate_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.form_factor.FormFactor.calculate_weight" title="Link to this definition"></a></dt>
+<dd><p>Creates an array of weights for all atoms in the simulation.</p>
+<dl>
+<dt>For electron densities:</dt><dd><ul>
+<li><p>creates dictonary of atom types and number of electrons
+loaded form an external file –&gt; in the future it backmaps</p>
+<blockquote>
+<div><p>the atom names to mapping files
+and automaticaly assigns # of electrons</p>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+<dt>Number densities:</dt><dd><ul class="simple">
+<li><p>all weights are 1</p></li>
+</ul>
+</dd>
+<dt>Mass densities:</dt><dd><ul class="simple">
+<li><p>reads masses from u.atoms.masses</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.form_factor.FormFactor.calculate_density">
+<span class="sig-name descname"><span class="pre">calculate_density</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/form_factor.html#FormFactor.calculate_density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.form_factor.FormFactor.calculate_density" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.form_factor.FormFactor.fourier">
+<span class="sig-name descname"><span class="pre">fourier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ff_density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ff_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_ff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/form_factor.html#FormFactor.fourier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.form_factor.FormFactor.fourier" title="Link to this definition"></a></dt>
+<dd><p>Calculates fourier transform of ff_density in the FF_range.
+It calculates a “height” of a bin for FF puroposes; in this case the number of
+bins is constant and the bin width changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ff_density</strong> (<em>_type_</em>) – TODO: fill</p></li>
+<li><p><strong>box_z</strong> (<em>_type_</em>) – TODO: fill</p></li>
+<li><p><strong>ff_range</strong> (<em>_type_</em>) – TODO: fill</p></li>
+<li><p><strong>d_ff</strong> (<em>_type_</em>) – TODO: fill</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>TODO: fill</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Scripts.DatabankLib.databankop.html" class="btn btn-neutral float-left" title="Scripts.DatabankLib.databankop module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Scripts.DatabankLib.jpyroutines.html" class="btn btn-neutral float-right" title="Scripts.DatabankLib.jpyroutines module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NMRlipids open collaboration 
+    OSI Approved: GNU General Public License v3 (GPLv3)
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version
+   .
+        <p>
+            <a href="https://github.com/NMRLipids/Databank/blob/main/LICENSE.txt"
+            target="_blank"
+            rel="noopener">
+            Link to GNU GPL v3 License
+            </a>
+        </p>
+        <p>
+            <a href="https://github.com/NMRLipids/Databank"
+            target="_blank"
+            rel="noopener">
+            Link to the GitHub repository
+            </a>
+        </p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

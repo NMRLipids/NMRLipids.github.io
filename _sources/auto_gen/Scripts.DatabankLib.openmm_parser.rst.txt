@@ -1,0 +1,7 @@
+Scripts.DatabankLib.openmm\_parser module
+=========================================
+
+.. automodule:: Scripts.DatabankLib.openmm_parser
+   :members:
+   :show-inheritance:
+   :undoc-members:

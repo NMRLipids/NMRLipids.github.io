@@ -1,0 +1,7 @@
+Scripts.DatabankLib.databankio module
+=====================================
+
+.. automodule:: Scripts.DatabankLib.databankio
+   :members:
+   :show-inheritance:
+   :undoc-members:

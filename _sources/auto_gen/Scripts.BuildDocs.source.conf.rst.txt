@@ -1,0 +1,7 @@
+Scripts.BuildDocs.source.conf module
+====================================
+
+.. automodule:: Scripts.BuildDocs.source.conf
+   :members:
+   :show-inheritance:
+   :undoc-members:

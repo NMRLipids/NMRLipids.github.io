@@ -1,0 +1,7 @@
+Scripts.DatabankLib.analyze\_nmrpca module
+==========================================
+
+.. automodule:: Scripts.DatabankLib.analyze_nmrpca
+   :members:
+   :show-inheritance:
+   :undoc-members:

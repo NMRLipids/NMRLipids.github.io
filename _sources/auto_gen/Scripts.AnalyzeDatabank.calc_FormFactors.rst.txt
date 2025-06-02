@@ -1,0 +1,7 @@
+Scripts.AnalyzeDatabank.calc\_FormFactors module
+================================================
+
+.. automodule:: Scripts.AnalyzeDatabank.calc_FormFactors
+   :members:
+   :show-inheritance:
+   :undoc-members:
