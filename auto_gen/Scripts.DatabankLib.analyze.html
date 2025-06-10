@@ -98,83 +98,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-Scripts.DatabankLib.analyze">
-<span id="scripts-databanklib-analyze-module"></span><h1>Scripts.DatabankLib.analyze module<a class="headerlink" href="#module-Scripts.DatabankLib.analyze" title="Link to this heading"></a></h1>
-<dl class="field-list simple">
-<dt class="field-odd">module<span class="colon">:</span></dt>
-<dd class="field-odd"><p>DatabankLib.analyze</p>
-</dd>
-<dt class="field-even">description<span class="colon">:</span></dt>
-<dd class="field-even"><p>major analysis methods calculating a property from NMRLipipds
-<cite>system</cite> object</p>
-</dd>
-</dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="Scripts.DatabankLib.analyze.computeNMRPCA">
-<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.analyze.</span></span><span class="sig-name descname"><span class="pre">computeNMRPCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Scripts.DatabankLib.core.html#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><span class="pre">System</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recompute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/analyze.html#computeNMRPCA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.analyze.computeNMRPCA" title="Link to this definition"></a></dt>
-<dd><p>Compute eq_times.json using NMR PCA analysis.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>system</strong> (<a class="reference internal" href="Scripts.DatabankLib.core.html#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><em>System</em></a>) – one of systems of the Databank</p></li>
-<li><p><strong>recompute</strong> (<em>bool</em><em>, </em><em>optional</em>) – Delete previous apl.json and recompute it if True.</p></li>
-<li><p><strong>False.</strong> (<em>Defaults to</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>int success code (<a href="#id1"><span class="problematic" id="id2">RCODE_</span></a>…)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="Scripts.DatabankLib.analyze.computeAPL">
-<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.analyze.</span></span><span class="sig-name descname"><span class="pre">computeAPL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Scripts.DatabankLib.core.html#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><span class="pre">System</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recompute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/analyze.html#computeAPL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.analyze.computeAPL" title="Link to this definition"></a></dt>
-<dd><p>Generate apl.json analysis file for a system.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>system</strong> (<em>dict</em>) – one of systems of the Databank</p></li>
-<li><p><strong>recompute</strong> (<em>bool</em><em>, </em><em>optional</em>) – Delete previous apl.json and recompute it if True.</p></li>
-<li><p><strong>False.</strong> (<em>Defaults to</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>int success code (<a href="#id3"><span class="problematic" id="id4">RCODE_</span></a>…)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="Scripts.DatabankLib.analyze.computeTH">
-<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.analyze.</span></span><span class="sig-name descname"><span class="pre">computeTH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recompute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/analyze.html#computeTH"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.analyze.computeTH" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="Scripts.DatabankLib.analyze.computeOP">
-<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.analyze.</span></span><span class="sig-name descname"><span class="pre">computeOP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Scripts.DatabankLib.core.html#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><span class="pre">System</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recompute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/analyze.html#computeOP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.analyze.computeOP" title="Link to this definition"></a></dt>
-<dd><p>_summary_</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>system</strong> (<em>dict</em>) – _description_</p></li>
-<li><p><strong>recompute</strong> (<em>bool</em><em>, </em><em>optional</em>) – _description_. Defaults to False.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>_description_</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="Scripts.DatabankLib.analyze.computeFF">
-<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.analyze.</span></span><span class="sig-name descname"><span class="pre">computeFF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Scripts.DatabankLib.core.html#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><span class="pre">System</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recompute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/analyze.html#computeFF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.analyze.computeFF" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
+  <section id="scripts-databanklib-analyze-module">
+<h1>Scripts.DatabankLib.analyze module<a class="headerlink" href="#scripts-databanklib-analyze-module" title="Link to this heading"></a></h1>
 </section>
 
 
