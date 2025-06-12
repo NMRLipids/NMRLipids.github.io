@@ -18,10 +18,10 @@ jobs:
     - name: Check out repo
       uses: actions/checkout@v4 
       
-    - name: Check out NMRLipids/Databank
+    - name: Check out NMRLipids/BilayerData
       uses: actions/checkout@v4
       with:
-        repository: NMRLipids/Databank
+        repository: NMRLipids/BilayerData
         path: NMRLipidsDB
     
     # Get zenodo DOIs and query stats from API
@@ -31,7 +31,7 @@ jobs:
    
     # Commits files to repository
     - name: Commit changes
-      uses: EndBug/add-and-commit@v4
+      uses: EndBug/add-and-commit@v9
       with:
         author_name: GitHub action
         message: "Zenodo stats"
