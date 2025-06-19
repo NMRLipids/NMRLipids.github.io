@@ -98,8 +98,97 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="scripts-builddatabank-searchdatabank-module">
-<h1>Scripts.BuildDatabank.searchDATABANK module<a class="headerlink" href="#scripts-builddatabank-searchdatabank-module" title="Link to this heading"></a></h1>
+  <section id="module-Scripts.BuildDatabank.searchDATABANK">
+<span id="scripts-builddatabank-searchdatabank-module"></span><h1>Scripts.BuildDatabank.searchDATABANK module<a class="headerlink" href="#module-Scripts.BuildDatabank.searchDATABANK" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.SearchSystem">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Scripts.BuildDatabank.searchDATABANK.</span></span><span class="sig-name descname"><span class="pre">SearchSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">readme</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/BuildDatabank/searchDATABANK.html#SearchSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.SearchSystem" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.SearchSystem.system">
+<span class="sig-name descname"><span class="pre">system</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.SearchSystem.system" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.SearchSystem.idx_path">
+<span class="sig-name descname"><span class="pre">idx_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.SearchSystem.idx_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.SearchSystem.get_lipids">
+<span class="sig-name descname"><span class="pre">get_lipids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">LipidSet[{'CHOL',</span> <span class="pre">'POPE',</span> <span class="pre">'DPPC',</span> <span class="pre">'POPC',</span> <span class="pre">'TOCL'}]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/BuildDatabank/searchDATABANK.html#SearchSystem.get_lipids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.SearchSystem.get_lipids" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.SearchSystem.get_ions">
+<span class="sig-name descname"><span class="pre">get_ions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/BuildDatabank/searchDATABANK.html#SearchSystem.get_ions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.SearchSystem.get_ions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.SearchSystem.molar_fraction">
+<span class="sig-name descname"><span class="pre">molar_fraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">LipidSet[{'CHOL',</span> <span class="pre">'POPE',</span> <span class="pre">'DPPC',</span> <span class="pre">'POPC',</span> <span class="pre">'TOCL'}]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/Scripts/BuildDatabank/searchDATABANK.html#SearchSystem.molar_fraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.SearchSystem.molar_fraction" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.SearchSystem.ion_conc">
+<span class="sig-name descname"><span class="pre">ion_conc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exp_counter_ions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/BuildDatabank/searchDATABANK.html#SearchSystem.ion_conc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.SearchSystem.ion_conc" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.SearchSystem.total_lipid_conc">
+<span class="sig-name descname"><span class="pre">total_lipid_conc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/BuildDatabank/searchDATABANK.html#SearchSystem.total_lipid_conc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.SearchSystem.total_lipid_conc" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.Experiment">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Scripts.BuildDatabank.searchDATABANK.</span></span><span class="sig-name descname"><span class="pre">Experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">readme</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exptype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/BuildDatabank/searchDATABANK.html#Experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.Experiment" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.Experiment.get_lipids">
+<span class="sig-name descname"><span class="pre">get_lipids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">LipidSet[{'CHOL',</span> <span class="pre">'POPE',</span> <span class="pre">'DPPC',</span> <span class="pre">'POPC',</span> <span class="pre">'TOCL'}]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/Scripts/BuildDatabank/searchDATABANK.html#Experiment.get_lipids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.Experiment.get_lipids" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.Experiment.get_ions">
+<span class="sig-name descname"><span class="pre">get_ions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ions</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/Scripts/BuildDatabank/searchDATABANK.html#Experiment.get_ions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.Experiment.get_ions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.load_simulations">
+<span class="sig-prename descclassname"><span class="pre">Scripts.BuildDatabank.searchDATABANK.</span></span><span class="sig-name descname"><span class="pre">load_simulations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#Scripts.BuildDatabank.searchDATABANK.SearchSystem" title="Scripts.BuildDatabank.searchDATABANK.SearchSystem"><span class="pre">SearchSystem</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/Scripts/BuildDatabank/searchDATABANK.html#load_simulations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.load_simulations" title="Link to this definition"></a></dt>
+<dd><p>Generates the list of Simulation objects. Go through all README.yaml files.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.load_experiments">
+<span class="sig-prename descclassname"><span class="pre">Scripts.BuildDatabank.searchDATABANK.</span></span><span class="sig-name descname"><span class="pre">load_experiments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exp_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#Scripts.BuildDatabank.searchDATABANK.Experiment" title="Scripts.BuildDatabank.searchDATABANK.Experiment"><span class="pre">Experiment</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/Scripts/BuildDatabank/searchDATABANK.html#load_experiments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.load_experiments" title="Link to this definition"></a></dt>
+<dd><p>Loops over the experiment entries in the experiment databank and read experiment
+readme and order parameter files into objects.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.find_pairs">
+<span class="sig-prename descclassname"><span class="pre">Scripts.BuildDatabank.searchDATABANK.</span></span><span class="sig-name descname"><span class="pre">find_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#Scripts.BuildDatabank.searchDATABANK.Experiment" title="Scripts.BuildDatabank.searchDATABANK.Experiment"><span class="pre">Experiment</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#Scripts.BuildDatabank.searchDATABANK.SearchSystem" title="Scripts.BuildDatabank.searchDATABANK.SearchSystem"><span class="pre">SearchSystem</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/BuildDatabank/searchDATABANK.html#find_pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.find_pairs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.log_pairs">
+<span class="sig-prename descclassname"><span class="pre">Scripts.BuildDatabank.searchDATABANK.</span></span><span class="sig-name descname"><span class="pre">log_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pairs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/Scripts/BuildDatabank/searchDATABANK.html#log_pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.log_pairs" title="Link to this definition"></a></dt>
+<dd><p>Write found correspondences into log file.</p>
+<p>pairs: [(Simulation, Experiment), …]
+fd: file descriptor for writting into</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Scripts.BuildDatabank.searchDATABANK.main">
+<span class="sig-prename descclassname"><span class="pre">Scripts.BuildDatabank.searchDATABANK.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/BuildDatabank/searchDATABANK.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.BuildDatabank.searchDATABANK.main" title="Link to this definition"></a></dt>
+<dd><p>Main program function. Not for exporting.</p>
+</dd></dl>
+
 </section>
 
 

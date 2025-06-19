@@ -98,8 +98,49 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="scripts-builddatabank-adddata-module">
-<h1>Scripts.BuildDatabank.AddData module<a class="headerlink" href="#scripts-builddatabank-adddata-module" title="Link to this heading"></a></h1>
+  <section id="module-Scripts.BuildDatabank.AddData">
+<span id="scripts-builddatabank-adddata-module"></span><h1>Scripts.BuildDatabank.AddData module<a class="headerlink" href="#module-Scripts.BuildDatabank.AddData" title="Link to this heading"></a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">program<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AddData.py</p>
+</dd>
+<dt class="field-even">description<span class="colon">:</span></dt>
+<dd class="field-even"><p>The script adds a simulation into the Databank based on <code class="docutils literal notranslate"><span class="pre">info.yaml</span></code>
+file.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Usage:</dt><dd><p>AddData.py Script [-h] [-f FILE] [-d] [-n] [-w WORK_DIR] [-o OUTPUT_DIR]</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">param<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-h</span></code>, <code class="docutils literal notranslate"><span class="pre">--help</span></code> show this help message and exit</p>
+</dd>
+<dt class="field-even">param<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">FILE</span></code>, <code class="docutils literal notranslate"><span class="pre">--file</span></code>  Input config file in yaml format.</p>
+</dd>
+<dt class="field-odd">param<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-d</span></code>, <code class="docutils literal notranslate"><span class="pre">--debug</span></code> enable debug logging output</p>
+</dd>
+<dt class="field-even">param<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-n</span></code>, <code class="docutils literal notranslate"><span class="pre">--no-cache</span></code> always redownload repository files</p>
+</dd>
+<dt class="field-odd">param<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-w</span> <span class="pre">WORK_DIR</span></code>, <code class="docutils literal notranslate"><span class="pre">--work-dir</span></code> set custom temporary working directory
+[not set = read from YAML]</p>
+</dd>
+<dt class="field-even">param<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">OUTPUT_DIR</span></code>, <code class="docutils literal notranslate"><span class="pre">--output-dir</span></code> set custom output directory
+[/path-to-databank]</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returning error codes:</dt><dd><p>1 - input YAML parsing errors
+2 - filesystem writting errors
+3 - network accessing errors</p>
+</dd>
+</dl>
 </section>
 
 

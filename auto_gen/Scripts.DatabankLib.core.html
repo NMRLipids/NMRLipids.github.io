@@ -98,8 +98,65 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="scripts-databanklib-core-module">
-<h1>Scripts.DatabankLib.core module<a class="headerlink" href="#scripts-databanklib-core-module" title="Link to this heading"></a></h1>
+  <section id="module-Scripts.DatabankLib.core">
+<span id="scripts-databanklib-core-module"></span><h1>Scripts.DatabankLib.core module<a class="headerlink" href="#module-Scripts.DatabankLib.core" title="Link to this heading"></a></h1>
+<p>Core databank class and system initialization function.
+Imported by <cite>databankLibrary</cite> by default.
+Can be imported without additional libraries to scan Databank system file tree!</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.core.System">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.core.</span></span><span class="sig-name descname"><span class="pre">System</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/core.html#System"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.core.System" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MutableMapping</span></code></p>
+<p>Main Databank single object, which is an extension of a
+dictionary with additional functionality.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.core.System.readme">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">readme</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#Scripts.DatabankLib.core.System.readme" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.core.System.content">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">content</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="Scripts.DatabankLib.settings.molecules.html#Scripts.DatabankLib.settings.molecules.Molecule" title="Scripts.DatabankLib.settings.molecules.Molecule"><span class="pre">Molecule</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#Scripts.DatabankLib.core.System.content" title="Link to this definition"></a></dt>
+<dd><p>Returns dictionary of molecule objects.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.core.SystemsCollection">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.core.</span></span><span class="sig-name descname"><span class="pre">SystemsCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><span class="pre">System</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/core.html#SystemsCollection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.core.SystemsCollection" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<a class="reference internal" href="#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a>]</p>
+<p>Immutable collection of system dicts. Can be accessed by ID using loc().</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.core.SystemsCollection.loc">
+<span class="sig-name descname"><span class="pre">loc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><span class="pre">System</span></a></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/core.html#SystemsCollection.loc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.core.SystemsCollection.loc" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.core.initialize_databank">
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.core.</span></span><span class="sig-name descname"><span class="pre">initialize_databank</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/core.html#initialize_databank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.core.initialize_databank" title="Link to this definition"></a></dt>
+<dd><p>Intializes the NMRlipids databank.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of dictionaries that contain the content of README.yaml files for
+each system.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.core.print_README">
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.core.</span></span><span class="sig-name descname"><span class="pre">print_README</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/core.html#print_README"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.core.print_README" title="Link to this definition"></a></dt>
+<dd><p>Prints the content of <code class="docutils literal notranslate"><span class="pre">system</span></code> dictionary in human readable format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>system</strong> – NMRlipids databank dictionary defining a simulation.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 

@@ -98,8 +98,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="scripts-analyzedatabank-nmrpca-timerelax-module">
-<h1>Scripts.AnalyzeDatabank.NMRPCA_timerelax module<a class="headerlink" href="#scripts-analyzedatabank-nmrpca-timerelax-module" title="Link to this heading"></a></h1>
+  <section id="module-Scripts.AnalyzeDatabank.NMRPCA_timerelax">
+<span id="scripts-analyzedatabank-nmrpca-timerelax-module"></span><h1>Scripts.AnalyzeDatabank.NMRPCA_timerelax module<a class="headerlink" href="#module-Scripts.AnalyzeDatabank.NMRPCA_timerelax" title="Link to this heading"></a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">program<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NMRPCA_timerelax.py</p>
+</dd>
+<dt class="field-even">description<span class="colon">:</span></dt>
+<dd class="field-even"><p>Compute PCA-derived lipid relaxation times.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Main runs the loop over all databank trajectories and does the following:</dt><dd><ol class="arabic simple">
+<li><p>Calls the parser to check, merge, and concatenate trajectory</p></li>
+<li><p>Calls PCA to gep PCs, projections, and ACs</p></li>
+<li><p>Calls Time calculation</p></li>
+</ol>
+</dd>
+</dl>
+<p>The parser assumes that the trajectory is downloaded and lipids are made
+whole, or GROMACS is installed and available via gmx command.</p>
+<p>For details on NMRPCA, see <cite>DatabankLib/analyze_nmrpca.py</cite>.</p>
 </section>
 
 
