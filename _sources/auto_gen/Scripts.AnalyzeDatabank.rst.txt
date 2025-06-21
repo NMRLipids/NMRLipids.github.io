@@ -15,4 +15,3 @@ Python files
    Scripts.AnalyzeDatabank.calcOrderParameters
    Scripts.AnalyzeDatabank.calc_FormFactors
    Scripts.AnalyzeDatabank.calc_thickness
-   Scripts.AnalyzeDatabank.template
