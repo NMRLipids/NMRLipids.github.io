@@ -86,6 +86,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">collections.abc</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
@@ -225,12 +226,16 @@
                             <span class="n">ydict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">))</span>
                         <span class="n">content</span> <span class="o">=</span> <span class="n">System</span><span class="p">(</span><span class="n">ydict</span><span class="p">)</span>
                     <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="ne">PermissionError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Problem loading on of the files required for the system: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;System path: </span><span class="si">{</span><span class="n">subdir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;System: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ydict</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">!!README LOAD ERROR!!</span>
+<span class="s2">Problems while loading on of the files required for the system: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span>
+<span class="s2">System path: </span><span class="si">{</span><span class="n">subdir</span><span class="si">}</span>
+<span class="s2">System: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ydict</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
                     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;System: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ydict</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">!!README LOAD ERROR!!</span>
+<span class="s2">Unexpected error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span>
+<span class="s2">System: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ydict</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">relpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">rpath</span><span class="p">)</span>
                         <span class="n">content</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">relpath</span><span class="p">[:</span><span class="o">-</span><span class="mi">11</span><span class="p">]</span>
