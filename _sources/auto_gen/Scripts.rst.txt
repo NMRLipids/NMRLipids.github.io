@@ -13,5 +13,6 @@ Subfolders
    Scripts.AnalyzeDatabank
    Scripts.BuildDatabank
    Scripts.DatabankLib
+   Scripts.WorkflowScripts
    Scripts.tests
    Scripts.updateGUI
