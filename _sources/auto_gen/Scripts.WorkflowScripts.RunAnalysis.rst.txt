@@ -1,0 +1,7 @@
+Scripts.WorkflowScripts.RunAnalysis module
+==========================================
+
+.. automodule:: Scripts.WorkflowScripts.RunAnalysis
+   :members:
+   :show-inheritance:
+   :undoc-members:

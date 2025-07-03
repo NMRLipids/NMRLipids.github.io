@@ -11,4 +11,5 @@ Python files
    :maxdepth: 1
 
    Scripts.WorkflowScripts.ProcessInfoFile
+   Scripts.WorkflowScripts.RunAnalysis
    Scripts.WorkflowScripts.Workflow_utils
