@@ -147,6 +147,22 @@ by <code class="docutils literal notranslate"><span class="pre">system</span></c
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.databankLibrary.GetEquilibrationTimes">
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankLibrary.</span></span><span class="sig-name descname"><span class="pre">GetEquilibrationTimes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Scripts.DatabankLib.core.html#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><span class="pre">System</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankLibrary.html#GetEquilibrationTimes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankLibrary.GetEquilibrationTimes" title="Link to this definition"></a></dt>
+<dd><p>Returns relative equilibration time for each lipid within a simulation defined
+by <code class="docutils literal notranslate"><span class="pre">system</span></code>. Relative equilibration times are calculated with
+<code class="docutils literal notranslate"><span class="pre">NMRPCA_timerelax.py</span></code> and stored in <code class="docutils literal notranslate"><span class="pre">eq_times.json</span></code> files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>system</strong> – NMRlipids databank dictionary defining a simulation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary of relative equilibration times for each lipid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.databankLibrary.GetNlipids">
 <span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankLibrary.</span></span><span class="sig-name descname"><span class="pre">GetNlipids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Scripts.DatabankLib.core.html#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><span class="pre">System</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankLibrary.html#GetNlipids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankLibrary.GetNlipids" title="Link to this definition"></a></dt>
 <dd><p>Returns the total number of lipids in a simulation defined by <code class="docutils literal notranslate"><span class="pre">system</span></code>.</p>
@@ -162,7 +178,7 @@ by <code class="docutils literal notranslate"><span class="pre">system</span></c
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.databankLibrary.getLipids">
-<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankLibrary.</span></span><span class="sig-name descname"><span class="pre">getLipids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Scripts.DatabankLib.core.html#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><span class="pre">System</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">LipidSet[{'POPC',</span> <span class="pre">'TOCL',</span> <span class="pre">'CHOL',</span> <span class="pre">'DPPC',</span> <span class="pre">'POPE'}]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankLibrary.html#getLipids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankLibrary.getLipids" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankLibrary.</span></span><span class="sig-name descname"><span class="pre">getLipids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Scripts.DatabankLib.core.html#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><span class="pre">System</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">LipidSet[{'POPE',</span> <span class="pre">'POPC',</span> <span class="pre">'DPPC',</span> <span class="pre">'TOCL',</span> <span class="pre">'CHOL'}]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankLibrary.html#getLipids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankLibrary.getLipids" title="Link to this definition"></a></dt>
 <dd><p>Returns a string using MDAnalysis notation that can used to select all lipids from
 the <code class="docutils literal notranslate"><span class="pre">system</span></code>.</p>
 <dl class="field-list simple">
