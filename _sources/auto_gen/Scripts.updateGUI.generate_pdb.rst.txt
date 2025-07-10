@@ -1,0 +1,7 @@
+Scripts.updateGUI.generate\_pdb module
+======================================
+
+.. automodule:: Scripts.updateGUI.generate_pdb
+   :members:
+   :show-inheritance:
+   :undoc-members:

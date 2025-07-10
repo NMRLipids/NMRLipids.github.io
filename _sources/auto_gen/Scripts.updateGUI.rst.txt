@@ -12,3 +12,4 @@ Python files
 
    Scripts.updateGUI.GUI_DB_Update
    Scripts.updateGUI.createPDBs
+   Scripts.updateGUI.generate_pdb
