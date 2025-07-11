@@ -82,58 +82,33 @@
   <section id="module-DatabankLib.databankop">
 <span id="orderparameter-module"></span><h1>OrderParameter module<a class="headerlink" href="#module-DatabankLib.databankop" title="Link to this heading"></a></h1>
 <blockquote>
-<div><blockquote>
-<div><dl class="field-list simple">
-<dt class="field-odd">meta private<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-</div></blockquote>
-<p>calculation of order parameters of lipid bilayers
+<div><p>calculation of order parameters of lipid bilayers
 from a MD trajectory</p>
-<p>Made by Joe,  Last edit 2017/02/02</p>
+<p>Made by Joe,  Last edit 2017/02/02
+Refactored for performance by Gemini</p>
 </div></blockquote>
 <blockquote>
 <div><p>output: order parameters (2 textfiles)</p>
 </div></blockquote>
 <hr class="docutils" />
 <dl class="py function">
-<dt class="sig sig-object py" id="DatabankLib.databankop.parse_op_input">
-<span class="sig-prename descclassname"><span class="pre">DatabankLib.databankop.</span></span><span class="sig-name descname"><span class="pre">parse_op_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapping_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lipid_resname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DatabankLib/databankop.html#parse_op_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DatabankLib.databankop.parse_op_input" title="Link to this definition"></a></dt>
-<dd><p>Form pair-list of all OPs which should be calculated</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>mapping_dict</strong> (<em>dict</em>) – mapping dictionary</p></li>
-<li><p><strong>lipid_resname</strong> (<em>str</em>) – lipid name (residue name)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of OrderParameter instances</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>array</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="DatabankLib.databankop.find_OP">
 <span class="sig-prename descclassname"><span class="pre">DatabankLib.databankop.</span></span><span class="sig-name descname"><span class="pre">find_OP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mdict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traj_fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lipid_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DatabankLib/databankop.html#find_OP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DatabankLib.databankop.find_OP" title="Link to this definition"></a></dt>
-<dd><p>Externally used funcion for computing OP values.</p>
+<dd><p>Externally used function for computing OP values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mdict</strong> (<em>_type_</em>) – mapping dict</p></li>
-<li><p><strong>top_fname</strong> (<em>_type_</em>) – TPR file</p></li>
-<li><p><strong>traj_fname</strong> (<em>_type_</em>) – TRAJ file</p></li>
-<li><p><strong>lipid_name</strong> (<em>_type_</em>) – lipid name (residue name)</p></li>
+<li><p><strong>mdict</strong> (<em>dict</em>) – The mapping dictionary.</p></li>
+<li><p><strong>top_fname</strong> (<em>str</em>) – Filename of the topology file (e.g., .gro, .tpr).</p></li>
+<li><p><strong>traj_fname</strong> (<em>str</em><em> or </em><em>list</em><em>[</em><em>str</em><em>]</em>) – Filename(s) of the trajectory file(s).</p></li>
+<li><p><strong>lipid_name</strong> (<em>str</em>) – The residue name of the lipid.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>list of OrderParameter instances</p>
+<dd class="field-even"><p>A list of _OrderParameter instances with calculated data.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ordPars</p>
+<dd class="field-odd"><p>list[_OrderParameter]</p>
 </dd>
 </dl>
 </dd></dl>

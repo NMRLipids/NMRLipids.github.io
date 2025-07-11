@@ -100,13 +100,16 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">gc</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">RCODE_ERROR</span><span class="p">,</span> <span class="n">RCODE_SKIPPED</span><span class="p">,</span> <span class="n">RCODE_COMPUTED</span><span class="p">,</span>
-    <span class="n">NMLDB_DATA_PATH</span><span class="p">)</span>
+    <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span>
+    <span class="n">RCODE_ERROR</span><span class="p">,</span>
+    <span class="n">RCODE_SKIPPED</span><span class="p">,</span>
+    <span class="n">RCODE_COMPUTED</span><span class="p">,</span>
+    <span class="n">NMLDB_DATA_PATH</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">System</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.settings.molecules</span><span class="w"> </span><span class="kn">import</span> <span class="n">lipids_set</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.settings.engines</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_struc_top_traj_fnames</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.databankLibrary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">GetNlipids</span><span class="p">,</span> <span class="n">system2MDanalysisUniverse</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.databankLibrary</span><span class="w"> </span><span class="kn">import</span> <span class="n">GetNlipids</span><span class="p">,</span> <span class="n">system2MDanalysisUniverse</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.jsonEncoders</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompactJSONEncoder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.databankio</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_download_file_url</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.databankop</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_OP</span>
@@ -117,7 +120,8 @@
 <div class="viewcode-block" id="computeNMRPCA">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.analyze.html#Scripts.DatabankLib.analyze.computeNMRPCA">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">computeNMRPCA</span><span class="p">(</span>  <span class="c1"># noqa: N802 (API)</span>
-        <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">recompute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">recompute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute eq_times.json using NMR PCA analysis.</span>
 
 <span class="sd">    Args:</span>
@@ -127,12 +131,12 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        int success code (RCODE_...)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;== Doi: &#39;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;DOI&#39;</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;== System name: &#39;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;SYSTEM&#39;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;== Doi: &quot;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;== System name: &quot;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;SYSTEM&quot;</span><span class="p">])</span>
     <span class="c1"># getting data from databank and preprocessing them</span>
     <span class="c1"># Start Parser</span>
     <span class="c1"># TODO: 2test|    parser = Parser(NMLDB_SIMU_PATH, readme, eq_time_fname, testTraj)</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">nmrpca</span><span class="o">.</span><span class="n">Parser</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="s1">&#39;eq_times.json&#39;</span><span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">nmrpca</span><span class="o">.</span><span class="n">Parser</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="s2">&quot;eq_times.json&quot;</span><span class="p">)</span>
     <span class="c1"># Check trajectory</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
     <span class="n">vpcode</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">validate_path</span><span class="p">()</span>
@@ -144,22 +148,22 @@
         <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
 
     <span class="k">if</span> <span class="p">(</span>
-        <span class="s1">&#39;WARNINGS&#39;</span> <span class="ow">in</span> <span class="n">system</span> <span class="ow">and</span>
-        <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
-        <span class="s1">&#39;AMBIGUOUS_ATOMNAMES&#39;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">]</span>
+        <span class="s2">&quot;WARNINGS&quot;</span> <span class="ow">in</span> <span class="n">system</span>
+        <span class="ow">and</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="s2">&quot;AMBIGUOUS_ATOMNAMES&quot;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">]</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
 
     <span class="k">if</span> <span class="p">(</span>
-        <span class="s1">&#39;WARNINGS&#39;</span> <span class="ow">in</span> <span class="n">system</span> <span class="ow">and</span>
-        <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
-        <span class="s1">&#39;SKIP_EQTIMES&#39;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">]</span>
+        <span class="s2">&quot;WARNINGS&quot;</span> <span class="ow">in</span> <span class="n">system</span>
+        <span class="ow">and</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="s2">&quot;SKIP_EQTIMES&quot;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">]</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
 
     <span class="c1"># Check if TPR is defined and non-null or &quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">__</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;TPR&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">__</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;TPR&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">_</span> <span class="o">=</span> <span class="n">__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;TPR is required for NMRPCA analysis!&quot;</span><span class="p">)</span>
@@ -202,7 +206,8 @@
 <div class="viewcode-block" id="computeAPL">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.analyze.html#Scripts.DatabankLib.analyze.computeAPL">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">computeAPL</span><span class="p">(</span>  <span class="c1"># noqa: N802 (API)</span>
-        <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">recompute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">recompute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate apl.json analysis file for a system.</span>
 
 <span class="sd">    Args:</span>
@@ -214,18 +219,18 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># TODO: reading software and file path for simulations</span>
     <span class="c1"># software = system[&#39;SOFTWARE&#39;]</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span>
 
     <span class="c1"># this is checking if area per lipid is already calculated for the systems</span>
-    <span class="n">outfilename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span>  <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;apl.json&#39;</span><span class="p">)</span>
+    <span class="n">outfilename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="s2">&quot;apl.json&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">outfilename</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">recompute</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">outfilename</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Analyzing: &#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Will write into: &#39;</span><span class="p">,</span> <span class="n">outfilename</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Analyzing: &quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Will write into: &quot;</span><span class="p">,</span> <span class="n">outfilename</span><span class="p">)</span>
 
     <span class="c1"># calculates the total number of lipids</span>
     <span class="n">n_lipid</span> <span class="o">=</span> <span class="n">GetNlipids</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
@@ -235,19 +240,19 @@
     <span class="n">u</span> <span class="o">=</span> <span class="n">system2MDanalysisUniverse</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Generation of MDAnalysis universe failed in folder&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Generation of MDAnalysis universe failed in folder&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">RCODE_ERROR</span>
 
     <span class="c1"># this calculates the area per lipid as a function of time and stores it</span>
     <span class="c1"># in the databank</span>
     <span class="n">apl</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Scanning the trajectory&#39;</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">time</span> <span class="o">&gt;=</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;TIMELEFTOUT&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">1000</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Scanning the trajectory&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">time</span> <span class="o">&gt;=</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;TIMELEFTOUT&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">:</span>
             <span class="n">dims</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">dimensions</span>
-            <span class="n">apl_frame</span> <span class="o">=</span> <span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="n">n_lipid</span>
+            <span class="n">apl_frame</span> <span class="o">=</span> <span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">n_lipid</span>
             <span class="n">apl</span><span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">time</span><span class="p">]</span> <span class="o">=</span> <span class="n">apl_frame</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfilename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfilename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">apl</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">CompactJSONEncoder</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">RCODE_COMPUTED</span></div>
@@ -257,16 +262,15 @@
 <div class="viewcode-block" id="computeTH">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.analyze.html#Scripts.DatabankLib.analyze.computeTH">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">computeTH</span><span class="p">(</span>  <span class="c1"># noqa: N802 (API)</span>
-        <span class="n">system</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">recompute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="n">thick_fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">],</span> <span class="s1">&#39;thickness.json&#39;</span><span class="p">)</span>
+    <span class="n">system</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">recompute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">thick_fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="s2">&quot;thickness.json&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">thick_fn</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">recompute</span><span class="p">:</span>
         <span class="c1"># file exist. Skipping</span>
         <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
 
-    <span class="n">wat_dens_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">],</span> <span class="s1">&#39;WaterDensity.json&#39;</span><span class="p">)</span>
-    <span class="n">lip_dens_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">],</span> <span class="s1">&#39;LipidDensity.json&#39;</span><span class="p">)</span>
+    <span class="n">wat_dens_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="s2">&quot;WaterDensity.json&quot;</span><span class="p">)</span>
+    <span class="n">lip_dens_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="s2">&quot;LipidDensity.json&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">lip_dens_name</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">wat_dens_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -277,15 +281,17 @@
         <span class="n">ld</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lip_dens</span><span class="p">)</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">wd</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">ld</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])))</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dehydrated sample! Standard thickness rule doesn&#39;t work.&quot;</span>
-                  <span class="s2">&quot; Will extract boxZ.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Dehydrated sample! Standard thickness rule doesn&#39;t work.&quot;</span>
+                <span class="s2">&quot; Will extract boxZ.&quot;</span>
+            <span class="p">)</span>
             <span class="n">thickness</span> <span class="o">=</span> <span class="n">wd</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">wd</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">thickness</span> <span class="o">=</span> <span class="n">wd</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">wd</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">]</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">thick_fn</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">thick_fn</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">thickness</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Calculation failed for &#39;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculation failed for &quot;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">RCODE_ERROR</span>
@@ -298,7 +304,8 @@
 <div class="viewcode-block" id="computeOP">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.analyze.html#Scripts.DatabankLib.analyze.computeOP">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">computeOP</span><span class="p">(</span>  <span class="c1"># noqa: N802 (API)</span>
-        <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">recompute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">recompute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
 
 <span class="sd">    Args:</span>
@@ -308,21 +315,18 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        int: _description_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span>
 
     <span class="c1"># Check if order parameters are calculated or something in the system prevents</span>
     <span class="c1"># order parameter calculation</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">]:</span>
-        <span class="n">outfilename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">key</span> <span class="o">+</span> <span class="s1">&#39;OrderParameters.json&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;COMPOSITION&quot;</span><span class="p">]:</span>
+        <span class="n">outfilename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;OrderParameters.json&quot;</span><span class="p">)</span>
         <span class="c1"># print(outfilename)</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">outfilename</span><span class="p">)</span> <span class="ow">or</span>
-            <span class="p">(</span>
-                <span class="s1">&#39;WARNINGS&#39;</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span>
-                <span class="nb">type</span><span class="p">(</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">dict</span> <span class="ow">and</span>
-                <span class="s1">&#39;AMBIGUOUS_ATOMNAMES&#39;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span>
-                <span class="n">key</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;AMBIGUOUS_ATOMNAMES&#39;</span><span class="p">]</span>
-            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">outfilename</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="s2">&quot;WARNINGS&quot;</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">dict</span>
+            <span class="ow">and</span> <span class="s2">&quot;AMBIGUOUS_ATOMNAMES&quot;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">][</span><span class="s2">&quot;AMBIGUOUS_ATOMNAMES&quot;</span><span class="p">]</span>
         <span class="p">):</span>
             <span class="n">file_found</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">lipids_set</span><span class="p">:</span>
@@ -334,36 +338,37 @@
 
     <span class="c1"># If order parameters are not calculated and system ok, then continue to</span>
     <span class="c1"># calculating order parameters</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Analyzing: &#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Analyzing: &quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
 
     <span class="c1"># Download the simulations and create MDAnalysis universe (the universe is not used</span>
     <span class="c1"># here but this script downloads the data)</span>
     <span class="n">_</span> <span class="o">=</span> <span class="n">system2MDanalysisUniverse</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
 
     <span class="c1"># Software and time for equilibration period</span>
-    <span class="n">software</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;SOFTWARE&#39;</span><span class="p">]</span>
-    <span class="n">eq_time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;TIMELEFTOUT&#39;</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span>
+    <span class="n">software</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;SOFTWARE&quot;</span><span class="p">]</span>
+    <span class="n">eq_time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">system</span><span class="p">[</span><span class="s2">&quot;TIMELEFTOUT&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">1000</span>
 
     <span class="c1"># Check if all or united atom simulation</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">united_atom</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;UNITEDATOM_DICT&#39;</span><span class="p">]</span>
-    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
+        <span class="n">united_atom</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;UNITEDATOM_DICT&quot;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
         <span class="n">united_atom</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="c1"># Check relevant warnings</span>
     <span class="n">g3switch</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">&#39;WARNINGS&#39;</span> <span class="ow">in</span> <span class="n">system</span> <span class="ow">and</span>
-        <span class="nb">type</span><span class="p">(</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">dict</span> <span class="ow">and</span>
-        <span class="s1">&#39;GROMACS_VERSION&#39;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">]</span> <span class="ow">and</span>
-        <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;GROMACS_VERSION&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;gromacs3&#39;</span>
+        <span class="s2">&quot;WARNINGS&quot;</span> <span class="ow">in</span> <span class="n">system</span>
+        <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">dict</span>
+        <span class="ow">and</span> <span class="s2">&quot;GROMACS_VERSION&quot;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">]</span>
+        <span class="ow">and</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">][</span><span class="s2">&quot;GROMACS_VERSION&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;gromacs3&quot;</span>
     <span class="p">)</span>
-    <span class="n">trconv_command</span> <span class="o">=</span> <span class="s1">&#39;trjconv&#39;</span> <span class="k">if</span> <span class="n">g3switch</span> <span class="k">else</span> <span class="s1">&#39;gmx trjconv&#39;</span>
+    <span class="n">trconv_command</span> <span class="o">=</span> <span class="s2">&quot;trjconv&quot;</span> <span class="k">if</span> <span class="n">g3switch</span> <span class="k">else</span> <span class="s2">&quot;gmx trjconv&quot;</span>
 
     <span class="n">cur_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">struc_fname</span><span class="p">,</span> <span class="n">top_fname</span><span class="p">,</span> <span class="n">trj_fname</span> <span class="o">=</span> \
-            <span class="n">get_struc_top_traj_fnames</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">join_path</span><span class="o">=</span><span class="n">cur_path</span><span class="p">)</span>
+        <span class="n">struc_fname</span><span class="p">,</span> <span class="n">top_fname</span><span class="p">,</span> <span class="n">trj_fname</span> <span class="o">=</span> <span class="n">get_struc_top_traj_fnames</span><span class="p">(</span>
+            <span class="n">system</span><span class="p">,</span> <span class="n">join_path</span><span class="o">=</span><span class="n">cur_path</span>
+        <span class="p">)</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Error reading filenames from system dictionary.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; =&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
@@ -371,76 +376,84 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Set topology file names and make Gromacs trajectories whole</span>
-        <span class="k">if</span> <span class="s1">&#39;gromacs&#39;</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;gromacs&quot;</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">top_fname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;TPR is required for OP calculations!&quot;</span><span class="p">)</span>
 
-            <span class="n">xtcwhole</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;whole.xtc&#39;</span><span class="p">)</span>
+            <span class="n">xtcwhole</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="s2">&quot;whole.xtc&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xtcwhole</span><span class="p">):</span>
                 <span class="n">exec_str</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;echo System | </span><span class="si">{</span><span class="n">trconv_command</span><span class="si">}</span><span class="s2"> -f </span><span class="si">{</span><span class="n">trj_fname</span><span class="si">}</span><span class="s2"> &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;-s </span><span class="si">{</span><span class="n">top_fname</span><span class="si">}</span><span class="s2"> -o </span><span class="si">{</span><span class="n">xtcwhole</span><span class="si">}</span><span class="s2"> -pbc mol -b </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">eq_time</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Make molecules whole in the trajectory&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">united_atom</span> <span class="ow">and</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;TRAJECTORY_SIZE&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">15e9</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;United atom trajectry larger than 15 Gb. &quot;</span>
-                          <span class="s2">&quot;Using only every third frame to reduce memory usage.&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">united_atom</span> <span class="ow">and</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;TRAJECTORY_SIZE&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">15e9</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="s2">&quot;United atom trajectry larger than 15 Gb. &quot;</span>
+                        <span class="s2">&quot;Using only every third frame to reduce memory usage.&quot;</span>
+                    <span class="p">)</span>
                     <span class="n">exec_str</span> <span class="o">+=</span> <span class="s2">&quot; -skip 3&quot;</span>
                 <span class="n">rcode</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">exec_str</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">rcode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;trjconv exited with error (see above)&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="s1">&#39;openMM&#39;</span> <span class="ow">in</span> <span class="n">software</span> <span class="ow">or</span> <span class="s1">&#39;NAMD&#39;</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="s2">&quot;openMM&quot;</span> <span class="ow">in</span> <span class="n">software</span> <span class="ow">or</span> <span class="s2">&quot;NAMD&quot;</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">struc_fname</span><span class="p">):</span>
-                <span class="n">pdb_url</span> <span class="o">=</span> <span class="n">resolve_download_file_url</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DOI&#39;</span><span class="p">),</span> <span class="n">struc_fname</span><span class="p">)</span>
+                <span class="n">pdb_url</span> <span class="o">=</span> <span class="n">resolve_download_file_url</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">),</span> <span class="n">struc_fname</span><span class="p">)</span>
                 <span class="n">_</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">pdb_url</span><span class="p">,</span> <span class="n">struc_fname</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Order parameter calculation for other than gromacs, &quot;</span>
-                  <span class="s2">&quot;openMM and NAMD are yet to be implemented.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Order parameter calculation for other than gromacs, &quot;</span>
+                <span class="s2">&quot;openMM and NAMD are yet to be implemented.&quot;</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="n">RCODE_ERROR</span>
 
         <span class="c1"># Calculate order parameters</span>
         <span class="c1"># -----------------------------------</span>
         <span class="c1"># united-atom switch -&gt; engine switch</span>
         <span class="k">if</span> <span class="n">united_atom</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;gromacs&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;gromacs&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;UNITED_ATOMS is supported only for GROMACS engine!&quot;</span><span class="p">)</span>
-            <span class="n">frame0struc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;frame0.gro&#39;</span><span class="p">)</span>
+            <span class="n">frame0struc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="s2">&quot;frame0.gro&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">g3switch</span><span class="p">:</span>
                 <span class="n">rcode</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;echo System | editconf -f </span><span class="si">{</span><span class="n">top_fname</span><span class="si">}</span><span class="s1"> -o </span><span class="si">{</span><span class="n">frame0struc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="sa">f</span><span class="s2">&quot;echo System | editconf -f </span><span class="si">{</span><span class="n">top_fname</span><span class="si">}</span><span class="s2"> -o </span><span class="si">{</span><span class="n">frame0struc</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
                 <span class="k">if</span> <span class="n">rcode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;editconf exited with error (see above)&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">rcode</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;echo System | </span><span class="si">{</span><span class="n">trconv_command</span><span class="si">}</span><span class="s2"> -f </span><span class="si">{</span><span class="n">xtcwhole</span><span class="si">}</span><span class="s2">&quot;</span>
-                                  <span class="sa">f</span><span class="s2">&quot; -s </span><span class="si">{</span><span class="n">top_fname</span><span class="si">}</span><span class="s2"> -dump 0 -o </span><span class="si">{</span><span class="n">frame0struc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">rcode</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;echo System | </span><span class="si">{</span><span class="n">trconv_command</span><span class="si">}</span><span class="s2"> -f </span><span class="si">{</span><span class="n">xtcwhole</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; -s </span><span class="si">{</span><span class="n">top_fname</span><span class="si">}</span><span class="s2"> -dump 0 -o </span><span class="si">{</span><span class="n">frame0struc</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
                 <span class="k">if</span> <span class="n">rcode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;trjconv (</span><span class="si">{</span><span class="n">trconv_command</span><span class="si">}</span><span class="s2">) exited with error (see above)&quot;</span><span class="p">)</span>
+                        <span class="sa">f</span><span class="s2">&quot;trjconv (</span><span class="si">{</span><span class="n">trconv_command</span><span class="si">}</span><span class="s2">) exited with error (see above)&quot;</span>
+                    <span class="p">)</span>
 
-            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;UNITEDATOM_DICT&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;UNITEDATOM_DICT&quot;</span><span class="p">]:</span>
                 <span class="c1"># construct order parameter definition file for CH bonds from</span>
                 <span class="c1"># mapping file</span>
                 <span class="n">mapping_dict</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">mapping_dict</span>
 
-                <span class="n">def_fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">key</span> <span class="o">+</span> <span class="s1">&#39;.def&#39;</span><span class="p">)</span>
-                <span class="n">def_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">def_fname</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+                <span class="n">def_fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;.def&quot;</span><span class="p">)</span>
+                <span class="n">def_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">def_fname</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
 
                 <span class="n">previous_line</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-                <span class="n">regexp1_H</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;M_[A-Z0-9]*C[0-9]*H[0-9]*_M&#39;</span><span class="p">)</span>  <span class="c1"># noqa: N806</span>
-                <span class="n">regexp2_H</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;M_G[0-9]*H[0-9]*_M&#39;</span><span class="p">)</span>  <span class="c1"># noqa: N806</span>
-                <span class="n">regexp1_C</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;M_[A-Z0-9]*C[0-9]*_M&#39;</span><span class="p">)</span>  <span class="c1"># noqa: N806</span>
-                <span class="n">regexp2_C</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;M_G[0-9]_M&#39;</span><span class="p">)</span>  <span class="c1"># noqa: N806</span>
+                <span class="n">regexp1_H</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_[A-Z0-9]*C[0-9]*H[0-9]*_M&quot;</span><span class="p">)</span>  <span class="c1"># noqa: N806</span>
+                <span class="n">regexp2_H</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_G[0-9]*H[0-9]*_M&quot;</span><span class="p">)</span>  <span class="c1"># noqa: N806</span>
+                <span class="n">regexp1_C</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_[A-Z0-9]*C[0-9]*_M&quot;</span><span class="p">)</span>  <span class="c1"># noqa: N806</span>
+                <span class="n">regexp2_C</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;M_G[0-9]_M&quot;</span><span class="p">)</span>  <span class="c1"># noqa: N806</span>
 
                 <span class="c1"># Note that mapping_dict&#39;s keys must be ordered</span>
                 <span class="c1"># C11 H111 H112 C12 H121 H122 ...</span>
                 <span class="c1"># otherwize algorithm will fail</span>
                 <span class="k">for</span> <span class="n">mapping_key</span> <span class="ow">in</span> <span class="n">mapping_dict</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">regexp1_C</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">)</span> <span class="ow">or</span> <span class="n">regexp2_C</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">):</span>
-                        <span class="n">atom_c</span> <span class="o">=</span> <span class="p">[</span><span class="n">mapping_key</span><span class="p">,</span> <span class="n">mapping_dict</span><span class="p">[</span><span class="n">mapping_key</span><span class="p">][</span><span class="s1">&#39;ATOMNAME&#39;</span><span class="p">]]</span>
+                        <span class="n">atom_c</span> <span class="o">=</span> <span class="p">[</span><span class="n">mapping_key</span><span class="p">,</span> <span class="n">mapping_dict</span><span class="p">[</span><span class="n">mapping_key</span><span class="p">][</span><span class="s2">&quot;ATOMNAME&quot;</span><span class="p">]]</span>
                         <span class="n">atom_h</span> <span class="o">=</span> <span class="p">[]</span>
                     <span class="k">elif</span> <span class="n">regexp1_H</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">)</span> <span class="ow">or</span> <span class="n">regexp2_H</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">mapping_key</span><span class="p">):</span>
-                        <span class="n">atom_h</span> <span class="o">=</span> <span class="p">[</span><span class="n">mapping_key</span><span class="p">,</span> <span class="n">mapping_dict</span><span class="p">[</span><span class="n">mapping_key</span><span class="p">][</span><span class="s1">&#39;ATOMNAME&#39;</span><span class="p">]]</span>
+                        <span class="n">atom_h</span> <span class="o">=</span> <span class="p">[</span><span class="n">mapping_key</span><span class="p">,</span> <span class="n">mapping_dict</span><span class="p">[</span><span class="n">mapping_key</span><span class="p">][</span><span class="s2">&quot;ATOMNAME&quot;</span><span class="p">]]</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">atom_c</span> <span class="o">=</span> <span class="p">[]</span>
                         <span class="n">atom_h</span> <span class="o">=</span> <span class="p">[]</span>
@@ -448,8 +461,18 @@
                     <span class="k">if</span> <span class="n">atom_h</span><span class="p">:</span>
                         <span class="k">assert</span> <span class="n">atom_c</span>
                         <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">atom_c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">atom_h</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">atom_c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">atom_h</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-                        <span class="n">def_line</span> <span class="o">=</span> <span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;&amp;&quot;</span> <span class="o">+</span> <span class="n">items</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span>
-                                    <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">def_line</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="n">items</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                            <span class="o">+</span> <span class="s2">&quot;&amp;&quot;</span>
+                            <span class="o">+</span> <span class="n">items</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+                            <span class="o">+</span> <span class="s2">&quot; &quot;</span>
+                            <span class="o">+</span> <span class="n">key</span>
+                            <span class="o">+</span> <span class="s2">&quot; &quot;</span>
+                            <span class="o">+</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="o">+</span> <span class="s2">&quot; &quot;</span>
+                            <span class="o">+</span> <span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                            <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
                         <span class="k">if</span> <span class="n">def_line</span> <span class="o">!=</span> <span class="n">previous_line</span><span class="p">:</span>
                             <span class="n">def_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">def_line</span><span class="p">)</span>
                             <span class="n">previous_line</span> <span class="o">=</span> <span class="n">def_line</span>
@@ -457,128 +480,161 @@
 
                 <span class="c1"># Add hydrogens to trajectory and calculate order parameters with buildH</span>
                 <span class="n">op_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                    <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">key</span> <span class="o">+</span> <span class="s1">&#39;OrderParameters.dat&#39;</span><span class="p">)</span>
+                    <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;OrderParameters.dat&quot;</span>
+                <span class="p">)</span>
 
                 <span class="n">lipid_json_file</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_DATA_PATH</span><span class="p">,</span> <span class="s1">&#39;lipid_json_buildH&#39;</span><span class="p">,</span>
-                                 <span class="n">system</span><span class="p">[</span><span class="s1">&#39;UNITEDATOM_DICT&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.json&#39;</span><span class="p">)</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                        <span class="n">NMLDB_DATA_PATH</span><span class="p">,</span>
+                        <span class="s2">&quot;lipid_json_buildH&quot;</span><span class="p">,</span>
+                        <span class="n">system</span><span class="p">[</span><span class="s2">&quot;UNITEDATOM_DICT&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="p">]</span>
 
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">lipid_json_file</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
                     <span class="n">lipid_json_file</span> <span class="o">=</span> <span class="kc">None</span>
 
-                <span class="nb">print</span><span class="p">(</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;UNITEDATOM_DICT&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">])</span>
-                <span class="n">buildh</span><span class="o">.</span><span class="n">launch</span><span class="p">(</span><span class="n">coord_file</span><span class="o">=</span><span class="n">frame0struc</span><span class="p">,</span> <span class="n">def_file</span><span class="o">=</span><span class="n">def_fname</span><span class="p">,</span>
-                              <span class="n">lipid_type</span><span class="o">=</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;UNITEDATOM_DICT&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">],</span>
-                              <span class="n">lipid_jsons</span><span class="o">=</span><span class="n">lipid_json_file</span><span class="p">,</span> <span class="n">traj_file</span><span class="o">=</span><span class="n">xtcwhole</span><span class="p">,</span>
-                              <span class="n">out_file</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op_file</span><span class="si">}</span><span class="s2">.buildH&quot;</span><span class="p">,</span> <span class="n">ignore_CH3s</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">system</span><span class="p">[</span><span class="s2">&quot;UNITEDATOM_DICT&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">])</span>
+                <span class="n">buildh</span><span class="o">.</span><span class="n">launch</span><span class="p">(</span>
+                    <span class="n">coord_file</span><span class="o">=</span><span class="n">frame0struc</span><span class="p">,</span>
+                    <span class="n">def_file</span><span class="o">=</span><span class="n">def_fname</span><span class="p">,</span>
+                    <span class="n">lipid_type</span><span class="o">=</span><span class="n">system</span><span class="p">[</span><span class="s2">&quot;UNITEDATOM_DICT&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">],</span>
+                    <span class="n">lipid_jsons</span><span class="o">=</span><span class="n">lipid_json_file</span><span class="p">,</span>
+                    <span class="n">traj_file</span><span class="o">=</span><span class="n">xtcwhole</span><span class="p">,</span>
+                    <span class="n">out_file</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op_file</span><span class="si">}</span><span class="s2">.buildH&quot;</span><span class="p">,</span>
+                    <span class="n">ignore_CH3s</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="p">)</span>
 
-                <span class="n">outfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">op_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+                <span class="n">outfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">op_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
                 <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Atom     Average OP     OP stem</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
                 <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="n">outfile2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                    <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">key</span> <span class="o">+</span> <span class="s1">&#39;OrderParameters.json&#39;</span><span class="p">)</span>
+                    <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;OrderParameters.json&quot;</span>
+                <span class="p">)</span>
 
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">op_file</span> <span class="o">+</span> <span class="s1">&#39;.buildH&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">op_file</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">op_file</span> <span class="o">+</span> <span class="s2">&quot;.buildH&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">op_file</span><span class="p">:</span>
                     <span class="n">lines</span> <span class="o">=</span> <span class="n">op_file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
                     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
                         <span class="k">if</span> <span class="s2">&quot;#&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                             <span class="k">continue</span>
                         <span class="n">line2</span> <span class="o">=</span> <span class="p">(</span>
-                            <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;  &quot;</span> <span class="o">+</span>
-                            <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;  &quot;</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span>
-                            <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">6</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&amp;&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+                            <span class="o">+</span> <span class="s2">&quot;  &quot;</span>
+                            <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">4</span><span class="p">]</span>
+                            <span class="o">+</span> <span class="s2">&quot;  &quot;</span>
+                            <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">5</span><span class="p">]</span>
+                            <span class="o">+</span> <span class="s2">&quot; &quot;</span>
+                            <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">6</span><span class="p">]</span>
+                            <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
                         <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line2</span><span class="p">)</span>
 
-                        <span class="n">op_name</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+                        <span class="n">op_name</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&amp;&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
                         <span class="c1"># -- line.split()[0] + &quot; &quot; + line.split()[1]</span>
                         <span class="n">op_values</span> <span class="o">=</span> <span class="p">[</span>
                             <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">4</span><span class="p">]),</span>
                             <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">5</span><span class="p">]),</span>
-                            <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">6</span><span class="p">])</span>
+                            <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">6</span><span class="p">]),</span>
                         <span class="p">]</span>
                         <span class="n">data</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">op_name</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[]</span>
                         <span class="n">data</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">op_name</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">op_values</span><span class="p">)</span>
 
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile2</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile2</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">CompactJSONEncoder</span><span class="p">)</span>
 
                 <span class="n">outfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
         <span class="c1"># not united-atom cases</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">&#39;gromacs&#39;</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
-                <span class="n">gro</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;conf.gro&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;gromacs&quot;</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
+                <span class="n">gro</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="s2">&quot;conf.gro&quot;</span><span class="p">)</span>
 
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Making gro file&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">g3switch</span><span class="p">:</span>
-                    <span class="n">rcode</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;echo System | editconf -f </span><span class="si">{</span><span class="n">top_fname</span><span class="si">}</span><span class="s1"> -o </span><span class="si">{</span><span class="n">gro</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="n">rcode</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;echo System | editconf -f </span><span class="si">{</span><span class="n">top_fname</span><span class="si">}</span><span class="s2"> -o </span><span class="si">{</span><span class="n">gro</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">rcode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;editconf exited with error (see above)&quot;</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">rcode</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;echo System | gmx trjconv &quot;</span>
-                                      <span class="sa">f</span><span class="s2">&quot;-f </span><span class="si">{</span><span class="n">trj_fname</span><span class="si">}</span><span class="s2"> -s </span><span class="si">{</span><span class="n">top_fname</span><span class="si">}</span><span class="s2"> -dump 0 -o </span><span class="si">{</span><span class="n">gro</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">rcode</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;echo System | gmx trjconv &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;-f </span><span class="si">{</span><span class="n">trj_fname</span><span class="si">}</span><span class="s2"> -s </span><span class="si">{</span><span class="n">top_fname</span><span class="si">}</span><span class="s2"> -dump 0 -o </span><span class="si">{</span><span class="n">gro</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
                     <span class="k">if</span> <span class="n">rcode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;trjconv exited with error (see above)&quot;</span><span class="p">)</span>
 
-            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;COMPOSITION&quot;</span><span class="p">]:</span>
 
                 <span class="k">if</span> <span class="p">(</span>
-                    <span class="s1">&#39;WARNINGS&#39;</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span>
-                    <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
-                    <span class="s1">&#39;AMBIGUOUS_ATOMNAMES&#39;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span>
-                    <span class="n">key</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;AMBIGUOUS_ATOMNAMES&#39;</span><span class="p">]</span>
+                    <span class="s2">&quot;WARNINGS&quot;</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                    <span class="ow">and</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                    <span class="ow">and</span> <span class="s2">&quot;AMBIGUOUS_ATOMNAMES&quot;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                    <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">][</span><span class="s2">&quot;AMBIGUOUS_ATOMNAMES&quot;</span><span class="p">]</span>
                 <span class="p">):</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Order parameters cannot be calculated if atom &quot;</span>
-                          <span class="s2">&quot;names are ambiguous.&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="s2">&quot;Order parameters cannot be calculated if atom &quot;</span>
+                        <span class="s2">&quot;names are ambiguous.&quot;</span>
+                    <span class="p">)</span>
                     <span class="k">continue</span>
 
                 <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">lipids_set</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Calculating &#39;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="s1">&#39; order parameters&#39;</span><span class="p">)</span>
-                    <span class="n">resname</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;NAME&#39;</span><span class="p">]</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculating &quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="s2">&quot; order parameters&quot;</span><span class="p">)</span>
+                    <span class="n">resname</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;COMPOSITION&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;NAME&quot;</span><span class="p">]</span>
                     <span class="n">outfilename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                        <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">key</span> <span class="o">+</span> <span class="s1">&#39;OrderParameters.dat&#39;</span><span class="p">)</span>
+                        <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;OrderParameters.dat&quot;</span>
+                    <span class="p">)</span>
                     <span class="n">outfilename2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                        <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">key</span> <span class="o">+</span> <span class="s1">&#39;OrderParameters.json&#39;</span><span class="p">)</span>
+                        <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;OrderParameters.json&quot;</span>
+                    <span class="p">)</span>
                     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">outfilename2</span><span class="p">):</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Order parameter file already found&#39;</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Order parameter file already found&quot;</span><span class="p">)</span>
                         <span class="k">continue</span>
-                    <span class="k">if</span> <span class="s1">&#39;gromacs&#39;</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">&quot;gromacs&quot;</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
                         <span class="k">try</span><span class="p">:</span>
-                            <span class="n">op_obj</span> <span class="o">=</span> <span class="n">find_OP</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">mapping_dict</span><span class="p">,</span>
-                                             <span class="n">top_fname</span><span class="p">,</span> <span class="n">xtcwhole</span><span class="p">,</span> <span class="n">resname</span><span class="p">)</span>
+                            <span class="n">op_obj</span> <span class="o">=</span> <span class="n">find_OP</span><span class="p">(</span>
+                                <span class="n">system</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">mapping_dict</span><span class="p">,</span>
+                                <span class="n">top_fname</span><span class="p">,</span>
+                                <span class="n">xtcwhole</span><span class="p">,</span>
+                                <span class="n">resname</span><span class="p">,</span>
+                            <span class="p">)</span>
                         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;We got this exception: </span><span class="se">\n</span><span class="s2">    </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;But we will try rebuild the Universe &quot;</span>
-                                           <span class="s2">&quot;from GROM if using tpr did not work!&quot;</span><span class="p">)</span>
-                            <span class="n">op_obj</span> <span class="o">=</span> <span class="n">find_OP</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">mapping_dict</span><span class="p">,</span>
-                                             <span class="n">gro</span><span class="p">,</span> <span class="n">xtcwhole</span><span class="p">,</span> <span class="n">resname</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                                <span class="s2">&quot;But we will try rebuild the Universe &quot;</span>
+                                <span class="s2">&quot;from GROM if using tpr did not work!&quot;</span>
+                            <span class="p">)</span>
+                            <span class="n">op_obj</span> <span class="o">=</span> <span class="n">find_OP</span><span class="p">(</span>
+                                <span class="n">system</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">mapping_dict</span><span class="p">,</span> <span class="n">gro</span><span class="p">,</span> <span class="n">xtcwhole</span><span class="p">,</span> <span class="n">resname</span>
+                            <span class="p">)</span>
 
-                    <span class="k">if</span> <span class="s1">&#39;openMM&#39;</span> <span class="ow">in</span> <span class="n">software</span> <span class="ow">or</span> <span class="s1">&#39;NAMD&#39;</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
-                        <span class="n">op_obj</span> <span class="o">=</span> <span class="n">find_OP</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">mapping_dict</span><span class="p">,</span>
-                                         <span class="n">struc_fname</span><span class="p">,</span> <span class="n">trj_fname</span><span class="p">,</span> <span class="n">resname</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="s2">&quot;openMM&quot;</span> <span class="ow">in</span> <span class="n">software</span> <span class="ow">or</span> <span class="s2">&quot;NAMD&quot;</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
+                        <span class="n">op_obj</span> <span class="o">=</span> <span class="n">find_OP</span><span class="p">(</span>
+                            <span class="n">system</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">mapping_dict</span><span class="p">,</span>
+                            <span class="n">struc_fname</span><span class="p">,</span>
+                            <span class="n">trj_fname</span><span class="p">,</span>
+                            <span class="n">resname</span><span class="p">,</span>
+                        <span class="p">)</span>
 
                     <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
 
-                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfilename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfilename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
                         <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Atom     Average OP     OP stem</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
                         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">op</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">op_obj</span><span class="p">):</span>
                             <span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">avg</span><span class="p">,</span> <span class="n">op</span><span class="o">.</span><span class="n">std</span><span class="p">,</span> <span class="n">op</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">get_avg_std_stem_OP</span>
-                            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">avg</span><span class="p">)</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">avg</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
                             <span class="n">data</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[]</span>
                             <span class="n">data</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">get_avg_std_stem_OP</span><span class="p">)</span>
 
-                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfilename2</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfilename2</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">CompactJSONEncoder</span><span class="p">)</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Order parameters calculated and saved to &quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Calculation failed for &#39;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculation failed for &quot;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">RCODE_ERROR</span>
@@ -590,49 +646,52 @@
 <div class="viewcode-block" id="computeFF">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.analyze.html#Scripts.DatabankLib.analyze.computeFF">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">computeFF</span><span class="p">(</span>  <span class="c1"># noqa: N802 (API)</span>
-        <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">recompute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;System title: &quot;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;SYSTEM&#39;</span><span class="p">])</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;System path: &quot;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">])</span>
-    <span class="n">software</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;SOFTWARE&#39;</span><span class="p">]</span>
+    <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">recompute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;System title: &quot;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;SYSTEM&quot;</span><span class="p">])</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;System path: &quot;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">])</span>
+    <span class="n">software</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;SOFTWARE&quot;</span><span class="p">]</span>
     <span class="c1"># download trajectory and gro files</span>
-    <span class="n">system_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">])</span>
-    <span class="n">doi</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DOI&#39;</span><span class="p">)</span>
-    <span class="n">skip_downloading</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="p">(</span><span class="n">doi</span> <span class="o">==</span> <span class="s1">&#39;localhost&#39;</span><span class="p">)</span>
+    <span class="n">system_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">])</span>
+    <span class="n">doi</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DOI&quot;</span><span class="p">)</span>
+    <span class="n">skip_downloading</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">doi</span> <span class="o">==</span> <span class="s2">&quot;localhost&quot;</span>
     <span class="k">if</span> <span class="n">skip_downloading</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;NOTE: The system with &#39;localhost&#39; DOI should be downloaded by the user.&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">system_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s2">&quot;FormFactor.json&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">recompute</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
 
-    <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;TYPEOFSYSTEM&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;miscellaneous&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;TYPEOFSYSTEM&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;miscellaneous&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Analyzing&#39;</span><span class="p">,</span> <span class="n">system_path</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Analyzing&quot;</span><span class="p">,</span> <span class="n">system_path</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;UNITEDATOM_DICT&#39;</span><span class="p">]:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;United atom simulation&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;UNITEDATOM_DICT&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;United atom simulation&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
         <span class="k">pass</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;ORIENTATION&#39;</span><span class="p">]:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Skipping due to ORIENTATION warning:&#39;</span><span class="p">,</span>
-                  <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;ORIENTATION&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">][</span><span class="s2">&quot;ORIENTATION&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Skipping due to ORIENTATION warning:&quot;</span><span class="p">,</span>
+                <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">][</span><span class="s2">&quot;ORIENTATION&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
         <span class="k">pass</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;PBC&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;hexagonal-box&#39;</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Skipping due to PBC warning:&#39;</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;PBC&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">][</span><span class="s2">&quot;PBC&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;hexagonal-box&quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Skipping due to PBC warning:&quot;</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">][</span><span class="s2">&quot;PBC&quot;</span><span class="p">])</span>
             <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
         <span class="k">pass</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;NOWATER&#39;</span><span class="p">]:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Skipping because there is not water in the trajectory.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">][</span><span class="s2">&quot;NOWATER&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Skipping because there is not water in the trajectory.&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -661,49 +720,56 @@
         <span class="k">if</span> <span class="n">skip_downloading</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">trj_name</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Trajectory should be downloaded [</span><span class="si">{</span><span class="n">trj_name</span><span class="si">}</span><span class="s2">] by user&quot;</span><span class="p">)</span>
+                    <span class="sa">f</span><span class="s2">&quot;Trajectory should be downloaded [</span><span class="si">{</span><span class="n">trj_name</span><span class="si">}</span><span class="s2">] by user&quot;</span>
+                <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">trj_url</span> <span class="o">=</span> <span class="n">resolve_download_file_url</span><span class="p">(</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;DOI&#39;</span><span class="p">],</span> <span class="n">trj</span><span class="p">)</span>
+            <span class="n">trj_url</span> <span class="o">=</span> <span class="n">resolve_download_file_url</span><span class="p">(</span><span class="n">system</span><span class="p">[</span><span class="s2">&quot;DOI&quot;</span><span class="p">],</span> <span class="n">trj</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">trj_name</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Downloading trajectory with the size of &#39;</span><span class="p">,</span>
-                      <span class="n">system</span><span class="p">[</span><span class="s1">&#39;TRAJECTORY_SIZE&#39;</span><span class="p">],</span> <span class="s1">&#39; to &#39;</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">])</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot;Downloading trajectory with the size of &quot;</span><span class="p">,</span>
+                    <span class="n">system</span><span class="p">[</span><span class="s2">&quot;TRAJECTORY_SIZE&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot; to &quot;</span><span class="p">,</span>
+                    <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span>
+                <span class="p">)</span>
                 <span class="n">_</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">trj_url</span><span class="p">,</span> <span class="n">trj_name</span><span class="p">)</span>
 
         <span class="c1"># make a function like this</span>
         <span class="c1"># TODO TPR should not be obligatory for GROMACS</span>
-        <span class="k">if</span> <span class="s1">&#39;gromacs&#39;</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;gromacs&quot;</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
             <span class="n">tpr_name</span> <span class="o">=</span> <span class="n">top_name</span>
 
             <span class="k">if</span> <span class="n">skip_downloading</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">tpr_name</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;TPR should be downloaded [</span><span class="si">{</span><span class="n">tpr_name</span><span class="si">}</span><span class="s2">] by user&quot;</span><span class="p">)</span>
+                        <span class="sa">f</span><span class="s2">&quot;TPR should be downloaded [</span><span class="si">{</span><span class="n">tpr_name</span><span class="si">}</span><span class="s2">] by user&quot;</span>
+                    <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">tpr_url</span> <span class="o">=</span> <span class="n">resolve_download_file_url</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">top</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">tpr_name</span><span class="p">):</span>
                     <span class="n">_</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">tpr_url</span><span class="p">,</span> <span class="n">tpr_name</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="s1">&#39;openMM&#39;</span> <span class="ow">in</span> <span class="n">software</span> <span class="ow">or</span> <span class="s1">&#39;NAMD&#39;</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;openMM&quot;</span> <span class="ow">in</span> <span class="n">software</span> <span class="ow">or</span> <span class="s2">&quot;NAMD&quot;</span> <span class="ow">in</span> <span class="n">software</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">skip_downloading</span><span class="p">:</span>
-                <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">struc_name</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">struc_name</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Structure file should be downloaded [</span><span class="si">{</span><span class="n">struc_name</span><span class="si">}</span><span class="s2">] by user&quot;</span><span class="p">)</span>
+                        <span class="sa">f</span><span class="s2">&quot;Structure file should be downloaded [</span><span class="si">{</span><span class="n">struc_name</span><span class="si">}</span><span class="s2">] by user&quot;</span>
+                    <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">pdb_url</span> <span class="o">=</span> <span class="n">resolve_download_file_url</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">struc</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">struc_name</span><span class="p">):</span>
                     <span class="n">_</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">pdb_url</span><span class="p">,</span> <span class="n">struc_name</span><span class="p">)</span>
 
-        <span class="n">eq_time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;TIMELEFTOUT&#39;</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span>
+        <span class="n">eq_time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">system</span><span class="p">[</span><span class="s2">&quot;TIMELEFTOUT&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">1000</span>
 
         <span class="c1"># FIND LAST CARBON OF SN-1 TAIL AND G3 CARBON</span>
-        <span class="k">for</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;COMPOSITION&quot;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="n">lipids_set</span><span class="p">:</span>
                 <span class="n">mapping</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">molecule</span><span class="p">]</span><span class="o">.</span><span class="n">mapping_dict</span>
 
                 <span class="c1"># TODO: rewrite via lipid dictionary!</span>
                 <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;M_G3_M&quot;</span><span class="p">,</span> <span class="s2">&quot;M_G13_M&quot;</span><span class="p">,</span> <span class="s2">&quot;M_C32_M&quot;</span><span class="p">]:</span>
                     <span class="k">try</span><span class="p">:</span>
-                        <span class="n">g3_atom</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="n">nm</span><span class="p">][</span><span class="s1">&#39;ATOMNAME&#39;</span><span class="p">]</span>
+                        <span class="n">g3_atom</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="n">nm</span><span class="p">][</span><span class="s2">&quot;ATOMNAME&quot;</span><span class="p">]</span>
                         <span class="k">continue</span>
                     <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
                         <span class="k">pass</span>
@@ -711,54 +777,55 @@
                 <span class="c1"># TODO: rewrite via lipid dictionary</span>
                 <span class="k">if</span> <span class="s2">&quot;M_G1C4_M&quot;</span> <span class="ow">in</span> <span class="n">mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                     <span class="k">for</span> <span class="n">c_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">30</span><span class="p">):</span>
-                        <span class="n">atom</span> <span class="o">=</span> <span class="s1">&#39;M_G1C&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c_idx</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_M&#39;</span>
+                        <span class="n">atom</span> <span class="o">=</span> <span class="s2">&quot;M_G1C&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c_idx</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_M&quot;</span>
                         <span class="k">try</span><span class="p">:</span>
-                            <span class="n">last_atom</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="n">atom</span><span class="p">][</span><span class="s1">&#39;ATOMNAME&#39;</span><span class="p">]</span>
+                            <span class="n">last_atom</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="n">atom</span><span class="p">][</span><span class="s2">&quot;ATOMNAME&quot;</span><span class="p">]</span>
                         <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
                             <span class="k">continue</span>
                 <span class="k">elif</span> <span class="s2">&quot;M_G11C4_M&quot;</span> <span class="ow">in</span> <span class="n">mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                     <span class="k">for</span> <span class="n">c_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">30</span><span class="p">):</span>
-                        <span class="n">atom</span> <span class="o">=</span> <span class="s1">&#39;M_G11C&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c_idx</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_M&#39;</span>
+                        <span class="n">atom</span> <span class="o">=</span> <span class="s2">&quot;M_G11C&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c_idx</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_M&quot;</span>
                         <span class="k">try</span><span class="p">:</span>
-                            <span class="n">last_atom</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="n">atom</span><span class="p">][</span><span class="s1">&#39;ATOMNAME&#39;</span><span class="p">]</span>
+                            <span class="n">last_atom</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="n">atom</span><span class="p">][</span><span class="s2">&quot;ATOMNAME&quot;</span><span class="p">]</span>
                         <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
                             <span class="k">continue</span>
                 <span class="k">elif</span> <span class="s2">&quot;M_CA4_M&quot;</span> <span class="ow">in</span> <span class="n">mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                     <span class="k">for</span> <span class="n">c_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">30</span><span class="p">):</span>
-                        <span class="n">atom</span> <span class="o">=</span> <span class="s1">&#39;M_CA&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c_idx</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_M&#39;</span>
+                        <span class="n">atom</span> <span class="o">=</span> <span class="s2">&quot;M_CA&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c_idx</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_M&quot;</span>
                         <span class="k">try</span><span class="p">:</span>
-                            <span class="n">last_atom</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="n">atom</span><span class="p">][</span><span class="s1">&#39;ATOMNAME&#39;</span><span class="p">]</span>
+                            <span class="n">last_atom</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="n">atom</span><span class="p">][</span><span class="s2">&quot;ATOMNAME&quot;</span><span class="p">]</span>
                         <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
                             <span class="k">continue</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="n">last_atom</span><span class="p">,</span> <span class="n">g3_atom</span><span class="p">)</span>
 
         <span class="c1"># Center around one lipid tail CH3 to guarantee all lipids in the same box</span>
-        <span class="k">if</span> <span class="s1">&#39;gromacs&#39;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;SOFTWARE&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="s2">&quot;gromacs&quot;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;SOFTWARE&quot;</span><span class="p">]:</span>
 
             <span class="k">if</span> <span class="p">(</span>
-                <span class="s1">&#39;WARNINGS&#39;</span> <span class="ow">in</span> <span class="n">system</span> <span class="ow">and</span>
-                <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
-                <span class="s1">&#39;GROMACS_VERSION&#39;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">]</span> <span class="ow">and</span>
-                <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;GROMACS_VERSION&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;gromacs3&#39;</span>
+                <span class="s2">&quot;WARNINGS&quot;</span> <span class="ow">in</span> <span class="n">system</span>
+                <span class="ow">and</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="s2">&quot;GROMACS_VERSION&quot;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">]</span>
+                <span class="ow">and</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;WARNINGS&quot;</span><span class="p">][</span><span class="s2">&quot;GROMACS_VERSION&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;gromacs3&quot;</span>
             <span class="p">):</span>
-                <span class="n">trjconv_cmd</span> <span class="o">=</span> <span class="s1">&#39;trjconv&#39;</span>
-                <span class="n">makendx_cmd</span> <span class="o">=</span> <span class="s1">&#39;make_ndx&#39;</span>
+                <span class="n">trjconv_cmd</span> <span class="o">=</span> <span class="s2">&quot;trjconv&quot;</span>
+                <span class="n">makendx_cmd</span> <span class="o">=</span> <span class="s2">&quot;make_ndx&quot;</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">trjconv_cmd</span> <span class="o">=</span> <span class="s1">&#39;gmx trjconv&#39;</span>
-                <span class="n">makendx_cmd</span> <span class="o">=</span> <span class="s1">&#39;gmx make_ndx&#39;</span>
+                <span class="n">trjconv_cmd</span> <span class="o">=</span> <span class="s2">&quot;gmx trjconv&quot;</span>
+                <span class="n">makendx_cmd</span> <span class="o">=</span> <span class="s2">&quot;gmx make_ndx&quot;</span>
 
-            <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;rm foo.ndx&#39;</span><span class="p">)</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;echo &quot;a </span><span class="si">{</span><span class="n">last_atom</span><span class="si">}</span><span class="se">\n</span><span class="s1">q&quot; | </span><span class="si">{</span><span class="n">makendx_cmd</span><span class="si">}</span><span class="s1"> -f </span><span class="si">{</span><span class="n">tpr_name</span><span class="si">}</span><span class="s1"> &#39;</span>
-                      <span class="sa">f</span><span class="s1">&#39;-o foo.ndx&#39;</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;rm foo.ndx&quot;</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;echo &quot;a </span><span class="si">{</span><span class="n">last_atom</span><span class="si">}</span><span class="se">\n</span><span class="s1">q&quot; | </span><span class="si">{</span><span class="n">makendx_cmd</span><span class="si">}</span><span class="s1"> -f </span><span class="si">{</span><span class="n">tpr_name</span><span class="si">}</span><span class="s1"> &#39;</span> <span class="sa">f</span><span class="s2">&quot;-o foo.ndx&quot;</span>
+            <span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;tail -n1 foo.ndx | awk &#39;{print $NF}&#39;&quot;</span><span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;echo &quot;[ centralAtom ]&quot; &gt;&gt; foo.ndx&#39;</span><span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;tail -n2 foo.ndx | head -n1 |  awk &#39;{print $NF}&#39; &gt;&gt; foo.ndx&quot;</span><span class="p">)</span>
 
-            <span class="n">xtcwhole</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">system_path</span><span class="p">,</span> <span class="s1">&#39;whole.xtc&#39;</span><span class="p">)</span>
-            <span class="n">xtcfoo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">system_path</span><span class="p">,</span> <span class="s1">&#39;foo2.xtc&#39;</span><span class="p">)</span>
-            <span class="n">xtccentered</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">system_path</span><span class="p">,</span> <span class="s1">&#39;centered.xtc&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xtccentered</span><span class="p">)):</span>
+            <span class="n">xtcwhole</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">system_path</span><span class="p">,</span> <span class="s2">&quot;whole.xtc&quot;</span><span class="p">)</span>
+            <span class="n">xtcfoo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">system_path</span><span class="p">,</span> <span class="s2">&quot;foo2.xtc&quot;</span><span class="p">)</span>
+            <span class="n">xtccentered</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">system_path</span><span class="p">,</span> <span class="s2">&quot;centered.xtc&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xtccentered</span><span class="p">):</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Make molecules whole in the trajectory&quot;</span><span class="p">)</span>
                 <span class="c1"># if unitedAtom and system[&#39;TRAJECTORY_SIZE&#39;] &gt; 15000000000:</span>
                 <span class="c1">#     print(&quot;United atom trajectry larger than 15 Gb. &quot;</span>
@@ -768,37 +835,46 @@
                 <span class="c1">#        &#39; -skip 3&#39;)</span>
                 <span class="c1"># else:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xtcwhole</span><span class="p">):</span>
-                    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;echo System |  </span><span class="si">{</span><span class="n">trjconv_cmd</span><span class="si">}</span><span class="s1"> -f </span><span class="si">{</span><span class="n">trj_name</span><span class="si">}</span><span class="s1"> &#39;</span>
-                              <span class="sa">f</span><span class="s1">&#39;-s </span><span class="si">{</span><span class="n">tpr_name</span><span class="si">}</span><span class="s1"> -o </span><span class="si">{</span><span class="n">xtcwhole</span><span class="si">}</span><span class="s1"> -pbc mol -b </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">eq_time</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;echo System |  </span><span class="si">{</span><span class="n">trjconv_cmd</span><span class="si">}</span><span class="s2"> -f </span><span class="si">{</span><span class="n">trj_name</span><span class="si">}</span><span class="s2"> &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;-s </span><span class="si">{</span><span class="n">tpr_name</span><span class="si">}</span><span class="s2"> -o </span><span class="si">{</span><span class="n">xtcwhole</span><span class="si">}</span><span class="s2"> -pbc mol -b </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">eq_time</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
 
-                <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xtcfoo</span><span class="p">)):</span>
-                    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;echo &quot;centralAtom</span><span class="se">\n</span><span class="s1">System&quot; |  </span><span class="si">{</span><span class="n">trjconv_cmd</span><span class="si">}</span><span class="s1"> -center&#39;</span>
-                              <span class="sa">f</span><span class="s1">&#39; -pbc mol -n foo.ndx -f </span><span class="si">{</span><span class="n">xtcwhole</span><span class="si">}</span><span class="s1"> -s </span><span class="si">{</span><span class="n">tpr_name</span><span class="si">}</span><span class="s1">&#39;</span>
-                              <span class="sa">f</span><span class="s1">&#39; -o </span><span class="si">{</span><span class="n">xtcfoo</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xtcfoo</span><span class="p">):</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">&#39;echo &quot;centralAtom</span><span class="se">\n</span><span class="s1">System&quot; |  </span><span class="si">{</span><span class="n">trjconv_cmd</span><span class="si">}</span><span class="s1"> -center&#39;</span>
+                        <span class="sa">f</span><span class="s2">&quot; -pbc mol -n foo.ndx -f </span><span class="si">{</span><span class="n">xtcwhole</span><span class="si">}</span><span class="s2"> -s </span><span class="si">{</span><span class="n">tpr_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; -o </span><span class="si">{</span><span class="n">xtcfoo</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
 
-                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;rm foo.ndx&#39;</span><span class="p">)</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;rm &#39;</span> <span class="o">+</span> <span class="n">xtcwhole</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;rm foo.ndx&quot;</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;rm &quot;</span> <span class="o">+</span> <span class="n">xtcwhole</span><span class="p">)</span>
 
-            <span class="c1"># Center around the center of mass of all the g_3 carbons</span>
-            <span class="c1"># if (not os.path.isfile(xtccentered)):</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;echo &quot;a </span><span class="si">{</span><span class="n">g3_atom</span><span class="si">}</span><span class="se">\n</span><span class="s1">q&quot; | </span><span class="si">{</span><span class="n">makendx_cmd</span><span class="si">}</span><span class="s1">&#39;</span>
-                          <span class="sa">f</span><span class="s1">&#39; -f </span><span class="si">{</span><span class="n">tpr_name</span><span class="si">}</span><span class="s1"> -o foo.ndx&#39;</span><span class="p">)</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;echo &quot;</span><span class="si">{</span><span class="n">g3_atom</span><span class="si">}</span><span class="se">\n</span><span class="s1">System&quot; |  </span><span class="si">{</span><span class="n">trjconv_cmd</span><span class="si">}</span><span class="s1"> -center&#39;</span>
-                          <span class="sa">f</span><span class="s1">&#39; -pbc mol -n foo.ndx -f </span><span class="si">{</span><span class="n">xtcfoo</span><span class="si">}</span><span class="s1"> -s </span><span class="si">{</span><span class="n">tpr_name</span><span class="si">}</span><span class="s1">&#39;</span>
-                          <span class="sa">f</span><span class="s1">&#39; -o </span><span class="si">{</span><span class="n">xtccentered</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;rm &#39;</span> <span class="o">+</span> <span class="n">xtcfoo</span><span class="p">)</span>
+                <span class="c1"># Center around the center of mass of all the g_3 carbons</span>
+                <span class="c1"># if (not os.path.isfile(xtccentered)):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;echo &quot;a </span><span class="si">{</span><span class="n">g3_atom</span><span class="si">}</span><span class="se">\n</span><span class="s1">q&quot; | </span><span class="si">{</span><span class="n">makendx_cmd</span><span class="si">}</span><span class="s1">&#39;</span>
+                    <span class="sa">f</span><span class="s2">&quot; -f </span><span class="si">{</span><span class="n">tpr_name</span><span class="si">}</span><span class="s2"> -o foo.ndx&quot;</span>
+                <span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;echo &quot;</span><span class="si">{</span><span class="n">g3_atom</span><span class="si">}</span><span class="se">\n</span><span class="s1">System&quot; |  </span><span class="si">{</span><span class="n">trjconv_cmd</span><span class="si">}</span><span class="s1"> -center&#39;</span>
+                    <span class="sa">f</span><span class="s2">&quot; -pbc mol -n foo.ndx -f </span><span class="si">{</span><span class="n">xtcfoo</span><span class="si">}</span><span class="s2"> -s </span><span class="si">{</span><span class="n">tpr_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; -o </span><span class="si">{</span><span class="n">xtccentered</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;rm &quot;</span> <span class="o">+</span> <span class="n">xtcfoo</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;rm foo.ndx&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Centering for other than Gromacs may not work if there are&quot;</span>
-                  <span class="s2">&quot; jumps over periodic boundary conditions in z-direction.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Centering for other than Gromacs may not work if there are&quot;</span>
+                <span class="s2">&quot; jumps over periodic boundary conditions in z-direction.&quot;</span>
+            <span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">system_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s2">&quot;FormFactor.json&quot;</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="s1">&#39;gromacs&#39;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;SOFTWARE&#39;</span><span class="p">]:</span>
-                    <span class="n">FormFactor</span><span class="p">(</span><span class="n">tpr_name</span><span class="p">,</span> <span class="n">xtccentered</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span>
-                               <span class="n">output_name</span><span class="p">,</span> <span class="n">system</span><span class="p">)</span>
-                <span class="k">if</span> <span class="s1">&#39;openMM&#39;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;SOFTWARE&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="s1">&#39;NAMD&#39;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;SOFTWARE&#39;</span><span class="p">]:</span>
-                    <span class="n">FormFactor</span><span class="p">(</span><span class="n">struc_name</span><span class="p">,</span> <span class="n">trj_name</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span>
-                               <span class="n">output_name</span><span class="p">,</span> <span class="n">system</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;gromacs&quot;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;SOFTWARE&quot;</span><span class="p">]:</span>
+                    <span class="n">FormFactor</span><span class="p">(</span><span class="n">tpr_name</span><span class="p">,</span> <span class="n">xtccentered</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">system</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;openMM&quot;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;SOFTWARE&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">&quot;NAMD&quot;</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;SOFTWARE&quot;</span><span class="p">]:</span>
+                    <span class="n">FormFactor</span><span class="p">(</span><span class="n">struc_name</span><span class="p">,</span> <span class="n">trj_name</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">system</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="c1"># Here it was expected to have allow_pickle-type errors.</span>
                 <span class="c1"># but I suppose, we cannot simply ignore them because it means that the</span>
@@ -808,7 +884,7 @@
 
     <span class="c1"># finall catch</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Calculation failed for &#39;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculation failed for &quot;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">RCODE_ERROR</span>
