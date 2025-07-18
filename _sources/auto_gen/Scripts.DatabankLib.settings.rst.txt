@@ -9,6 +9,7 @@ Python files
    :maxdepth: 1
 
    Scripts.DatabankLib.settings.dic_lipids_UA
+   Scripts.DatabankLib.settings.elements
    Scripts.DatabankLib.settings.engines
    Scripts.DatabankLib.settings.molecules
 

@@ -22,9 +22,9 @@ Python files
    Scripts.DatabankLib.databankLibrary
    Scripts.DatabankLib.databankio
    Scripts.DatabankLib.databankop
-   Scripts.DatabankLib.form_factor
    Scripts.DatabankLib.jpyroutines
    Scripts.DatabankLib.jsonEncoders
+   Scripts.DatabankLib.maicos
    Scripts.DatabankLib.openmm_parser
    Scripts.DatabankLib.plottings
    Scripts.DatabankLib.quality

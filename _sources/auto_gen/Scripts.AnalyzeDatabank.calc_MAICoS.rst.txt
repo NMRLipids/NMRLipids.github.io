@@ -1,0 +1,7 @@
+Scripts.AnalyzeDatabank.calc\_MAICoS module
+===========================================
+
+.. automodule:: Scripts.AnalyzeDatabank.calc_MAICoS
+   :members:
+   :show-inheritance:
+   :undoc-members:

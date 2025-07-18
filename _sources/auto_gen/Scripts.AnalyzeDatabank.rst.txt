@@ -13,5 +13,5 @@ Python files
    Scripts.AnalyzeDatabank.NMRPCA_timerelax
    Scripts.AnalyzeDatabank.calcAPL
    Scripts.AnalyzeDatabank.calcOrderParameters
-   Scripts.AnalyzeDatabank.calc_FormFactors
+   Scripts.AnalyzeDatabank.calc_MAICoS
    Scripts.AnalyzeDatabank.calc_thickness

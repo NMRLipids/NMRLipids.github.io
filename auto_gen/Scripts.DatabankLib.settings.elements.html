@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scripts.AnalyzeDatabank.calcOrderParameters module &mdash; NMRlipids databank 4.9.2023 documentation</title>
+  <title>Scripts.DatabankLib.settings.elements module &mdash; NMRlipids databank 4.9.2023 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Scripts.AnalyzeDatabank.calc_MAICoS module" href="Scripts.AnalyzeDatabank.calc_MAICoS.html" />
-    <link rel="prev" title="Scripts.AnalyzeDatabank.calcAPL module" href="Scripts.AnalyzeDatabank.calcAPL.html" /> 
+    <link rel="next" title="Scripts.DatabankLib.settings.engines module" href="Scripts.DatabankLib.settings.engines.html" />
+    <link rel="prev" title="Scripts.DatabankLib.settings.dic_lipids_UA module" href="Scripts.DatabankLib.settings.dic_lipids_UA.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -87,10 +87,11 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../Overview.html">Project structure</a></li>
           <li class="breadcrumb-item"><a href="Scripts.html">Scripts</a></li>
-          <li class="breadcrumb-item"><a href="Scripts.AnalyzeDatabank.html">Scripts.AnalyzeDatabank</a></li>
-      <li class="breadcrumb-item active">Scripts.AnalyzeDatabank.calcOrderParameters module</li>
+          <li class="breadcrumb-item"><a href="Scripts.DatabankLib.html">Scripts.DatabankLib</a></li>
+          <li class="breadcrumb-item"><a href="Scripts.DatabankLib.settings.html">Scripts.DatabankLib.settings</a></li>
+      <li class="breadcrumb-item active">Scripts.DatabankLib.settings.elements module</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/auto_gen/Scripts.AnalyzeDatabank.calcOrderParameters.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/auto_gen/Scripts.DatabankLib.settings.elements.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -98,16 +99,50 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-Scripts.AnalyzeDatabank.calcOrderParameters">
-<span id="scripts-analyzedatabank-calcorderparameters-module"></span><h1>Scripts.AnalyzeDatabank.calcOrderParameters module<a class="headerlink" href="#module-Scripts.AnalyzeDatabank.calcOrderParameters" title="Link to this heading"></a></h1>
+  <section id="module-Scripts.DatabankLib.settings.elements">
+<span id="scripts-databanklib-settings-elements-module"></span><h1>Scripts.DatabankLib.settings.elements module<a class="headerlink" href="#module-Scripts.DatabankLib.settings.elements" title="Link to this heading"></a></h1>
+<p>Elements assigneer functions. Helps Molecule to define brutto formula
+from existing mapping files and element guesser.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.settings.elements.uname2element">
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.settings.elements.</span></span><span class="sig-name descname"><span class="pre">uname2element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapping_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/settings/elements.html#uname2element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.settings.elements.uname2element" title="Link to this definition"></a></dt>
+<dd><p>Guess element name from universal atom name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mapping_name</strong> – name of the mapping, e.g. ‘M_C1’, ‘M_G’</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – if element cannot be determined from mapping name</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>element name, e.g. ‘C’, ‘N’, …</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.settings.elements.guess_elements">
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.settings.elements.</span></span><span class="sig-name descname"><span class="pre">guess_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Scripts.DatabankLib.core.html#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><span class="pre">System</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Universe</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/settings/elements.html#guess_elements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.settings.elements.guess_elements" title="Link to this definition"></a></dt>
+<dd><p>Assigns elements to atoms in the MDAnalysis universe based on the system’s
+composition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>system</strong> (<a class="reference internal" href="Scripts.DatabankLib.core.html#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><em>System</em></a>) – Databank System object</p></li>
+<li><p><strong>u</strong> (<em>mda.Universe</em>) – MDAnalysis Universe object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Scripts.AnalyzeDatabank.calcAPL.html" class="btn btn-neutral float-left" title="Scripts.AnalyzeDatabank.calcAPL module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Scripts.AnalyzeDatabank.calc_MAICoS.html" class="btn btn-neutral float-right" title="Scripts.AnalyzeDatabank.calc_MAICoS module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Scripts.DatabankLib.settings.dic_lipids_UA.html" class="btn btn-neutral float-left" title="Scripts.DatabankLib.settings.dic_lipids_UA module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Scripts.DatabankLib.settings.engines.html" class="btn btn-neutral float-right" title="Scripts.DatabankLib.settings.engines module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
