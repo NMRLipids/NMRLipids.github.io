@@ -85,10 +85,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">urllib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">deprecated</span><span class="w"> </span><span class="kn">import</span> <span class="n">deprecated</span>
@@ -560,75 +558,6 @@
 <span class="c1"># -------------------------------------- SEPARATED PART (??) ----------------------</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">calc_file_sha1_hash</span><span class="p">(</span><span class="n">fi</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4096</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    :meta private:</span>
-<span class="sd">    Calculates sha1 hash of given file using hashlib</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        fi (str): path to file</span>
-<span class="sd">        step (int, optional): file read bytes step. Defaults to 4096.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        str: sha1 filehash of 40 char length</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">sha1_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">()</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fi</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">fi</span><span class="p">)</span> <span class="o">/</span> <span class="n">step</span><span class="p">))</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
-            <span class="c1"># Read and update hash string value in blocks of 4K</span>
-            <span class="k">for</span> <span class="n">byte_block</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">step</span><span class="p">),</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-                <span class="n">sha1_hash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">byte_block</span><span class="p">)</span>
-                <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">sha1_hash</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">create_databank_directories</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">sim_hashes</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    :meta private:</span>
-<span class="sd">    create nested output directory structure to save results</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        sim (_type_): Processed simulation entries</span>
-<span class="sd">        sim_hashes (_type_): file hashes needed for directory structure</span>
-<span class="sd">        out (str): output base path</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        NotImplementedError: unsupported simulation software</span>
-<span class="sd">        OSError: Error while creating the output directory</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        str: output directory</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># resolve output dir naming</span>
-    <span class="k">if</span> <span class="n">sim</span><span class="p">[</span><span class="s2">&quot;SOFTWARE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;gromacs&quot;</span><span class="p">:</span>
-        <span class="n">head_dir</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TPR&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
-        <span class="n">sub_dir1</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TPR&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
-        <span class="n">sub_dir2</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TPR&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">sub_dir3</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TRJ&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">sim</span><span class="p">[</span><span class="s2">&quot;SOFTWARE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;openMM&quot;</span> <span class="ow">or</span> <span class="n">sim</span><span class="p">[</span><span class="s2">&quot;SOFTWARE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;NAMD&quot;</span><span class="p">:</span>
-        <span class="n">head_dir</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TRJ&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
-        <span class="n">sub_dir1</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TRJ&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
-        <span class="n">sub_dir2</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TRJ&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">sub_dir3</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TRJ&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sim software &#39;</span><span class="si">{</span><span class="n">sim</span><span class="p">[</span><span class="s1">&#39;SOFTWARE&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39; not supported&quot;</span><span class="p">)</span>
-
-    <span class="n">directory_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">head_dir</span><span class="p">,</span> <span class="n">sub_dir1</span><span class="p">,</span> <span class="n">sub_dir2</span><span class="p">,</span> <span class="n">sub_dir3</span><span class="p">)</span>
-
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;output_dir = </span><span class="si">{</span><span class="n">directory_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># destination directory is not empty</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;output directory &#39;</span><span class="si">{</span><span class="n">directory_path</span><span class="si">}</span><span class="s2">&#39; is not empty. Data may be overriden.&quot;</span>
-        <span class="p">)</span>
-
-    <span class="c1"># create directories</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory_path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">directory_path</span>
-
-
 <span class="k">class</span><span class="w"> </span><span class="nc">YamlBadConfigException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :meta private:</span>
@@ -688,10 +617,6 @@
         <span class="sa">f</span><span class="s2">&quot;all </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">software_required_keys</span><span class="p">)</span><span class="si">}</span><span class="s2"> required&quot;</span>
         <span class="sa">f</span><span class="s2">&quot; &#39;</span><span class="si">{</span><span class="n">sim</span><span class="p">[</span><span class="s1">&#39;SOFTWARE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; sim keys are present&quot;</span>
     <span class="p">)</span>
-
-    <span class="c1"># STEP 3 - check working directory</span>
-    <span class="k">if</span> <span class="s2">&quot;DIR_WRK&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sim</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;&#39;DIR_WRK&#39; Parameter missing in yaml&quot;</span><span class="p">)</span>
 
     <span class="c1"># STEP 4 - Check that all entry keys provided for each simulation are valid</span>
     <span class="n">files_tbd</span> <span class="o">=</span> <span class="p">[]</span>

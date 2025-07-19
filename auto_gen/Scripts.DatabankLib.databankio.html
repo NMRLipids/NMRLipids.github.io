@@ -100,8 +100,86 @@
              
   <section id="module-Scripts.DatabankLib.databankio">
 <span id="scripts-databanklib-databankio-module"></span><h1>Scripts.DatabankLib.databankio module<a class="headerlink" href="#module-Scripts.DatabankLib.databankio" title="Link to this heading"></a></h1>
-<p>&#64;DRAFT
-Network communication. Downloading files. Checking links etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">module databankio<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Inut/Output auxilary module</p>
+</dd>
+<dt class="field-even">description<span class="colon">:</span></dt>
+<dd class="field-even"><p>Input/Output auxilary module with some small usefull functions. It includes:
+- Network communication.
+- Downloading files.
+- Checking links.
+- Resolving DOIs.
+- Calculating file hashes.</p>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.databankio.download_resource_from_uri">
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankio.</span></span><span class="sig-name descname"><span class="pre">download_resource_from_uri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">override_if_exists</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankio.html#download_resource_from_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankio.download_resource_from_uri" title="Link to this definition"></a></dt>
+<dd><p>Download file resource [from uri] to given file destination using urllib</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uri</strong> – (str) file URL</p></li>
+<li><p><strong>dest</strong> – (str) file destination path</p></li>
+<li><p><strong>override_if_exists</strong> – (bool, optional)
+Override dest. file if exists. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>HTTPException</strong> – An error occured during download</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>code (int)
+0 - OK, 1 - skipped, 2 - redownloaded</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.databankio.calc_file_sha1_hash">
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankio.</span></span><span class="sig-name descname"><span class="pre">calc_file_sha1_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">67108864</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_block</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankio.html#calc_file_sha1_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankio.calc_file_sha1_hash" title="Link to this definition"></a></dt>
+<dd><p>Calculates SHA1 hash of given file using hashlib.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fi</strong> – (str) path to file</p></li>
+<li><p><strong>step</strong> – (int, optional) file read bytes step. Defaults to 64MB.</p></li>
+<li><p><strong>one_block</strong> – (bool, optional) read just a single block. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns str<span class="colon">:</span></dt>
+<dd class="field-even"><p>sha1 filehash of 40 char length</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.databankio.create_databank_directories">
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankio.</span></span><span class="sig-name descname"><span class="pre">create_databank_directories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_hashes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankio.html#create_databank_directories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankio.create_databank_directories" title="Link to this definition"></a></dt>
+<dd><p>Creates nested output directory structure to save results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sim</strong> – Processed simulation entries.</p></li>
+<li><p><strong>sim_hashes</strong> – File hashes needed for directory structure.</p></li>
+<li><p><strong>out</strong> – Output base path (str).</p></li>
+<li><p><strong>dry_run_mode</strong> – If True, do not create directories, just return the path.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output directory (str).</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>NotImplementedError</strong> – If the simulation software is unsupported.</p></li>
+<li><p><strong>OSError</strong> – If an error occurs while creating the output directory.</p></li>
+<li><p><strong>FileExistsError</strong> – If the output directory already exists and is not empty.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 

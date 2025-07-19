@@ -1,0 +1,400 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scripts.DatabankLib.databankio &mdash; NMRlipids databank 4.9.2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=10ee5b61"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            NMRlipids databank
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User information:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../listOfFiles.html">List and descriptions of NMRlipids databank files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../READMEcontent.html">User input and content of README.yaml files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../addingData.html">Adding simulations into the NMRlipids databank</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../addingExpData.html">Adding experimental data into the NMRlipids databank</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../moleculesAndMapping.html">Universal molecule and atom names</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../databankLibrary.html">NMRlipids databank API functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../exampleAndTutorials.html">Examples and tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Structure</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Overview.html">Project structure</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">NMRlipids databank</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">Scripts.DatabankLib.databankio</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Scripts.DatabankLib.databankio</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:module databankio: Inut/Output auxilary module</span>
+<span class="sd">:description:</span>
+<span class="sd">    Input/Output auxilary module with some small usefull functions. It includes:</span>
+<span class="sd">    - Network communication.</span>
+<span class="sd">    - Downloading files.</span>
+<span class="sd">    - Checking links.</span>
+<span class="sd">    - Resolving DOIs.</span>
+<span class="sd">    - Calculating file hashes.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">urllib.error</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">urllib.request</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">MAX_DRYRUN_SIZE</span> <span class="o">=</span> <span class="mi">50</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>  <span class="c1"># 50 MB, max size for dry-run download</span>
+
+
+<div class="viewcode-block" id="download_resource_from_uri">
+<a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.databankio.html#Scripts.DatabankLib.databankio.download_resource_from_uri">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">download_resource_from_uri</span><span class="p">(</span>
+    <span class="n">uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dest</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">override_if_exists</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">dry_run_mode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download file resource [from uri] to given file destination using urllib</span>
+
+<span class="sd">    :param uri: (str) file URL</span>
+<span class="sd">    :param dest: (str) file destination path</span>
+<span class="sd">    :param override_if_exists: (bool, optional)</span>
+<span class="sd">            Override dest. file if exists. Defaults to False.</span>
+
+<span class="sd">    :raises HTTPException: An error occured during download</span>
+
+<span class="sd">    :return: code (int) </span>
+<span class="sd">             0 - OK, 1 - skipped, 2 - redownloaded</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO verify file size before skipping already existing download!</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">RetrieveProgressBar</span><span class="p">(</span><span class="n">tqdm</span><span class="p">):</span>
+        <span class="c1"># uses tqdm.update(), see docs https://github.com/tqdm/tqdm#hooks-and-callbacks</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">update_retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bsize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">tsize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">tsize</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">bsize</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="n">fi_name</span> <span class="o">=</span> <span class="n">uri</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># check if dest path already exists</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">override_if_exists</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">dest</span><span class="p">):</span>
+        <span class="n">socket</span><span class="o">.</span><span class="n">setdefaulttimeout</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># seconds</span>
+
+        <span class="c1"># compare filesize</span>
+        <span class="n">fi_size</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span><span class="o">.</span><span class="n">length</span>  <span class="c1"># download size</span>
+        <span class="k">if</span> <span class="n">fi_size</span> <span class="o">==</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">dest</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dest</span><span class="si">}</span><span class="s2">: file already exists, skipping&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fi_name</span><span class="si">}</span><span class="s2"> filesize mismatch of local &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;file &#39;</span><span class="si">{</span><span class="n">fi_name</span><span class="si">}</span><span class="s2">&#39;, redownloading ...&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="mi">2</span>
+
+    <span class="c1"># download</span>
+    <span class="n">socket</span><span class="o">.</span><span class="n">setdefaulttimeout</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># seconds</span>
+    <span class="n">url_size</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span><span class="o">.</span><span class="n">length</span>  <span class="c1"># download size</span>
+
+    <span class="k">if</span> <span class="n">dry_run_mode</span><span class="p">:</span>
+        <span class="c1"># Download only up to MAX_DRYRUN_SIZE bytes, no tqdm</span>
+        <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_file</span><span class="p">:</span>
+            <span class="n">total</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">url_size</span><span class="p">,</span> <span class="n">MAX_DRYRUN_SIZE</span><span class="p">)</span> <span class="k">if</span> <span class="n">url_size</span> <span class="k">else</span> <span class="n">MAX_DRYRUN_SIZE</span>
+            <span class="n">downloaded</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">8192</span>
+            <span class="n">next_report</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>  <span class="c1"># print every 10 MB</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Dry-run: Downloading up to&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">total</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="p">(</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">)</span><span class="si">}</span><span class="s2"> MB of </span><span class="si">{</span><span class="n">fi_name</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">)</span>
+            <span class="k">while</span> <span class="n">downloaded</span> <span class="o">&lt;</span> <span class="n">total</span><span class="p">:</span>
+                <span class="n">to_read</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">total</span> <span class="o">-</span> <span class="n">downloaded</span><span class="p">)</span>
+                <span class="n">chunk</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">to_read</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+                <span class="n">downloaded</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">downloaded</span> <span class="o">&gt;=</span> <span class="n">next_report</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Downloaded </span><span class="si">{</span><span class="n">downloaded</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="p">(</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">)</span><span class="si">}</span><span class="s2"> MB ...&quot;</span><span class="p">)</span>
+                    <span class="n">next_report</span> <span class="o">+=</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Dry-run: Finished, downloaded&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">downloaded</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="p">(</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">)</span><span class="si">}</span><span class="s2"> MB of </span><span class="si">{</span><span class="n">fi_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">with</span> <span class="n">RetrieveProgressBar</span><span class="p">(</span>
+        <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">unit_scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">unit_divisor</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">miniters</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="n">fi_name</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">u</span><span class="p">:</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">reporthook</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">update_retrieve</span><span class="p">)</span>
+
+    <span class="c1"># check if the file is fully downloaded</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">url_size</span> <span class="o">!=</span> <span class="n">size</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;downloaded filsize mismatch (</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">url_size</span><span class="si">}</span><span class="s2"> B)&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="mi">0</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">resolve_doi_url</span><span class="p">(</span><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">validate_uri</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :meta private:</span>
+<span class="sd">    Returns full doi link of given ressource, also checks if URL is valid.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        doi (str): [doi] part from config</span>
+<span class="sd">        validate_uri (bool, optional): Check if URL is valid. Defaults to True.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: full doi link</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="s2">&quot;https://doi.org/&quot;</span> <span class="o">+</span> <span class="n">doi</span>
+
+    <span class="k">if</span> <span class="n">validate_uri</span><span class="p">:</span>
+        <span class="n">socket</span><span class="o">.</span><span class="n">setdefaulttimeout</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># seconds</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">resolve_download_file_url</span><span class="p">(</span>
+        <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fi_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">validate_uri</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">sleep429</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :meta private:</span>
+<span class="sd">    Resolve file URI from supported DOI with given filename</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        doi (str): DOI string</span>
+<span class="sd">        fi_name (str): name of the file to resolve from source</span>
+<span class="sd">        validate_uri (bool, optional): Check if URI exists. Defaults to True.</span>
+<span class="sd">        sleep429 (int, optional): Sleep in seconds if 429 HTTP code returned</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        NotImplementedError: Unsupported DOI repository</span>
+<span class="sd">        HTTPError: HTTP Error Status Code</span>
+<span class="sd">        URLError: Failed to reach the server</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: file URI</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;zenodo&quot;</span> <span class="ow">in</span> <span class="n">doi</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="n">zenodo_entry_number</span> <span class="o">=</span> <span class="n">doi</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;https://zenodo.org/record/&quot;</span> <span class="o">+</span> <span class="n">zenodo_entry_number</span> <span class="o">+</span> <span class="s2">&quot;/files/&quot;</span> <span class="o">+</span> <span class="n">fi_name</span>
+
+        <span class="c1"># check if ressource exists, may throw exception</span>
+        <span class="k">if</span> <span class="n">validate_uri</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">socket</span><span class="o">.</span><span class="n">setdefaulttimeout</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># seconds</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">TimeoutError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot open </span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">. Timeout error.&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">urllib</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">HTTPError</span> <span class="k">as</span> <span class="n">hte</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">hte</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="mi">429</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">sleep429</span><span class="o">/</span><span class="mi">5</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span>
+                            <span class="s2">&quot;Too many iteration of increasing waiting time!&quot;</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;HTTP error returned from URI: </span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Site returns 429 code.&quot;</span>
+                                   <span class="sa">f</span><span class="s2">&quot; Try to sleep </span><span class="si">{</span><span class="n">sleep429</span><span class="si">}</span><span class="s2"> seconds and repeat!&quot;</span><span class="p">)</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep429</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">resolve_download_file_url</span><span class="p">(</span><span class="n">doi</span><span class="p">,</span> <span class="n">fi_name</span><span class="p">,</span> <span class="n">validate_uri</span><span class="p">,</span>
+                                                     <span class="n">sleep429</span><span class="o">=</span><span class="n">sleep429</span><span class="o">+</span><span class="mi">5</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">hte</span>
+        <span class="k">return</span> <span class="n">uri</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;Repository not validated. Please upload the data for example to zenodo.org&quot;</span>
+        <span class="p">)</span>
+
+
+<div class="viewcode-block" id="calc_file_sha1_hash">
+<a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.databankio.html#Scripts.DatabankLib.databankio.calc_file_sha1_hash">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_file_sha1_hash</span><span class="p">(</span><span class="n">fi</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">67108864</span><span class="p">,</span> <span class="n">one_block</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates SHA1 hash of given file using hashlib.</span>
+
+<span class="sd">    :param fi: (str) path to file</span>
+<span class="sd">    :param step: (int, optional) file read bytes step. Defaults to 64MB.</span>
+<span class="sd">    :param one_block: (bool, optional) read just a single block. Defaults to True.</span>
+
+<span class="sd">    :returns str: sha1 filehash of 40 char length</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sha1_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">()</span>
+    <span class="n">n_tot_steps</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">fi</span><span class="p">)</span> <span class="o">/</span> <span class="n">step</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fi</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">one_block</span><span class="p">:</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+            <span class="n">sha1_hash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># we don&#39;t need tqdm from one-block SHA1</span>
+            <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">n_tot_steps</span><span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
+                <span class="c1"># Read and update hash string value in blocks of 4K</span>
+                <span class="k">for</span> <span class="n">byte_block</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">step</span><span class="p">),</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+                    <span class="n">sha1_hash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">byte_block</span><span class="p">)</span>
+                    <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sha1_hash</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="create_databank_directories">
+<a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.databankio.html#Scripts.DatabankLib.databankio.create_databank_directories">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_databank_directories</span><span class="p">(</span>
+        <span class="n">sim</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> 
+        <span class="n">sim_hashes</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> 
+        <span class="n">out</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">dry_run_mode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates nested output directory structure to save results.</span>
+
+<span class="sd">    :param sim: Processed simulation entries.</span>
+<span class="sd">    :param sim_hashes: File hashes needed for directory structure.</span>
+<span class="sd">    :param out: Output base path (str).</span>
+<span class="sd">    :param dry_run_mode: If True, do not create directories, just return the path.</span>
+
+<span class="sd">    :returns: Output directory (str).</span>
+
+<span class="sd">    :raises NotImplementedError: If the simulation software is unsupported.</span>
+<span class="sd">    :raises OSError: If an error occurs while creating the output directory.</span>
+<span class="sd">    :raises FileExistsError: If the output directory already exists and is not empty.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># resolve output dir naming</span>
+    <span class="k">if</span> <span class="n">sim</span><span class="p">[</span><span class="s2">&quot;SOFTWARE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;gromacs&quot;</span><span class="p">:</span>
+        <span class="n">head_dir</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TPR&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">sub_dir1</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TPR&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+        <span class="n">sub_dir2</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TPR&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">sub_dir3</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TRJ&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">sim</span><span class="p">[</span><span class="s2">&quot;SOFTWARE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;openMM&quot;</span> <span class="ow">or</span> <span class="n">sim</span><span class="p">[</span><span class="s2">&quot;SOFTWARE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;NAMD&quot;</span><span class="p">:</span>
+        <span class="n">head_dir</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TRJ&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">sub_dir1</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TRJ&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+        <span class="n">sub_dir2</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TRJ&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">sub_dir3</span> <span class="o">=</span> <span class="n">sim_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TRJ&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sim software &#39;</span><span class="si">{</span><span class="n">sim</span><span class="p">[</span><span class="s1">&#39;SOFTWARE&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39; not supported&quot;</span><span class="p">)</span>
+
+    <span class="n">directory_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">head_dir</span><span class="p">,</span> <span class="n">sub_dir1</span><span class="p">,</span> <span class="n">sub_dir2</span><span class="p">,</span> <span class="n">sub_dir3</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;output_dir = </span><span class="si">{</span><span class="n">directory_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># destination directory is not empty</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileExistsError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Output directory &#39;</span><span class="si">{</span><span class="n">directory_path</span><span class="si">}</span><span class="s2">&#39; is not empty. Delete it if you wish.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># create directories</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">dry_run_mode</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory_path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">directory_path</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, NMRlipids open collaboration 
+    OSI Approved: GNU General Public License v3 (GPLv3)
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version
+   .
+        <p>
+            <a href="https://github.com/NMRLipids/Databank/blob/main/LICENSE.txt"
+            target="_blank"
+            rel="noopener">
+            Link to GNU GPL v3 License
+            </a>
+        </p>
+        <p>
+            <a href="https://github.com/NMRLipids/Databank"
+            target="_blank"
+            rel="noopener">
+            Link to the GitHub repository
+            </a>
+        </p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
