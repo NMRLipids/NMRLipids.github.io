@@ -10,8 +10,4 @@ Python files
 .. toctree::
    :maxdepth: 1
 
-   Scripts.AnalyzeDatabank.NMRPCA_timerelax
-   Scripts.AnalyzeDatabank.calcAPL
-   Scripts.AnalyzeDatabank.calcOrderParameters
-   Scripts.AnalyzeDatabank.calc_MAICoS
-   Scripts.AnalyzeDatabank.calc_thickness
+   Scripts.AnalyzeDatabank.compute_databank
