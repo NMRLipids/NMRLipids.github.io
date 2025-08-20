@@ -87,8 +87,43 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.jsonEncoders</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompactJSONEncoder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">System</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.jsonEncoders</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompactJSONEncoder</span>
 
+
+<div class="viewcode-block" id="is_system_suitable_4_maicos">
+<a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.maicos.html#Scripts.DatabankLib.maicos.is_system_suitable_4_maicos">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_system_suitable_4_maicos</span><span class="p">(</span><span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Checks if the system is suitable for maicos calculations.&quot;</span>
+
+<span class="sd">    :param system: Databank System object (System)</span>
+<span class="sd">    :return: False if system should be skipped</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;TYPEOFSYSTEM&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;miscellaneous&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;ORIENTATION&#39;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Skipping due to ORIENTATION warning:&#39;</span><span class="p">,</span>
+                  <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;ORIENTATION&#39;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;PBC&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;hexagonal-box&#39;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Skipping due to PBC warning:&#39;</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;PBC&#39;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;NOWATER&#39;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Skipping because there is not water in the trajectory.&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+ 
 
 <div class="viewcode-block" id="NumpyArrayEncoder">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.maicos.html#Scripts.DatabankLib.maicos.NumpyArrayEncoder">[docs]</a>

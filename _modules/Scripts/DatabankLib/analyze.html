@@ -118,6 +118,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.databankop</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_OP</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib</span><span class="w"> </span><span class="kn">import</span> <span class="n">analyze_nmrpca</span> <span class="k">as</span> <span class="n">nmrpca</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.maicos</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">is_system_suitable_4_maicos</span><span class="p">,</span>
     <span class="n">FormFactorPlanar</span><span class="p">,</span>
     <span class="n">DielectricPlanar</span><span class="p">,</span>
     <span class="n">DensityPlanar</span><span class="p">,</span>
@@ -676,8 +677,9 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">computeMAICOS</span><span class="p">(</span>  <span class="c1"># noqa: N802 (API)</span>
     <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">recompute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;System title: &quot;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;SYSTEM&#39;</span><span class="p">])</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;System path: &quot;</span> <span class="o">+</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_system_suitable_4_maicos</span><span class="p">(</span><span class="n">system</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
+    <span class="c1"># otherwise continue </span>
     <span class="n">software</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;SOFTWARE&#39;</span><span class="p">]</span>
     <span class="c1"># download trajectory and gro files</span>
     <span class="n">system_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">])</span>
@@ -688,16 +690,16 @@
 
     <span class="n">set_maicos_files</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;LipidMassDensity.json&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;DiporderWater.json&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;FormFactor.json&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;TotalChargeDensity.json&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;WaterChargeDensity.json&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;Diporder2Water.json&quot;</span><span class="p">,</span>
         <span class="s2">&quot;TotalMassDensity.json&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;TotalDensity.json&quot;</span><span class="p">,</span>
         <span class="s2">&quot;WaterMassDensity.json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;TotalDensity.json&quot;</span><span class="p">,</span>
         <span class="s2">&quot;LipidDensity.json&quot;</span><span class="p">,</span>
         <span class="s2">&quot;WaterDensity.json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;FormFactor.json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DiporderWater.json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Diporder2Water.json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;TotalChargeDensity.json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;WaterChargeDensity.json&quot;</span><span class="p">,</span>
         <span class="s2">&quot;LipidChargeDensity.json&quot;</span><span class="p">,</span>
         <span class="s2">&quot;DielectricLipid&quot;</span><span class="p">,</span>  <span class="c1"># Dielectric* files are treated</span>
         <span class="s2">&quot;DielectricWater&quot;</span><span class="p">,</span>  <span class="c1"># slightly differently (see below)</span>
@@ -715,43 +717,6 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">system_path</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">recompute</span><span class="p">:</span>
                 <span class="n">set_maicos_files</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Files to be computed: &quot;</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">set_maicos_files</span><span class="p">))</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">set_maicos_files</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
-
-    <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;TYPEOFSYSTEM&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;miscellaneous&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Analyzing&#39;</span><span class="p">,</span> <span class="n">system_path</span><span class="p">)</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;UNITEDATOM_DICT&#39;</span><span class="p">]:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;United atom simulation&#39;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-        <span class="k">pass</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;ORIENTATION&#39;</span><span class="p">]:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Skipping due to ORIENTATION warning:&#39;</span><span class="p">,</span>
-                  <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;ORIENTATION&#39;</span><span class="p">])</span>
-            <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
-    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;PBC&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;hexagonal-box&#39;</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Skipping due to PBC warning:&#39;</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;PBC&#39;</span><span class="p">])</span>
-            <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
-    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">system</span><span class="p">[</span><span class="s1">&#39;WARNINGS&#39;</span><span class="p">][</span><span class="s1">&#39;NOWATER&#39;</span><span class="p">]:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Skipping because there is not water in the trajectory.&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
-    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
-        <span class="k">pass</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">struc</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">trj</span> <span class="o">=</span> <span class="n">get_struc_top_traj_fnames</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
@@ -768,7 +733,22 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error getting structure/topology/trajectory filenames.&quot;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">RCODE_ERROR</span>
+    
+    <span class="k">if</span> <span class="n">top</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># No topology =&gt; no charge inforamtion</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Dielectric properties and charge densities are not accessible without topology.&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">set_maicos_files</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;Dielectric&quot;</span> <span class="ow">in</span> <span class="n">file</span> <span class="ow">or</span> <span class="s2">&quot;Charge&quot;</span> <span class="ow">in</span> <span class="n">file</span><span class="p">):</span>
+                <span class="n">set_maicos_files</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;Diporder&quot;</span> <span class="ow">in</span> <span class="n">file</span><span class="p">):</span>
+                <span class="c1"># TODO: impute charges!</span>
+                <span class="n">set_maicos_files</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">set_maicos_files</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;All available MAICoS files are found. Skipping.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RCODE_SKIPPED</span>
+    
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Files to be computed: &quot;</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">set_maicos_files</span><span class="p">))</span>
     <span class="n">socket</span><span class="o">.</span><span class="n">setdefaulttimeout</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>

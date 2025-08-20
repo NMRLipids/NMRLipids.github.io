@@ -100,10 +100,26 @@
              
   <section id="module-Scripts.DatabankLib.maicos">
 <span id="scripts-databanklib-maicos-module"></span><h1>Scripts.DatabankLib.maicos module<a class="headerlink" href="#module-Scripts.DatabankLib.maicos" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.maicos.is_system_suitable_4_maicos">
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.maicos.</span></span><span class="sig-name descname"><span class="pre">is_system_suitable_4_maicos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Scripts.DatabankLib.core.html#Scripts.DatabankLib.core.System" title="Scripts.DatabankLib.core.System"><span class="pre">System</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/maicos.html#is_system_suitable_4_maicos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.maicos.is_system_suitable_4_maicos" title="Link to this definition"></a></dt>
+<dd><p>Checks if the system is suitable for maicos calculations.”</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param system<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Databank System object (System)</p>
+</dd>
+<dt class="field-even">return<span class="colon">:</span></dt>
+<dd class="field-even"><p>False if system should be skipped</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.maicos.NumpyArrayEncoder">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.maicos.</span></span><span class="sig-name descname"><span class="pre">NumpyArrayEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/maicos.html#NumpyArrayEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.maicos.NumpyArrayEncoder" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="Scripts.DatabankLib.jsonEncoders.html#Scripts.DatabankLib.jsonEncoders.CompactJSONEncoder" title="Scripts.DatabankLib.jsonEncoders.CompactJSONEncoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompactJSONEncoder</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CompactJSONEncoder</span></code></p>
 <p>Encoder for 2xN numpy arrays to be used with json.dump.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.maicos.NumpyArrayEncoder.encode">
