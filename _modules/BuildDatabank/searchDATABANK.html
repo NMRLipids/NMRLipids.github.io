@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BuildDatabank.searchDATABANK &mdash; NMRlipids databank 4.9.2023 documentation</title>
+  <title>BuildDatabank.searchDATABANK &mdash; NMRlipids Databank v1.3.0 1.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=10ee5b61"></script>
+      <script src="../../_static/documentation_options.js?v=1f29e9d3"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -29,7 +29,7 @@
           
           
           <a href="../../index.html" class="icon icon-home">
-            NMRlipids databank
+            NMRlipids Databank v1.3.0
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -39,15 +39,11 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">User information:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../listOfFiles.html">List and descriptions of NMRlipids databank files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../READMEcontent.html">User input and content of README.yaml files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../addingData.html">Adding simulations into the NMRlipids databank</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../addingExpData.html">Adding experimental data into the NMRlipids databank</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../moleculesAndMapping.html">Universal molecule and atom names</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../databankLibrary.html">NMRlipids databank API functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../exampleAndTutorials.html">Examples and tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dbstructure.html">Data Organization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dbcontribute.html">Data Contribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dbprograms.html">Databank standalone programs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Project Structure</span></p>
 <ul>
@@ -60,7 +56,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">NMRlipids databank</a>
+          <a href="../../index.html">NMRlipids Databank v1.3.0</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -104,7 +100,7 @@
 
 
 <div class="viewcode-block" id="SearchSystem">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem">[docs]</a>
+<a class="viewcode-back" href="../../programs/searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SearchSystem</span><span class="p">:</span>
 
     <span class="n">system</span><span class="p">:</span> <span class="nb">dict</span>
@@ -115,14 +111,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">idx_path</span> <span class="o">=</span> <span class="n">readme</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="SearchSystem.get_lipids">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.get_lipids">[docs]</a>
+<a class="viewcode-back" href="../../programs/searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.get_lipids">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_lipids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecules</span><span class="o">=</span><span class="n">lipids_set</span><span class="p">):</span>
         <span class="n">lipids</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">lipids</span></div>
 
 
 <div class="viewcode-block" id="SearchSystem.get_ions">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.get_ions">[docs]</a>
+<a class="viewcode-back" href="../../programs/searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.get_ions">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_ions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ions</span><span class="p">):</span>
         <span class="n">sim_ions</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ions</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">sim_ions</span></div>
@@ -130,7 +126,7 @@
 
     <span class="c1"># fraction of each lipid with respect to total amount of lipids (only for lipids!)</span>
 <div class="viewcode-block" id="SearchSystem.molar_fraction">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.molar_fraction">[docs]</a>
+<a class="viewcode-back" href="../../programs/searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.molar_fraction">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">molar_fraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">molecules</span><span class="o">=</span><span class="n">lipids_set</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="n">cmps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">]</span>
         <span class="n">number</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cmps</span><span class="p">[</span><span class="n">molecule</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">])</span>
@@ -142,7 +138,7 @@
     <span class="c1"># change name to ionConcentration()</span>
 
 <div class="viewcode-block" id="SearchSystem.ion_conc">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.ion_conc">[docs]</a>
+<a class="viewcode-back" href="../../programs/searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.ion_conc">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">ion_conc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">exp_counter_ions</span><span class="p">):</span>
         <span class="n">lipids1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lipids</span><span class="p">()</span>
         <span class="n">c_water</span> <span class="o">=</span> <span class="mf">55.5</span>
@@ -167,7 +163,7 @@
 
 
 <div class="viewcode-block" id="SearchSystem.total_lipid_conc">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.total_lipid_conc">[docs]</a>
+<a class="viewcode-back" href="../../programs/searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem.total_lipid_conc">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">total_lipid_conc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">c_water</span> <span class="o">=</span> <span class="mf">55.5</span>
         <span class="n">n_water</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">][</span><span class="s1">&#39;SOL&#39;</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">]</span>
@@ -194,7 +190,7 @@
 
 
 <div class="viewcode-block" id="Experiment">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.Experiment">[docs]</a>
+<a class="viewcode-back" href="../../programs/searchDATABANK.html#BuildDatabank.searchDATABANK.Experiment">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Experiment</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readme</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">molname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exptype</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">readme</span> <span class="o">=</span> <span class="n">readme</span>
@@ -203,14 +199,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">exptype</span> <span class="o">=</span> <span class="n">exptype</span>
 
 <div class="viewcode-block" id="Experiment.get_lipids">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.Experiment.get_lipids">[docs]</a>
+<a class="viewcode-back" href="../../programs/searchDATABANK.html#BuildDatabank.searchDATABANK.Experiment.get_lipids">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_lipids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecules</span><span class="o">=</span><span class="n">lipids_set</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="n">lipids</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readme</span><span class="p">[</span><span class="s1">&#39;MOLAR_FRACTIONS&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">lipids</span></div>
 
 
 <div class="viewcode-block" id="Experiment.get_ions">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.Experiment.get_ions">[docs]</a>
+<a class="viewcode-back" href="../../programs/searchDATABANK.html#BuildDatabank.searchDATABANK.Experiment.get_ions">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_ions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="n">exp_ions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -231,7 +227,7 @@
 
 
 <div class="viewcode-block" id="load_simulations">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.load_simulations">[docs]</a>
+<a class="viewcode-back" href="../../programs/searchDATABANK.html#BuildDatabank.searchDATABANK.load_simulations">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_simulations</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SearchSystem</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates the list of Simulation objects. Go through all README.yaml files.</span>
@@ -255,7 +251,7 @@
 
 
 <div class="viewcode-block" id="load_experiments">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.load_experiments">[docs]</a>
+<a class="viewcode-back" href="../../programs/searchDATABANK.html#BuildDatabank.searchDATABANK.load_experiments">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_experiments</span><span class="p">(</span><span class="n">exp_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Experiment</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Loops over the experiment entries in the experiment databank and read experiment</span>
@@ -306,7 +302,7 @@
 
 
 <div class="viewcode-block" id="find_pairs">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.find_pairs">[docs]</a>
+<a class="viewcode-back" href="../../programs/searchDATABANK.html#BuildDatabank.searchDATABANK.find_pairs">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">find_pairs</span><span class="p">(</span><span class="n">experiments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Experiment</span><span class="p">],</span> <span class="n">simulations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SearchSystem</span><span class="p">]):</span>
     <span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">simulation</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">simulations</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Simulation&#39;</span><span class="p">):</span>
@@ -417,7 +413,7 @@
 
 
 <div class="viewcode-block" id="log_pairs">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.log_pairs">[docs]</a>
+<a class="viewcode-back" href="../../programs/searchDATABANK.html#BuildDatabank.searchDATABANK.log_pairs">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">log_pairs</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">fd</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Write found correspondences into log file.</span>
@@ -452,7 +448,7 @@
 
 
 <div class="viewcode-block" id="main">
-<a class="viewcode-back" href="../../searchDATABANK.html#BuildDatabank.searchDATABANK.main">[docs]</a>
+<a class="viewcode-back" href="../../programs/searchDATABANK.html#BuildDatabank.searchDATABANK.main">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Main program function. Not for exporting.</span>
@@ -522,14 +518,14 @@
     (at your option) any later version
    .
         <p>
-            <a href="https://github.com/NMRLipids/Databank/blob/main/LICENSE.txt"
+            <a href="https://github.com/NMRlipids/Databank/blob/main/LICENSE.txt"
             target="_blank"
             rel="noopener">
             Link to GNU GPL v3 License
             </a>
         </p>
         <p>
-            <a href="https://github.com/NMRLipids/Databank"
+            <a href="https://github.com/NMRlipids/Databank"
             target="_blank"
             rel="noopener">
             Link to the GitHub repository
