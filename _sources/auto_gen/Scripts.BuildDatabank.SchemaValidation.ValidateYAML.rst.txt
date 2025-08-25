@@ -1,0 +1,7 @@
+Scripts.BuildDatabank.SchemaValidation.ValidateYAML module
+==========================================================
+
+.. automodule:: Scripts.BuildDatabank.SchemaValidation.ValidateYAML
+   :members:
+   :show-inheritance:
+   :undoc-members:
