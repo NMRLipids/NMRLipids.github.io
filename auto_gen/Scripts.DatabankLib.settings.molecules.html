@@ -136,6 +136,17 @@ specific operations for handling molecule data.</p>
 <dd></dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.settings.molecules.Molecule.metadata">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#Scripts.DatabankLib.settings.molecules.Molecule.metadata" title="Link to this definition"></a></dt>
+<dd><p>Returns metadata for the molecule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict with metadata</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.settings.molecules.Molecule.name">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#Scripts.DatabankLib.settings.molecules.Molecule.name" title="Link to this definition"></a></dt>
 <dd><p>Molecule name.</p>
@@ -154,6 +165,17 @@ specific operations for handling molecule data.</p>
 <dd><p>Bases: <a class="reference internal" href="#Scripts.DatabankLib.settings.molecules.Molecule" title="Scripts.DatabankLib.settings.molecules.Molecule"><code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code></a></p>
 <p>Lipid class inherited from Molecule base. Contains all the molecules
 which belongs to the bilayer.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.settings.molecules.Lipid.metadata">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#Scripts.DatabankLib.settings.molecules.Lipid.metadata" title="Link to this definition"></a></dt>
+<dd><p>Returns metadata for the lipid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict with metadata</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -185,6 +207,14 @@ will be called)</p>
 <dt class="sig sig-object py" id="Scripts.DatabankLib.settings.molecules.MoleculeSet.discard">
 <span class="sig-name descname"><span class="pre">discard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/settings/molecules.html#MoleculeSet.discard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.settings.molecules.MoleculeSet.discard" title="Link to this definition"></a></dt>
 <dd><p>Remove a lipid from the set without raising an error if it does not exist.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.settings.molecules.MoleculeSet.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#Scripts.DatabankLib.settings.molecules.Molecule" title="Scripts.DatabankLib.settings.molecules.Molecule"><span class="pre">Molecule</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/settings/molecules.html#MoleculeSet.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.settings.molecules.MoleculeSet.get" title="Link to this definition"></a></dt>
+<dd><p>Get a molecule by its name.
+:param key: The name of the molecule to retrieve.
+:param default: The value to return if the molecule is not found.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -238,13 +268,13 @@ will be called)</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.settings.molecules.lipids_set">
-<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.settings.molecules.</span></span><span class="sig-name descname"><span class="pre">lipids_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#Scripts.DatabankLib.settings.molecules.LipidSet" title="Scripts.DatabankLib.settings.molecules.LipidSet"><span class="pre">LipidSet</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">LipidSet[{'DPPC',</span> <span class="pre">'TOCL',</span> <span class="pre">'POPE',</span> <span class="pre">'CHOL',</span> <span class="pre">'POPC'}]</span></em><a class="headerlink" href="#Scripts.DatabankLib.settings.molecules.lipids_set" title="Link to this definition"></a></dt>
-<dd><p>Dictionary of possible lipids</p>
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.settings.molecules.</span></span><span class="sig-name descname"><span class="pre">lipids_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#Scripts.DatabankLib.settings.molecules.LipidSet" title="Scripts.DatabankLib.settings.molecules.LipidSet"><span class="pre">LipidSet</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">LipidSet[{'DPPC',</span> <span class="pre">'POPE',</span> <span class="pre">'TOCL',</span> <span class="pre">'POPC',</span> <span class="pre">'CHOL'}]</span></em><a class="headerlink" href="#Scripts.DatabankLib.settings.molecules.lipids_set" title="Link to this definition"></a></dt>
+<dd><p>MutableSet of possible lipids</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.settings.molecules.lipids_dict">
-<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.settings.molecules.</span></span><span class="sig-name descname"><span class="pre">lipids_dict</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">LipidSet[{'DPPC',</span> <span class="pre">'TOCL',</span> <span class="pre">'POPE',</span> <span class="pre">'CHOL',</span> <span class="pre">'POPC'}]</span></em><a class="headerlink" href="#Scripts.DatabankLib.settings.molecules.lipids_dict" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.settings.molecules.</span></span><span class="sig-name descname"><span class="pre">lipids_dict</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">LipidSet[{'DPPC',</span> <span class="pre">'POPE',</span> <span class="pre">'TOCL',</span> <span class="pre">'POPC',</span> <span class="pre">'CHOL'}]</span></em><a class="headerlink" href="#Scripts.DatabankLib.settings.molecules.lipids_dict" title="Link to this definition"></a></dt>
 <dd><p>Use lipids_set instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -255,13 +285,13 @@ will be called)</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.settings.molecules.molecules_set">
-<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.settings.molecules.</span></span><span class="sig-name descname"><span class="pre">molecules_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#Scripts.DatabankLib.settings.molecules.NonLipidSet" title="Scripts.DatabankLib.settings.molecules.NonLipidSet"><span class="pre">NonLipidSet</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">NonLipidSet[{'CLA',</span> <span class="pre">'SOD',</span> <span class="pre">'SOL'}]</span></em><a class="headerlink" href="#Scripts.DatabankLib.settings.molecules.molecules_set" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.settings.molecules.</span></span><span class="sig-name descname"><span class="pre">molecules_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#Scripts.DatabankLib.settings.molecules.NonLipidSet" title="Scripts.DatabankLib.settings.molecules.NonLipidSet"><span class="pre">NonLipidSet</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">NonLipidSet[{'CLA',</span> <span class="pre">'SOL',</span> <span class="pre">'SOD'}]</span></em><a class="headerlink" href="#Scripts.DatabankLib.settings.molecules.molecules_set" title="Link to this definition"></a></dt>
 <dd><p>Dictionary of other than lipid molecules.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.settings.molecules.molecules_dict">
-<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.settings.molecules.</span></span><span class="sig-name descname"><span class="pre">molecules_dict</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">NonLipidSet[{'CLA',</span> <span class="pre">'SOD',</span> <span class="pre">'SOL'}]</span></em><a class="headerlink" href="#Scripts.DatabankLib.settings.molecules.molecules_dict" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.settings.molecules.</span></span><span class="sig-name descname"><span class="pre">molecules_dict</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">NonLipidSet[{'CLA',</span> <span class="pre">'SOL',</span> <span class="pre">'SOD'}]</span></em><a class="headerlink" href="#Scripts.DatabankLib.settings.molecules.molecules_dict" title="Link to this definition"></a></dt>
 <dd><p>Use molecules_set instead</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>

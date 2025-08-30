@@ -148,6 +148,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_molname</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mapping_fpath</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mapping_dict</span> <span class="o">=</span> <span class="kc">None</span>
+        
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">__check_name</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -166,6 +167,26 @@
         <span class="n">pat</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;[A-Za-z0-9_]+&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pat</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Only </span><span class="si">{</span><span class="n">pat</span><span class="si">}</span><span class="s2"> symbols are allowed in Molecule name.&quot;</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_populate_meta_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Populates metadata for the molecule from its YAML file.</span>
+<span class="sd">        </span>
+<span class="sd">        This method should be implemented in subclasses to load specific</span>
+<span class="sd">        metadata related to the molecule.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metadata for the molecule.</span>
+
+<span class="sd">        :return: dict with metadata</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -186,7 +207,8 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span></div>
 
-
+    
+    
 
 <div class="viewcode-block" id="Lipid">
 <a class="viewcode-back" href="../../../../auto_gen/Scripts.DatabankLib.settings.molecules.html#Scripts.DatabankLib.settings.molecules.Lipid">[docs]</a>
@@ -200,9 +222,42 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Directory containing all lipid-subdirs&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lipids_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lipids_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_populate_meta_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Populates metadata for the lipid from its YAML file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">meta_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_path</span><span class="p">(),</span> <span class="s2">&quot;metadata.yaml&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">meta_path</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">meta_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">yaml_file</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Metadata file not found for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metadata for the lipid.</span>
 
+<span class="sd">        :return: dict with metadata</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_metadata&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_populate_meta_data</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> 
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create the lipid.</span>
+
+<span class="sd">        :param name: The name of the lipid.</span>
+<span class="sd">        :type name: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_populate_meta_data</span><span class="p">()</span></div>
+
+        
 
 <div class="viewcode-block" id="NonLipid">
 <a class="viewcode-back" href="../../../../auto_gen/Scripts.DatabankLib.settings.molecules.html#Scripts.DatabankLib.settings.molecules.NonLipid">[docs]</a>
@@ -312,6 +367,24 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span></div>
 
 
+
+<div class="viewcode-block" id="MoleculeSet.get">
+<a class="viewcode-back" href="../../../../auto_gen/Scripts.DatabankLib.settings.molecules.html#Scripts.DatabankLib.settings.molecules.MoleculeSet.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Molecule</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a molecule by its name.</span>
+<span class="sd">        :param key: The name of the molecule to retrieve.</span>
+<span class="sd">        :param default: The value to return if the molecule is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="n">key</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+                    <span class="k">return</span> <span class="n">item</span>
+        <span class="k">return</span> <span class="n">default</span></div>
+
+    
+
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="si">}</span><span class="s2">]&quot;</span>
 
@@ -394,7 +467,7 @@
 
 
 <span class="n">lipids_set</span><span class="p">:</span> <span class="n">LipidSet</span> <span class="o">=</span> <span class="n">LipidSet</span><span class="o">.</span><span class="n">load_from_data</span><span class="p">()</span>
-<span class="sd">&quot;&quot;&quot; Dictionary of possible lipids &quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot; MutableSet of possible lipids &quot;&quot;&quot;</span>
 
 <span class="n">lipids_dict</span> <span class="o">=</span> <span class="n">lipids_set</span>
 <span class="sd">&quot;&quot;&quot; @deprecated: Use lipids_set instead. &quot;&quot;&quot;</span>
