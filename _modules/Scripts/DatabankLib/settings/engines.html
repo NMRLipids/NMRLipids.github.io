@@ -127,7 +127,7 @@
         <span class="s2">&quot;REQUIRED&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
         <span class="s2">&quot;TYPE&quot;</span><span class="p">:</span> <span class="s2">&quot;files&quot;</span><span class="p">,</span>
         <span class="s2">&quot;CATEGORY&quot;</span><span class="p">:</span> <span class="s2">&quot;trajectory&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;EXTENSION&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;xtc&quot;</span><span class="p">,</span> <span class="s2">&quot;trr&quot;</span><span class="p">,),</span>
+        <span class="s2">&quot;EXTENSION&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;xtc&quot;</span><span class="p">,</span> <span class="s2">&quot;trr&quot;</span><span class="p">),</span>
     <span class="p">},</span>
     <span class="s2">&quot;TPR&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;REQUIRED&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
@@ -241,12 +241,12 @@
     <span class="p">},</span>
     <span class="s2">&quot;TYPEOFSYSTEM&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;REQUIRED&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="s2">&quot;TYPE&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+        <span class="s2">&quot;TYPE&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="s2">&quot;BATCHID&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;REQUIRED&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="s2">&quot;TYPE&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
-    <span class="p">}</span>
+        <span class="s2">&quot;TYPE&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
 <span class="p">}</span>
 
 <span class="c1"># Amber</span>
@@ -255,13 +255,13 @@
         <span class="s2">&quot;REQUIRED&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
         <span class="s2">&quot;TYPE&quot;</span><span class="p">:</span> <span class="s2">&quot;files&quot;</span><span class="p">,</span>
         <span class="s2">&quot;CATEGORY&quot;</span><span class="p">:</span> <span class="s2">&quot;trajectory&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;EXTENSION&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;nc&quot;</span><span class="p">,</span> <span class="s2">&quot;ncdf&quot;</span><span class="p">,</span> <span class="s2">&quot;trj&quot;</span><span class="p">,</span> <span class="s2">&quot;mdcrd&quot;</span><span class="p">,),</span>
+        <span class="s2">&quot;EXTENSION&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;nc&quot;</span><span class="p">,</span> <span class="s2">&quot;ncdf&quot;</span><span class="p">,</span> <span class="s2">&quot;trj&quot;</span><span class="p">,</span> <span class="s2">&quot;mdcrd&quot;</span><span class="p">),</span>
     <span class="p">},</span>
     <span class="s2">&quot;TOP&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;REQUIRED&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
         <span class="s2">&quot;CATEGORY&quot;</span><span class="p">:</span> <span class="s2">&quot;topology&quot;</span><span class="p">,</span>
         <span class="s2">&quot;TYPE&quot;</span><span class="p">:</span> <span class="s2">&quot;file&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;EXTENSION&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;prmtop&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="s2">&quot;parm7&quot;</span><span class="p">,),</span>
+        <span class="s2">&quot;EXTENSION&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;prmtop&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="s2">&quot;parm7&quot;</span><span class="p">),</span>
     <span class="p">},</span>
     <span class="s2">&quot;FF&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;REQUIRED&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
@@ -564,8 +564,10 @@
 <div class="viewcode-block" id="get_struc_top_traj_fnames">
 <a class="viewcode-back" href="../../../../auto_gen/Scripts.DatabankLib.settings.engines.html#Scripts.DatabankLib.settings.engines.get_struc_top_traj_fnames">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_struc_top_traj_fnames</span><span class="p">(</span>
-        <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">allow_structure</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">join_path</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+    <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span>
+    <span class="n">allow_structure</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">join_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns filenames of structure/topology/trajectory according to system&#39;s engine.</span>
 
 <span class="sd">    Args:</span>
@@ -577,27 +579,25 @@
 <span class="sd">    Returns ((string, string, string)): structure filename, topology filename,</span>
 <span class="sd">            trajectory filename</span>
 
-<span class="sd">    Raises:</span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
 <span class="sd">        ValueError: function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sft</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;SOFTWARE&quot;</span><span class="p">]</span>
     <span class="n">sft_spec</span> <span class="o">=</span> <span class="n">software_dict</span><span class="p">[</span><span class="n">sft</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
     <span class="n">trj_fn</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sft_spec</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;CATEGORY&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;CATEGORY&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;trajectory&quot;</span> <span class="ow">and</span>
-                <span class="n">k</span> <span class="ow">in</span> <span class="n">system</span> <span class="ow">and</span> <span class="n">system</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;CATEGORY&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;CATEGORY&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;trajectory&quot;</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">system</span> <span class="ow">and</span> <span class="n">system</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">trj_fn</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
             <span class="k">break</span>
     <span class="n">top_fn</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sft_spec</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;CATEGORY&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;CATEGORY&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;topology&quot;</span> <span class="ow">and</span>
-                <span class="n">k</span> <span class="ow">in</span> <span class="n">system</span> <span class="ow">and</span> <span class="n">system</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;CATEGORY&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;CATEGORY&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;topology&quot;</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">system</span> <span class="ow">and</span> <span class="n">system</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">top_fn</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
             <span class="k">break</span>
     <span class="n">struc_fn</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sft_spec</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;CATEGORY&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;CATEGORY&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;structure&quot;</span>
-                <span class="ow">and</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">system</span> <span class="ow">and</span> <span class="n">system</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;CATEGORY&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;CATEGORY&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;structure&quot;</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">system</span> <span class="ow">and</span> <span class="n">system</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">struc_fn</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
             <span class="k">break</span>
 

@@ -8,6 +8,7 @@ Subfolders
 .. toctree::
    :maxdepth: 1
 
+   Scripts.DatabankLib.SchemaValidation
    Scripts.DatabankLib.settings
 
 Python files

@@ -90,11 +90,11 @@
 <span class="sd">--------------------------------------------------------</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="c1"># Maximum bond length for a C-H bond to be considered reasonable.</span>
@@ -147,12 +147,12 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">field_value</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
                     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;Provided name for field &#39;</span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2">&#39; is empty! &quot;</span>
-                        <span class="s2">&quot;Cannot use empty names for atoms and OP definitions.&quot;</span>
+                        <span class="s2">&quot;Cannot use empty names for atoms and OP definitions.&quot;</span><span class="p">,</span>
                     <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Provided value for &#39;</span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2">&#39; is not a string: </span><span class="si">{</span><span class="n">field_value</span><span class="si">}</span><span class="s2">. &quot;</span>
-                    <span class="s2">&quot;Unexpected behaviour might occur.&quot;</span>
+                    <span class="s2">&quot;Unexpected behaviour might occur.&quot;</span><span class="p">,</span>
                 <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -165,8 +165,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">stem</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Number of optional positional arguments is </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2">, not 0 or 2. &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Args: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="se">\n</span><span class="s2">Wrong file format?&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Number of optional positional arguments is </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2">, not 0 or 2. Args: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="se">\n</span><span class="s2">Wrong file format?&quot;</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">traj</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># For storing final OP results.</span>
@@ -187,8 +186,10 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_read_trajs_calc_OPs</span><span class="p">(</span>
-    <span class="n">op_obj_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">_OrderParameter</span><span class="p">],</span> <span class="n">top</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">trajs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-<span class="p">):</span>  <span class="c1"># noqa: N802 (API)</span>
+    <span class="n">op_obj_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">_OrderParameter</span><span class="p">],</span>
+    <span class="n">top</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">trajs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates an MDAnalysis Universe, reads trajectories, and calculates Order Parameters (&quot;S&quot;).</span>
 
 <span class="sd">    This function calculates the order parameters for each definition in ``op_obj_list``.</span>
@@ -212,8 +213,7 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">selection_by_residue</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Selection is empty: [</span><span class="si">{</span><span class="n">sel_str</span><span class="si">}</span><span class="s2">]. &quot;</span>
-                <span class="s2">&quot;Check residue and atom names in the mapping file.&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;Selection is empty: [</span><span class="si">{</span><span class="n">sel_str</span><span class="si">}</span><span class="s2">]. Check residue and atom names in the mapping file.&quot;</span><span class="p">,</span>
                 <span class="ne">UserWarning</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">improper_ops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
@@ -234,7 +234,8 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_selection</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;No valid atom pairs found for selection: [</span><span class="si">{</span><span class="n">sel_str</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span>
+                <span class="sa">f</span><span class="s2">&quot;No valid atom pairs found for selection: [</span><span class="si">{</span><span class="n">sel_str</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">,</span>
+                <span class="ne">UserWarning</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">improper_ops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
             <span class="k">continue</span>
@@ -286,7 +287,9 @@
             <span class="n">d2_valid</span> <span class="o">=</span> <span class="n">d2</span><span class="p">[</span><span class="n">valid_mask</span><span class="p">]</span>
             <span class="n">vec_valid</span> <span class="o">=</span> <span class="n">vec</span><span class="p">[</span><span class="n">valid_mask</span><span class="p">]</span>
             <span class="n">cos2</span><span class="p">[</span><span class="n">valid_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span>
-                <span class="n">vec_valid</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">d2_valid</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="n">d2_valid</span> <span class="o">!=</span> <span class="mi">0</span>
+                <span class="n">vec_valid</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="n">d2_valid</span><span class="p">,</span>
+                <span class="n">where</span><span class="o">=</span><span class="n">d2_valid</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="c1"># Calculate order parameters for all residues</span>
@@ -357,8 +360,11 @@
 <div class="viewcode-block" id="find_OP">
 <a class="viewcode-back" href="../../miscsrc/OrderParameter.html#DatabankLib.databankop.find_OP">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">find_OP</span><span class="p">(</span>
-    <span class="n">mdict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">top_fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">traj_fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lipid_name</span><span class="p">:</span> <span class="nb">str</span>
-<span class="p">):</span>  <span class="c1"># noqa: N802 (API)</span>
+    <span class="n">mdict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">top_fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">traj_fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">lipid_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Externally used function for computing OP values.</span>
 
 <span class="sd">    :param mdict: The mapping dictionary.</span>

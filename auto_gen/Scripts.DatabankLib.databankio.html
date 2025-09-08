@@ -133,14 +133,10 @@ The delay doubles after each failed attempt. Defaults to 1.</p></li>
 <dd class="field-odd"><p><strong>uri</strong> (<em>str</em>) – The URL of the file.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>The size of the file in bytes, or 0 if the ‘Content-Length’</dt><dd><p>header is not present.</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p><strong>int</strong> – header is not present.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p>The size of the file in bytes, or 0 if the ‘Content-Length’</p>
 </dd>
 </dl>
 </dd></dl>
@@ -180,21 +176,17 @@ even if it already exists. Defaults to False.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>A status code indicating the result.</dt><dd><p>0: Download was successful.
+<dd class="field-even"><p><strong>int</strong> – 0: Download was successful.
 1: Download was skipped because the file already exists.
 2: File was re-downloaded due to a size mismatch.</p>
 </dd>
-</dl>
-</p>
-</dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p>A status code indicating the result.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>ConnectionError</strong> – An error occurred after multiple download attempts.</p></li>
-<li><p><strong>OSError</strong> – The downloaded file size does not match the expected size.</p></li>
+<li><p><strong>ConnectionError</strong> – An error occurred after multiple download attempts.:</p></li>
+<li><p><strong>OSError</strong> – The downloaded file size does not match the expected size.:</p></li>
 </ul>
 </dd>
 </dl>
@@ -213,16 +205,15 @@ and reachable address. Defaults to True.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The full, validated DOI link (e.g., “<a class="reference external" href="https://doi.org/">https://doi.org/</a>…”).</p>
+<dd class="field-even"><p><strong>str</strong></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>The full, validated DOI link (e.g., “<a class="reference external" href="https://doi.org/">https://doi.org/</a>…”).</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>urllib.error.HTTPError</strong> – If the DOI resolves to a URL, but the server
-    returns an HTTP error code (e.g., 404 Not Found).</p></li>
-<li><p><strong>ConnectionError</strong> – If the server cannot be reached after multiple retries.</p></li>
+<li><p><strong>urllib.error.HTTPError</strong> – If the DOI resolves to a URL, but the server: returns an HTTP error code (e.g., 404 Not Found).</p></li>
+<li><p><strong>ConnectionError</strong> – If the server cannot be reached after multiple retries.:</p></li>
 </ul>
 </dd>
 </dl>
@@ -245,10 +236,10 @@ Defaults to True.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The hexadecimal SHA1 hash of the file content.</p>
+<dd class="field-even"><p><strong>str</strong></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>The hexadecimal SHA1 hash of the file content.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -274,17 +265,16 @@ not created. Defaults to False.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The full path to the created output directory.</p>
+<dd class="field-even"><p><strong>str</strong></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>The full path to the created output directory.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>FileExistsError</strong> – If the target output directory already exists and is
-    not empty.</p></li>
-<li><p><strong>NotImplementedError</strong> – If the simulation software is not supported.</p></li>
-<li><p><strong>RuntimeError</strong> – If the target output directory could not be created.</p></li>
+<li><p><strong>FileExistsError</strong> – If the target output directory already exists and is: not empty.</p></li>
+<li><p><strong>NotImplementedError</strong> – If the simulation software is not supported.:</p></li>
+<li><p><strong>RuntimeError</strong> – If the target output directory could not be created.:</p></li>
 </ul>
 </dd>
 </dl>

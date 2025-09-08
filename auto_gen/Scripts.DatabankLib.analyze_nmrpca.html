@@ -96,8 +96,7 @@
              
   <section id="module-Scripts.DatabankLib.analyze_nmrpca">
 <span id="scripts-databanklib-analyze-nmrpca-module"></span><h1>Scripts.DatabankLib.analyze_nmrpca module<a class="headerlink" href="#module-Scripts.DatabankLib.analyze_nmrpca" title="Link to this heading"></a></h1>
-<p>This code aims to calculate the relaxation time based on the
-PCAlipids analysis.</p>
+<p>NMRPCA module calculate the relaxation time based on the PCAlipids analysis.</p>
 <p>For details check:</p>
 <p>Principal Component Analysis of Lipid Molecule Conformational Changes in Molecular Dynamics Simulations
 Pavel Buslaev, Valentin Gordeliy, Sergei Grudinin, and Ivan Gushchin.
@@ -202,7 +201,7 @@ all lipids available for the trajectory.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.analyze_nmrpca.Parser.dump_data">
 <span class="sig-name descname"><span class="pre">dump_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/analyze_nmrpca.html#Parser.dump_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.analyze_nmrpca.Parser.dump_data" title="Link to this definition"></a></dt>
-<dd><p>Write data to json file</p>
+<dd><p>Write data to json file.</p>
 </dd></dl>
 
 </dd></dl>
@@ -300,7 +299,7 @@ trajectory</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.analyze_nmrpca.Concatenator.concatenate_traj">
 <span class="sig-name descname"><span class="pre">concatenate_traj</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/analyze_nmrpca.html#Concatenator.concatenate_traj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.analyze_nmrpca.Concatenator.concatenate_traj" title="Link to this definition"></a></dt>
-<dd><p>concatenateTraj performs basic trajectory concatination. First, it extracts
+<dd><p>ConcatenateTraj performs basic trajectory concatination. First, it extracts
 coordinates from trajectory, next, it reshapes the coordinate array, swaps
 time and resid axes to obtain continuous trajectories of individual lipids
 (this is needed for autocorrelation time analysis), and finally merges
@@ -310,7 +309,7 @@ individual lipid trajectories.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.analyze_nmrpca.Concatenator.concatenate_traj_with_merging">
 <span class="sig-name descname"><span class="pre">concatenate_traj_with_merging</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/analyze_nmrpca.html#Concatenator.concatenate_traj_with_merging"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.analyze_nmrpca.Concatenator.concatenate_traj_with_merging" title="Link to this definition"></a></dt>
-<dd><p>concatenateTrajWithMerging performs basic trajectory concatination. In
+<dd><p>ConcatenateTrajWithMerging performs basic trajectory concatination. In
 contrast to basic concatenateTraj it additionally merges splitted lipids.
 First, it creates extracts coordinates from trajectory, next, it reshapes
 the coordinate array, swaps time and resid axes to obtain continuous
@@ -329,7 +328,7 @@ the structure to the calculated average structure in (1).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.analyze_nmrpca.Concatenator.concatenate">
 <span class="sig-name descname"><span class="pre">concatenate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/analyze_nmrpca.html#Concatenator.concatenate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.analyze_nmrpca.Concatenator.concatenate" title="Link to this definition"></a></dt>
-<dd><p>Simple enveloping function to perform concatenation</p>
+<dd><p>Simple enveloping function to perform concatenation.</p>
 </dd></dl>
 
 </dd></dl>
@@ -373,7 +372,7 @@ matrix is calculated manually.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.analyze_nmrpca.PCA.get_proj">
 <span class="sig-name descname"><span class="pre">get_proj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cdata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/analyze_nmrpca.html#PCA.get_proj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.analyze_nmrpca.PCA.get_proj" title="Link to this definition"></a></dt>
-<dd><p>Projecting the trajectory on the 1st principal component</p>
+<dd><p>Projecting the trajectory on the 1st principal component.</p>
 </dd></dl>
 
 <dl class="py method">

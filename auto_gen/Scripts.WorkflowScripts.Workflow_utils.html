@@ -96,27 +96,15 @@
              
   <section id="module-Scripts.WorkflowScripts.Workflow_utils">
 <span id="scripts-workflowscripts-workflow-utils-module"></span><h1>Scripts.WorkflowScripts.Workflow_utils module<a class="headerlink" href="#module-Scripts.WorkflowScripts.Workflow_utils" title="Link to this heading"></a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="Scripts.WorkflowScripts.Workflow_utils.run_command">
-<span class="sig-prename descclassname"><span class="pre">Scripts.WorkflowScripts.Workflow_utils.</span></span><span class="sig-name descname"><span class="pre">run_command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Command</span> <span class="pre">failed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">working_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/WorkflowScripts/Workflow_utils.html#run_command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.WorkflowScripts.Workflow_utils.run_command" title="Link to this definition"></a></dt>
-<dd><p>Run a shell command and exit on failure.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>command</strong> – The shell command to execute (string).</p></li>
-<li><p><strong>error_message</strong> – Message to display if the command fails.</p></li>
-<li><p><strong>working_dir</strong> – Optional working directory in which to run the command.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>SystemExit</strong> – Exits with code 1 if the command fails.</p>
-</dd>
-</dl>
-</dd></dl>
-
+<p>Contains methods used for python scripts related to workflows.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This module is only used by automated workflows. Users of the Databank
+repository can safely ignore it.</p>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="Scripts.WorkflowScripts.Workflow_utils.run_python_script">
-<span class="sig-prename descclassname"><span class="pre">Scripts.WorkflowScripts.Workflow_utils.</span></span><span class="sig-name descname"><span class="pre">run_python_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">script_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Python</span> <span class="pre">script</span> <span class="pre">failed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">working_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/WorkflowScripts/Workflow_utils.html#run_python_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.WorkflowScripts.Workflow_utils.run_python_script" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Scripts.WorkflowScripts.Workflow_utils.</span></span><span class="sig-name descname"><span class="pre">run_python_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">script_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Python</span> <span class="pre">script</span> <span class="pre">failed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">working_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/Scripts/WorkflowScripts/Workflow_utils.html#run_python_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.WorkflowScripts.Workflow_utils.run_python_script" title="Link to this definition"></a></dt>
 <dd><p>Execute a Python script with the current interpreter and optional arguments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -135,11 +123,11 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Scripts.WorkflowScripts.Workflow_utils.get_databank_paths">
-<span class="sig-prename descclassname"><span class="pre">Scripts.WorkflowScripts.Workflow_utils.</span></span><span class="sig-name descname"><span class="pre">get_databank_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">NMLDB_ROOT_PATH</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/WorkflowScripts/Workflow_utils.html#get_databank_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.WorkflowScripts.Workflow_utils.get_databank_paths" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Scripts.WorkflowScripts.Workflow_utils.</span></span><span class="sig-name descname"><span class="pre">get_databank_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nmlb_root_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/Scripts/WorkflowScripts/Workflow_utils.html#get_databank_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.WorkflowScripts.Workflow_utils.get_databank_paths" title="Link to this definition"></a></dt>
 <dd><p>Retrieve relevant paths from databank.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>NMLDB_ROOT_PATH</strong> – Root path of the database repository.</p>
+<dd class="field-odd"><p><strong>nmlb_root_path</strong> – Root path of the database repository.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Dictionary mapping descriptive keys to full paths of databank components.</p>
@@ -152,7 +140,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Scripts.WorkflowScripts.Workflow_utils.delete_info_file">
-<span class="sig-prename descclassname"><span class="pre">Scripts.WorkflowScripts.Workflow_utils.</span></span><span class="sig-name descname"><span class="pre">delete_info_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info_file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/WorkflowScripts/Workflow_utils.html#delete_info_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.WorkflowScripts.Workflow_utils.delete_info_file" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Scripts.WorkflowScripts.Workflow_utils.</span></span><span class="sig-name descname"><span class="pre">delete_info_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/Scripts/WorkflowScripts/Workflow_utils.html#delete_info_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.WorkflowScripts.Workflow_utils.delete_info_file" title="Link to this definition"></a></dt>
 <dd><p>Delete an info file at the specified path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

@@ -81,17 +81,18 @@
 <span class="sd">TODO: remove code duplication and commented code</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib</span><span class="w"> </span><span class="kn">import</span> <span class="n">NMLDB_SIMU_PATH</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">System</span><span class="p">,</span> <span class="n">initialize_databank</span><span class="p">,</span> <span class="n">lipids_set</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">decimal</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dc</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.signal</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.signal</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib</span><span class="w"> </span><span class="kn">import</span> <span class="n">NMLDB_SIMU_PATH</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">System</span><span class="p">,</span> <span class="n">initialize_databank</span><span class="p">,</span> <span class="n">lipids_set</span>
 
 
 <span class="c1"># TODO: inherit from System</span>
@@ -108,7 +109,7 @@
 <div class="viewcode-block" id="QualSimulation.get_lipids">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.quality.html#Scripts.DatabankLib.quality.QualSimulation.get_lipids">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_lipids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecules</span><span class="o">=</span><span class="n">lipids_set</span><span class="p">):</span>
-        <span class="n">lipids</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">]</span>
+        <span class="n">lipids</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s2">&quot;COMPOSITION&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">lipids</span></div>
 
 
@@ -116,9 +117,9 @@
 <div class="viewcode-block" id="QualSimulation.molar_fraction">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.quality.html#Scripts.DatabankLib.quality.QualSimulation.molar_fraction">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">molar_fraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">molecules</span><span class="o">=</span><span class="n">lipids_set</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="n">cmps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;COMPOSITION&#39;</span><span class="p">]</span>
-        <span class="n">number</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cmps</span><span class="p">[</span><span class="n">molecule</span><span class="p">][</span><span class="s1">&#39;COUNT&#39;</span><span class="p">])</span>
-        <span class="n">all_counts</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;COUNT&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cmps</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">]</span>
+        <span class="n">cmps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="s2">&quot;COMPOSITION&quot;</span><span class="p">]</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cmps</span><span class="p">[</span><span class="n">molecule</span><span class="p">][</span><span class="s2">&quot;COUNT&quot;</span><span class="p">])</span>
+        <span class="n">all_counts</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="s2">&quot;COUNT&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cmps</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">number</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="n">all_counts</span><span class="p">))</span></div>
 </div>
 
@@ -138,8 +139,7 @@
 <span class="c1"># Order parameters</span>
 <div class="viewcode-block" id="prob_S_in_g">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.quality.html#Scripts.DatabankLib.quality.prob_S_in_g">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">prob_S_in_g</span><span class="p">(</span><span class="n">OP_exp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">exp_error</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="n">OP_sim</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">op_sim_sd</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prob_S_in_g</span><span class="p">(</span><span class="n">OP_exp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">exp_error</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">OP_sim</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">op_sim_sd</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main quality function computing the quality value from experimental and</span>
 <span class="sd">    simulation OP data.</span>
 
@@ -149,17 +149,17 @@
 <span class="sd">        OP_sim (float): Simulated OP value</span>
 <span class="sd">        op_sim_sd (float): Standard deviation from simulation</span>
 
-<span class="sd">    Returns:</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
 <span class="sd">        float: single-OP quality value or NaN</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># normal distribution N(s, OP_sim, op_sim_sd)</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">OP_exp</span> <span class="o">-</span> <span class="n">exp_error</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">OP_exp</span> <span class="o">+</span> <span class="n">exp_error</span>
 
-    <span class="n">a_rel</span> <span class="o">=</span> <span class="p">(</span><span class="n">OP_sim</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">/</span><span class="n">op_sim_sd</span>
-    <span class="n">b_rel</span> <span class="o">=</span> <span class="p">(</span><span class="n">OP_sim</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">/</span><span class="n">op_sim_sd</span>
-    <span class="n">p_s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">b_rel</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> \
-        <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">a_rel</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">a_rel</span> <span class="o">=</span> <span class="p">(</span><span class="n">OP_sim</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">op_sim_sd</span>
+    <span class="n">b_rel</span> <span class="o">=</span> <span class="p">(</span><span class="n">OP_sim</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">op_sim_sd</span>
+    <span class="n">p_s</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">b_rel</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">a_rel</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">p_s</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">p_s</span>
@@ -180,15 +180,15 @@
 
     <span class="k">for</span> <span class="n">key_m</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">mapping_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">key_f</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;FRAGMENT&#39;</span><span class="p">]</span>
+            <span class="n">key_f</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;FRAGMENT&quot;</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="n">key_f</span> <span class="o">=</span> <span class="s1">&#39;n/d&#39;</span>
+            <span class="n">key_f</span> <span class="o">=</span> <span class="s2">&quot;n/d&quot;</span>
         <span class="n">fragments</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">key_f</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key_m</span><span class="p">)</span>
 
     <span class="c1"># merge glycerol backbone fragment into headgroup fragment</span>
-    <span class="k">if</span> <span class="s1">&#39;glycerol backbone&#39;</span> <span class="ow">in</span> <span class="n">fragments</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="s1">&#39;headgroup&#39;</span> <span class="ow">in</span> <span class="n">fragments</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">fragments</span><span class="p">[</span><span class="s1">&#39;headgroup&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">fragments</span><span class="p">[</span><span class="s1">&#39;glycerol backbone&#39;</span><span class="p">]</span>
-        <span class="n">fragments</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;glycerol backbone&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;glycerol backbone&quot;</span> <span class="ow">in</span> <span class="n">fragments</span> <span class="ow">and</span> <span class="s2">&quot;headgroup&quot;</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">:</span>
+        <span class="n">fragments</span><span class="p">[</span><span class="s2">&quot;headgroup&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">fragments</span><span class="p">[</span><span class="s2">&quot;glycerol backbone&quot;</span><span class="p">]</span>
+        <span class="n">fragments</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;glycerol backbone&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">fragments</span></div>
 
@@ -222,9 +222,7 @@
         <span class="n">count_value</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">fragment_size</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">exp_op_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="p">(</span>
-                <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">[</span><span class="n">fragment_key</span><span class="p">]</span>
-            <span class="p">):</span>  <span class="c1"># check if atom belongs to the fragment</span>
+            <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">[</span><span class="n">fragment_key</span><span class="p">]:</span>  <span class="c1"># check if atom belongs to the fragment</span>
                 <span class="n">fragment_size</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]):</span>
                     <span class="n">count_value</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -261,8 +259,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">p_F</span><span class="p">[</span><span class="n">fragment_key</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">key_exp</span><span class="p">,</span> <span class="n">value_exp</span> <span class="ow">in</span> <span class="n">exp_op_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="n">key_exp</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">[</span><span class="n">fragment_key</span><span class="p">]</span> <span class="ow">and</span>
-                            <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">value_exp</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])):</span>
+                    <span class="k">if</span> <span class="n">key_exp</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">[</span><span class="n">fragment_key</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">value_exp</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]):</span>
                         <span class="n">OP_exp</span> <span class="o">=</span> <span class="n">value_exp</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
                         <span class="k">try</span><span class="p">:</span>
                             <span class="n">OP_sim</span> <span class="o">=</span> <span class="n">sim_op_data</span><span class="p">[</span><span class="n">key_exp</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -295,14 +292,14 @@
                             <span class="n">E_sum</span> <span class="o">+=</span> <span class="n">QE</span>
                             <span class="n">AV_sum</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">if</span> <span class="n">AV_sum</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">E_F</span> <span class="o">=</span> <span class="p">(</span><span class="n">E_sum</span> <span class="o">/</span> <span class="n">AV_sum</span><span class="p">)</span><span class="o">*</span><span class="n">p_F</span><span class="p">[</span><span class="n">fragment_key</span><span class="p">]</span>
+                    <span class="n">E_F</span> <span class="o">=</span> <span class="p">(</span><span class="n">E_sum</span> <span class="o">/</span> <span class="n">AV_sum</span><span class="p">)</span> <span class="o">*</span> <span class="n">p_F</span><span class="p">[</span><span class="n">fragment_key</span><span class="p">]</span>
                     <span class="n">fragment_quality</span><span class="p">[</span><span class="n">fragment_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">E_F</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">fragment_quality</span><span class="p">[</span><span class="n">fragment_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">fragment_quality</span><span class="p">[</span><span class="n">fragment_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fragment quality &#39;</span><span class="p">,</span> <span class="n">fragment_quality</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;fragment quality &quot;</span><span class="p">,</span> <span class="n">fragment_quality</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">fragment_quality</span></div>
 
 
@@ -310,7 +307,9 @@
 <div class="viewcode-block" id="fragmentQualityAvg">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.quality.html#Scripts.DatabankLib.quality.fragmentQualityAvg">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">fragmentQualityAvg</span><span class="p">(</span>
-    <span class="n">lipid</span><span class="p">,</span> <span class="n">fragment_qual_dict</span><span class="p">,</span> <span class="n">fragments</span>
+    <span class="n">lipid</span><span class="p">,</span>
+    <span class="n">fragment_qual_dict</span><span class="p">,</span>
+    <span class="n">fragments</span><span class="p">,</span>
 <span class="p">):</span>  <span class="c1"># handles one lipid at a time</span>
     <span class="n">sums_dict</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -334,9 +333,8 @@
     <span class="c1"># calculate total quality over all fragment quality averages</span>
     <span class="k">if</span> <span class="p">[</span>
         <span class="n">x</span>
-        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">avg_total_quality</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">checkForCH</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fragments</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">avg_total_quality</span><span class="p">[</span><span class="n">x</span><span class="p">]))</span>
-        <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">checkForCH</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fragments</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">avg_total_quality</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">checkForCH</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fragments</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">avg_total_quality</span><span class="p">[</span><span class="n">x</span><span class="p">]))</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">checkForCH</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fragments</span><span class="p">))</span>
     <span class="p">]:</span>
         <span class="n">list_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">avg_total_quality</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>
         <span class="n">avg_total_quality</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">list_values</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_values</span><span class="p">)</span>
@@ -366,10 +364,10 @@
 
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">system_fragment_qualities</span><span class="p">[</span><span class="n">lipid</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-                <span class="n">lipid_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="n">w</span><span class="o">*</span><span class="n">value</span>
+                <span class="n">lipid_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">value</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># save 1 - w of a lipid into a list if the fragment quality is nan</span>
-                <span class="n">w_nan</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">w</span><span class="p">)</span>
+                <span class="n">w_nan</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span>
 
         <span class="n">system_dict</span><span class="p">[</span><span class="n">lipid</span><span class="p">]</span> <span class="o">=</span> <span class="n">lipid_dict</span>
 
@@ -381,24 +379,24 @@
 
     <span class="k">for</span> <span class="n">lipid_key</span> <span class="ow">in</span> <span class="n">system_dict</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">system_dict</span><span class="p">[</span><span class="n">lipid_key</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;total&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;total&quot;</span><span class="p">:</span>
                 <span class="n">total</span> <span class="o">+=</span> <span class="n">value</span>
-            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;headgroup&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;headgroup&quot;</span><span class="p">:</span>
                 <span class="n">headgroup</span> <span class="o">+=</span> <span class="n">value</span>
-            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;sn-1&#39;</span> <span class="ow">or</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;sn-2&#39;</span><span class="p">:</span>
-                <span class="n">tails</span> <span class="o">+=</span> <span class="n">value</span><span class="o">/</span><span class="mi">2</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;sn-1&quot;</span> <span class="ow">or</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;sn-2&quot;</span><span class="p">:</span>
+                <span class="n">tails</span> <span class="o">+=</span> <span class="n">value</span> <span class="o">/</span> <span class="mi">2</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">tails</span> <span class="o">+=</span> <span class="n">value</span>
 
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">w_nan</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="c1"># multiply all elements of w_nan and divide the sum by the product</span>
-        <span class="n">system_quality</span><span class="p">[</span><span class="s1">&#39;headgroup&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">headgroup</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">w_nan</span><span class="p">)</span>
-        <span class="n">system_quality</span><span class="p">[</span><span class="s1">&#39;tails&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tails</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">w_nan</span><span class="p">)</span>
-        <span class="n">system_quality</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">w_nan</span><span class="p">)</span>
+        <span class="n">system_quality</span><span class="p">[</span><span class="s2">&quot;headgroup&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">headgroup</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">w_nan</span><span class="p">)</span>
+        <span class="n">system_quality</span><span class="p">[</span><span class="s2">&quot;tails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tails</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">w_nan</span><span class="p">)</span>
+        <span class="n">system_quality</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">w_nan</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">system_quality</span><span class="p">[</span><span class="s1">&#39;headgroup&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">headgroup</span>
-        <span class="n">system_quality</span><span class="p">[</span><span class="s1">&#39;tails&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tails</span>
-        <span class="n">system_quality</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total</span>
+        <span class="n">system_quality</span><span class="p">[</span><span class="s2">&quot;headgroup&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">headgroup</span>
+        <span class="n">system_quality</span><span class="p">[</span><span class="s2">&quot;tails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tails</span>
+        <span class="n">system_quality</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;system_quality&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">system_quality</span><span class="p">)</span>
@@ -411,7 +409,8 @@
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.quality.html#Scripts.DatabankLib.quality.calc_k_e">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">calc_k_e</span><span class="p">(</span><span class="n">SimExpData</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Scaling factor as defined by Kučerka et al. 2008b,</span>
-<span class="sd">       doi:10.1529/biophysj.107.122465&quot;&quot;&quot;</span>
+<span class="sd">    doi:10.1529/biophysj.107.122465</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sum1</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">sum2</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -426,8 +425,7 @@
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">SimExpData</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">k_e</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
 
 
 
@@ -462,8 +460,8 @@
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.quality.html#Scripts.DatabankLib.quality.formfactorQuality">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">formfactorQuality</span><span class="p">(</span><span class="n">simFFdata</span><span class="p">,</span> <span class="n">expFFdata</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate form factor quality for a simulation as defined by</span>
-<span class="sd">    Kučerka et al. 2010, doi:10.1007/s00232-010-9254-5&quot;&quot;&quot;</span>
-
+<span class="sd">    Kučerka et al. 2010, doi:10.1007/s00232-010-9254-5</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># SAMULI: This creates a array containing experiments and simualtions with</span>
     <span class="c1"># the overlapping x-axis values</span>
     <span class="n">SimExpData</span> <span class="o">=</span> <span class="p">[]</span>
@@ -471,7 +469,7 @@
         <span class="k">for</span> <span class="n">ExpValues</span> <span class="ow">in</span> <span class="n">expFFdata</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">SimValues</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">ExpValues</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">0.0005</span><span class="p">:</span>  <span class="c1"># and ExpValues[0] &lt; 0.41:</span>
                 <span class="n">SimExpData</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="p">[</span><span class="n">ExpValues</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ExpValues</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ExpValues</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">SimValues</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                    <span class="p">[</span><span class="n">ExpValues</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ExpValues</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ExpValues</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">SimValues</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
                 <span class="p">)</span>
 
     <span class="c1"># Calculates the scaling factor for plotting</span>
@@ -488,8 +486,7 @@
 
     <span class="k">if</span> <span class="n">N</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">khi2</span><span class="p">,</span> <span class="n">k_e</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
 
 
 
@@ -497,8 +494,8 @@
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.quality.html#Scripts.DatabankLib.quality.formfactorQualitySIMtoEXP">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">formfactorQualitySIMtoEXP</span><span class="p">(</span><span class="n">simFFdata</span><span class="p">,</span> <span class="n">expFFdata</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate form factor quality for a simulation as defined by</span>
-<span class="sd">    Kučerka et al. 2010, doi:10.1007/s00232-010-9254-5&quot;&quot;&quot;</span>
-
+<span class="sd">    Kučerka et al. 2010, doi:10.1007/s00232-010-9254-5</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># SAMULI: This creates a array containing experiments and simualtions with</span>
     <span class="c1"># the overlapping x-axis values</span>
     <span class="n">SimExpData</span> <span class="o">=</span> <span class="p">[]</span>
@@ -506,14 +503,14 @@
         <span class="k">for</span> <span class="n">ExpValues</span> <span class="ow">in</span> <span class="n">expFFdata</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">SimValues</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">ExpValues</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">0.0005</span><span class="p">:</span>  <span class="c1"># and ExpValues[0] &lt; 0.41:</span>
                 <span class="n">SimExpData</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="p">[</span><span class="n">ExpValues</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ExpValues</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ExpValues</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">SimValues</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                    <span class="p">[</span><span class="n">ExpValues</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ExpValues</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ExpValues</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">SimValues</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
                 <span class="p">)</span>
 
     <span class="n">k_e</span> <span class="o">=</span> <span class="n">calc_k_e</span><span class="p">(</span><span class="n">SimExpData</span><span class="p">)</span>
 
     <span class="n">sum1</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">SimExpData</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">SimExpData</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">SimExpData</span><span class="p">)):</span>
         <span class="n">F_e</span> <span class="o">=</span> <span class="n">SimExpData</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">deltaF_e</span> <span class="o">=</span> <span class="n">expFFdata</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">F_s</span> <span class="o">=</span> <span class="n">SimExpData</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
@@ -524,15 +521,13 @@
 
     <span class="k">if</span> <span class="n">N</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">khi2</span><span class="p">,</span> <span class="n">k_e</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="loadSimulations">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.quality.html#Scripts.DatabankLib.quality.loadSimulations">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">loadSimulations</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">QualSimulation</span><span class="p">]:</span>
-
     <span class="n">systems</span> <span class="o">=</span> <span class="n">initialize_databank</span><span class="p">()</span>
 
     <span class="n">simulations</span> <span class="o">=</span> <span class="p">[]</span>
@@ -543,13 +538,14 @@
             <span class="k">continue</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">experiments</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>  <span class="c1"># if experiments is not empty</span>
-
                 <span class="n">simOPdata</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># order parameter files for each type of lipid</span>
                 <span class="k">for</span> <span class="n">lipMol</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;COMPOSITION&quot;</span><span class="p">]:</span>
                     <span class="k">if</span> <span class="n">lipMol</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lipids_set</span><span class="p">:</span>
                         <span class="k">continue</span>
                     <span class="n">filename2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                        <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="n">lipMol</span> <span class="o">+</span> <span class="s2">&quot;OrderParameters.json&quot;</span>
+                        <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span>
+                        <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span>
+                        <span class="n">lipMol</span> <span class="o">+</span> <span class="s2">&quot;OrderParameters.json&quot;</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">OPdata</span> <span class="o">=</span> <span class="p">{}</span>
                     <span class="k">try</span><span class="p">:</span>
@@ -562,7 +558,9 @@
 
                 <span class="n">simFFdata</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># form factor data</span>
                 <span class="n">filename2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                    <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="s2">&quot;FormFactor.json&quot;</span>
+                    <span class="n">NMLDB_SIMU_PATH</span><span class="p">,</span>
+                    <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;FormFactor.json&quot;</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename2</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
@@ -571,7 +569,7 @@
                     <span class="c1"># FormFactor data for this system is missed</span>
                     <span class="k">pass</span>
                 <span class="n">simulations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="n">QualSimulation</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">simOPdata</span><span class="p">,</span> <span class="n">simFFdata</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">])</span>
+                    <span class="n">QualSimulation</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">simOPdata</span><span class="p">,</span> <span class="n">simFFdata</span><span class="p">,</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]),</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The simulation does not have experimental data.&quot;</span><span class="p">)</span>

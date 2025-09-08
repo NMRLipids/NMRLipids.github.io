@@ -4,14 +4,6 @@ Scripts.BuildDatabank
 =====================
 .. py:module:: Scripts.BuildDatabank
 
-Subfolders
------------
-
-.. toctree::
-   :maxdepth: 1
-
-   Scripts.BuildDatabank.SchemaValidation
-
 Python files
 ----------
 
