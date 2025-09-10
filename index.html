@@ -122,7 +122,7 @@ as described in <a class="reference internal" href="schemas/moleculesAndMapping.
 </section>
 <section id="system-requirements">
 <h2>System requirements<a class="headerlink" href="#system-requirements" title="Link to this heading"></a></h2>
-<p>The code has been tested in Linux environment with python 3.7 or newer and recent <a class="reference external" href="https://manual.gromacs.org/current/install-guide/index.html">Gromacs</a> version installed.</p>
+<p>The code has been tested in Linux environment with python 3.10 or newer and recent <a class="reference external" href="https://manual.gromacs.org/current/install-guide/index.html">Gromacs</a> version installed.</p>
 <p>Setup using conda as distribution:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>databank<span class="w"> </span>MDAnalysis
 conda<span class="w"> </span>activate<span class="w"> </span>databank
@@ -154,10 +154,6 @@ conda<span class="w"> </span>activate<span class="w"> </span>databank
 <li class="toctree-l3"><a class="reference internal" href="dbstructure.html#lipid-united-atom-dictionary">Lipid united-atom dictionary</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dbstructure.html#related-pages">Related pages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="schemas/simulation_metadata.html">Simulation metadata (README.yaml)</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dbcontribute.html">Data Contribution</a><ul>
@@ -177,10 +173,20 @@ conda<span class="w"> </span>activate<span class="w"> </span>databank
 <li class="toctree-l3"><a class="reference internal" href="contrib/addingMolecule.html#mapping-file-creation">Mapping file creation</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="schemas/moleculesAndMapping.html">Universal molecule and atom names</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schemas/moleculesAndMapping.html#id1">Molecule names</a></li>
+<li class="toctree-l3"><a class="reference internal" href="schemas/moleculesAndMapping.html#universal-atom-names-in-mapping-files">Universal atom names in mapping files</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="schemas/simulation_metadata.html">Simulation metadata (README.yaml)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schemas/simulation_metadata.html#fields-description">Fields description</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dbprograms.html">Databank standalone programs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="programs/AddData.html">AddData script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="programs/compute_databank.html">Recompute-Databank Script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="programs/searchDATABANK.html">searchDATABANK script</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="programs/searchDATABANK.html#BuildDatabank.searchDATABANK.SearchSystem"><code class="docutils literal notranslate"><span class="pre">SearchSystem</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="programs/searchDATABANK.html#BuildDatabank.searchDATABANK.Experiment"><code class="docutils literal notranslate"><span class="pre">Experiment</span></code></a></li>

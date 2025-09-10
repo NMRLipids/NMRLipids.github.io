@@ -96,28 +96,22 @@
              
   <section id="module-Scripts.DatabankLib.databankio">
 <span id="scripts-databanklib-databankio-module"></span><h1>Scripts.DatabankLib.databankio module<a class="headerlink" href="#module-Scripts.DatabankLib.databankio" title="Link to this heading"></a></h1>
-<dl class="field-list simple">
-<dt class="field-odd">module databankio<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Inut/Output auxilary module</p>
-</dd>
-<dt class="field-even">description<span class="colon">:</span></dt>
-<dd class="field-even"><p>Input/Output auxilary module with some small usefull functions. It includes:
+<p>Inut/Output auxilary module <strong>DatabankLib.databankio</strong>.</p>
+<p>Input/Output auxilary module with some small usefull functions. It includes:
 - Network communication.
 - Downloading files.
 - Checking links.
 - Resolving DOIs.
 - Calculating file hashes.</p>
-</dd>
-</dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.databankio.retry_with_exponential_backoff">
-<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankio.</span></span><span class="sig-name descname"><span class="pre">retry_with_exponential_backoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_attempts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay_seconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankio.html#retry_with_exponential_backoff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankio.retry_with_exponential_backoff" title="Link to this definition"></a></dt>
-<dd><p>Decorator that retries a function with exponential backoff.</p>
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankio.</span></span><span class="sig-name descname"><span class="pre">retry_with_exponential_backoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_attempts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay_seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankio.html#retry_with_exponential_backoff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankio.retry_with_exponential_backoff" title="Link to this definition"></a></dt>
+<dd><p>Retry a function with exponential backoff.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>max_attempts</strong> (<em>int</em>) – The maximum number of attempts. Defaults to 3.</p></li>
-<li><p><strong>delay_seconds</strong> (<em>int</em>) – The initial delay between retries in seconds.
+<li><p><strong>max_attempts</strong> – (int) The maximum number of attempts. Defaults to 3.</p></li>
+<li><p><strong>delay_seconds</strong> – (int) The initial delay between retries in seconds.
 The delay doubles after each failed attempt. Defaults to 1.</p></li>
 </ul>
 </dd>
@@ -127,16 +121,14 @@ The delay doubles after each failed attempt. Defaults to 1.</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.databankio.get_file_size_with_retry">
 <span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankio.</span></span><span class="sig-name descname"><span class="pre">get_file_size_with_retry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankio.html#get_file_size_with_retry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankio.get_file_size_with_retry" title="Link to this definition"></a></dt>
-<dd><p>Fetches the size of a file from a URI with retry logic.</p>
+<dd><p>Fetch the size of a file from a URI with retry logic.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>uri</strong> (<em>str</em>) – The URL of the file.</p>
+<dd class="field-odd"><p><strong>uri</strong> – (str) The URL of the file.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>int</strong> – header is not present.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The size of the file in bytes, or 0 if the ‘Content-Length’</p>
+<dd class="field-even"><p>The size of the file in bytes, or 0 if the ‘Content-Length’
+header is not present (int).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -144,7 +136,7 @@ The delay doubles after each failed attempt. Defaults to 1.</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.databankio.download_with_progress_with_retry">
 <span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankio.</span></span><span class="sig-name descname"><span class="pre">download_with_progress_with_retry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fi_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankio.html#download_with_progress_with_retry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankio.download_with_progress_with_retry" title="Link to this definition"></a></dt>
-<dd><p>Downloads a file with a progress bar and retry logic.</p>
+<dd><p>Download a file with a progress bar and retry logic.</p>
 <p>Uses tqdm to display a progress bar during the download.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -160,7 +152,7 @@ description.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.databankio.download_resource_from_uri">
-<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankio.</span></span><span class="sig-name descname"><span class="pre">download_resource_from_uri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">override_if_exists</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankio.html#download_resource_from_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankio.download_resource_from_uri" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankio.</span></span><span class="sig-name descname"><span class="pre">download_resource_from_uri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">override_if_exists</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankio.html#download_resource_from_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankio.download_resource_from_uri" title="Link to this definition"></a></dt>
 <dd><p>Download file resource from a URI to a local destination.</p>
 <p>Checks if the file already exists and has the same size before downloading.
 Can also perform a partial “dry-run” download.</p>
@@ -195,7 +187,7 @@ even if it already exists. Defaults to False.</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.databankio.resolve_doi_url">
 <span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankio.</span></span><span class="sig-name descname"><span class="pre">resolve_doi_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankio.html#resolve_doi_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankio.resolve_doi_url" title="Link to this definition"></a></dt>
-<dd><p>Resolves a DOI to a full URL and validates that it is reachable.</p>
+<dd><p>Resolve a DOI to a full URL and validates that it is reachable.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -220,9 +212,39 @@ and reachable address. Defaults to True.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="Scripts.DatabankLib.databankio.resolve_download_file_url">
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankio.</span></span><span class="sig-name descname"><span class="pre">resolve_download_file_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fi_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankio.html#resolve_download_file_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankio.resolve_download_file_url" title="Link to this definition"></a></dt>
+<dd><p>Resolve a download file URI from a supported DOI and filename.</p>
+<p>Currently supports Zenodo DOIs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doi</strong> (<em>str</em>) – The DOI identifier for the repository (e.g.,
+“10.5281/zenodo.1234”).</p></li>
+<li><p><strong>fi_name</strong> (<em>str</em>) – The name of the file within the repository.</p></li>
+<li><p><strong>validate_uri</strong> (<em>bool</em>) – If True, checks if the resolved URL is a valid
+and reachable address. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>str</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The full, direct download URL for the file.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RuntimeError</strong> – If the URL cannot be opened after multiple retries.:</p></li>
+<li><p><strong>NotImplementedError</strong> – If the DOI provider is not supported.:</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.databankio.calc_file_sha1_hash">
 <span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankio.</span></span><span class="sig-name descname"><span class="pre">calc_file_sha1_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">67108864</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_block</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankio.html#calc_file_sha1_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankio.calc_file_sha1_hash" title="Link to this definition"></a></dt>
-<dd><p>Calculates the SHA1 hash of a file.</p>
+<dd><p>Calculate the SHA1 hash of a file.</p>
 <p>Reads the file in chunks to handle large files efficiently if specified.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -246,8 +268,8 @@ Defaults to True.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Scripts.DatabankLib.databankio.create_databank_directories">
-<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankio.</span></span><span class="sig-name descname"><span class="pre">create_databank_directories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_hashes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankio.html#create_databank_directories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankio.create_databank_directories" title="Link to this definition"></a></dt>
-<dd><p>Creates a nested output directory structure to save simulation results.</p>
+<span class="sig-prename descclassname"><span class="pre">Scripts.DatabankLib.databankio.</span></span><span class="sig-name descname"><span class="pre">create_databank_directories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_hashes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/Scripts/DatabankLib/databankio.html#create_databank_directories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scripts.DatabankLib.databankio.create_databank_directories" title="Link to this definition"></a></dt>
+<dd><p>Create a nested output directory structure to save simulation results.</p>
 <p>The directory structure is generated based on the hashes of the simulation
 input files.</p>
 <dl class="field-list simple">

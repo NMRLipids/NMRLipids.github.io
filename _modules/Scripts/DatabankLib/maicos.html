@@ -75,7 +75,21 @@
            <div itemprop="articleBody">
              
   <h1>Source code for Scripts.DatabankLib.maicos</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Wrappers for MAICoS calculations adapted to Databank needs.</span>
+
+<span class="sd">- Checks if a system is suitable for maicos calculations</span>
+<span class="sd">- Custom JSON encoder for numpy arrays</span>
+<span class="sd">- Custom maicos analysis classes with save methods adapted to Databank needs</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">Logger</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">maicos</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
@@ -85,13 +99,14 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">System</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.jsonEncoders</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompactJSONEncoder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib.settings.molecules</span><span class="w"> </span><span class="kn">import</span> <span class="n">lipids_set</span>
 
 
 <div class="viewcode-block" id="is_system_suitable_4_maicos">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.maicos.html#Scripts.DatabankLib.maicos.is_system_suitable_4_maicos">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">is_system_suitable_4_maicos</span><span class="p">(</span><span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_system_suitable_4_maicos</span><span class="p">(</span><span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Checks if the system is suitable for maicos calculations.&quot;</span>
+<span class="sd">    Check if the system is suitable for maicos calculations.&quot;</span>
 
 <span class="sd">    :param system: Databank System object (System)</span>
 <span class="sd">    :return: False if system should be skipped</span>
@@ -120,6 +135,181 @@
 
 
 
+<div class="viewcode-block" id="first_last_carbon">
+<a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.maicos.html#Scripts.DatabankLib.maicos.first_last_carbon">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">first_last_carbon</span><span class="p">(</span><span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">Logger</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find last carbon of sn-1 tail and g3 carbon.&quot;&quot;&quot;</span>
+    <span class="n">g3_atom</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">last_atom</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;COMPOSITION&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="n">lipids_set</span><span class="p">:</span>
+            <span class="n">mapping</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">molecule</span><span class="p">]</span><span class="o">.</span><span class="n">mapping_dict</span>
+
+            <span class="c1"># TODO: rewrite via lipid dictionary!</span>
+            <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;M_G3_M&quot;</span><span class="p">,</span> <span class="s2">&quot;M_G13_M&quot;</span><span class="p">,</span> <span class="s2">&quot;M_C32_M&quot;</span><span class="p">]:</span>
+                <span class="n">_ga</span> <span class="o">=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nm</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ATOMNAME&quot;</span><span class="p">)</span>
+                <span class="n">g3_atom</span> <span class="o">=</span> <span class="n">_ga</span> <span class="k">if</span> <span class="n">_ga</span> <span class="k">else</span> <span class="n">g3_atom</span>
+
+            <span class="c1"># TODO: rewrite via lipid dictionary</span>
+            <span class="k">for</span> <span class="n">c_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">30</span><span class="p">):</span>
+                <span class="k">if</span> <span class="s2">&quot;M_G1C4_M&quot;</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
+                    <span class="n">atom</span> <span class="o">=</span> <span class="s2">&quot;M_G1C&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c_idx</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_M&quot;</span>
+                <span class="k">elif</span> <span class="s2">&quot;M_G11C4_M&quot;</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
+                    <span class="n">atom</span> <span class="o">=</span> <span class="s2">&quot;M_G11C&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c_idx</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_M&quot;</span>
+                <span class="k">elif</span> <span class="s2">&quot;M_CA4_M&quot;</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
+                    <span class="n">atom</span> <span class="o">=</span> <span class="s2">&quot;M_CA&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c_idx</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_M&quot;</span>
+                <span class="n">_la</span> <span class="o">=</span> <span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ATOMNAME&quot;</span><span class="p">)</span>
+                <span class="n">last_atom</span> <span class="o">=</span> <span class="n">_la</span> <span class="k">if</span> <span class="n">_la</span> <span class="k">else</span> <span class="n">last_atom</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found last atom </span><span class="si">{</span><span class="n">last_atom</span><span class="si">}</span><span class="s2"> and g3 atom </span><span class="si">{</span><span class="n">g3_atom</span><span class="si">}</span><span class="s2"> for system </span><span class="si">{</span><span class="n">system</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">last_atom</span><span class="p">,</span> <span class="n">g3_atom</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="traj_centering_for_maicos">
+<a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.maicos.html#Scripts.DatabankLib.maicos.traj_centering_for_maicos">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">traj_centering_for_maicos</span><span class="p">(</span>
+    <span class="n">system_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">trj_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">tpr_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">last_atom</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">g3_atom</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">eq_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">recompute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Center trajectory around the center of mass of all methyl carbons.&quot;&quot;&quot;</span>
+    <span class="n">xtccentered</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">system_path</span><span class="p">,</span> <span class="s2">&quot;centered.xtc&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xtccentered</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">recompute</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">xtccentered</span>  <span class="c1"># already done</span>
+    <span class="k">if</span> <span class="n">recompute</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">xtccentered</span><span class="p">)</span>
+
+    <span class="c1"># make index</span>
+    <span class="c1"># TODO refactor to MDAnalysis</span>
+    <span class="n">ndxpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">system_path</span><span class="p">,</span> <span class="s2">&quot;foo.ndx&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">echo_input</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;a </span><span class="si">{</span><span class="n">last_atom</span><span class="si">}</span><span class="se">\n</span><span class="s2">q</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;gmx&quot;</span><span class="p">,</span> <span class="s2">&quot;make_ndx&quot;</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">tpr_name</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">ndxpath</span><span class="p">],</span> <span class="nb">input</span><span class="o">=</span><span class="n">echo_input</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Subprocess failed during ndx file creation: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ndxpath</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">last_lines</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">last_atom_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">last_lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ndxpath</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;[ centralAtom ]</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">last_atom_id</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Some error occurred while reading the foo.ndx </span><span class="si">{</span><span class="n">ndxpath</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+    <span class="c1"># start preparing centered trajectory</span>
+    <span class="n">xtcwhole</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">system_path</span><span class="p">,</span> <span class="s2">&quot;whole.xtc&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Make molecules whole in the trajectory&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">xtcwhole</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">echo_proc</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;System</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;gmx&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;trjconv&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-f&quot;</span><span class="p">,</span>
+                <span class="n">trj_name</span><span class="p">,</span>
+                <span class="s2">&quot;-s&quot;</span><span class="p">,</span>
+                <span class="n">tpr_name</span><span class="p">,</span>
+                <span class="s2">&quot;-o&quot;</span><span class="p">,</span>
+                <span class="n">xtcwhole</span><span class="p">,</span>
+                <span class="s2">&quot;-pbc&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;mol&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-b&quot;</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">eq_time</span><span class="p">),</span>
+            <span class="p">],</span>
+            <span class="nb">input</span><span class="o">=</span><span class="n">echo_proc</span><span class="p">,</span>
+            <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;trjconv for whole.xtc failed&quot;</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+    <span class="c1"># centering irt methyl-groups</span>
+    <span class="n">xtcfoo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">system_path</span><span class="p">,</span> <span class="s2">&quot;foo2.xtc&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">xtcfoo</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">echo_input</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;centralAtom</span><span class="se">\n</span><span class="s2">System&quot;</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;gmx&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;trjconv&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-pbc&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;mol&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-n&quot;</span><span class="p">,</span>
+                <span class="n">ndxpath</span><span class="p">,</span>
+                <span class="s2">&quot;-f&quot;</span><span class="p">,</span>
+                <span class="n">xtcwhole</span><span class="p">,</span>
+                <span class="s2">&quot;-s&quot;</span><span class="p">,</span>
+                <span class="n">tpr_name</span><span class="p">,</span>
+                <span class="s2">&quot;-o&quot;</span><span class="p">,</span>
+                <span class="n">xtcfoo</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="nb">input</span><span class="o">=</span><span class="n">echo_input</span><span class="p">,</span>
+            <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;trjconv for center failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ndxpath</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">xtcwhole</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Failed to remove temporary files: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+    <span class="c1"># Center around the center of mass of all the g_3 carbons</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">echo_input</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;a </span><span class="si">{</span><span class="n">g3_atom</span><span class="si">}</span><span class="se">\n</span><span class="s2">q</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;gmx&quot;</span><span class="p">,</span> <span class="s2">&quot;make_ndx&quot;</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">tpr_name</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">ndxpath</span><span class="p">],</span> <span class="nb">input</span><span class="o">=</span><span class="n">echo_input</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">echo_input</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g3_atom</span><span class="si">}</span><span class="se">\n</span><span class="s2">System&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;gmx&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;trjconv&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-center&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-pbc&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;mol&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-n&quot;</span><span class="p">,</span>
+                <span class="n">ndxpath</span><span class="p">,</span>
+                <span class="s2">&quot;-f&quot;</span><span class="p">,</span>
+                <span class="n">xtcfoo</span><span class="p">,</span>
+                <span class="s2">&quot;-s&quot;</span><span class="p">,</span>
+                <span class="n">tpr_name</span><span class="p">,</span>
+                <span class="s2">&quot;-o&quot;</span><span class="p">,</span>
+                <span class="n">xtccentered</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="nb">input</span><span class="o">=</span><span class="n">echo_input</span><span class="p">,</span>
+            <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Failed during centering on g3 carbons.&quot;</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">xtcfoo</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ndxpath</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;A error occurred during removing temporary files </span><span class="si">{</span><span class="n">ndxpath</span><span class="si">}</span><span class="s2"> &amp; </span><span class="si">{</span><span class="n">xtcfoo</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+    <span class="k">return</span> <span class="n">xtccentered</span></div>
+
+
+
 <div class="viewcode-block" id="NumpyArrayEncoder">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.maicos.html#Scripts.DatabankLib.maicos.NumpyArrayEncoder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NumpyArrayEncoder</span><span class="p">(</span><span class="n">CompactJSONEncoder</span><span class="p">):</span>
@@ -127,7 +317,8 @@
 
 <div class="viewcode-block" id="NumpyArrayEncoder.encode">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.maicos.html#Scripts.DatabankLib.maicos.NumpyArrayEncoder.encode">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># noqa: ANN001 (o: Any)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode numpy arrays as lists.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">CompactJSONEncoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">CompactJSONEncoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span></div>
@@ -214,9 +405,12 @@
 
 <div class="viewcode-block" id="FormFactorPlanar.save">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.maicos.html#Scripts.DatabankLib.maicos.FormFactorPlanar.save">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># perform unit conversion from Å to nm</span>
-        <span class="c1"># (see comments in _single_frame)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save performing unit conversion from Å to nm.</span>
+
+<span class="sd">        NOTE: see comments in _single_frame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span>
             <span class="p">[</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">scattering_vectors</span><span class="p">,</span>
@@ -233,10 +427,12 @@
 <div class="viewcode-block" id="DensityPlanar">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.maicos.html#Scripts.DatabankLib.maicos.DensityPlanar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DensityPlanar</span><span class="p">(</span><span class="n">maicos</span><span class="o">.</span><span class="n">DensityPlanar</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Density profiler for planar system.&quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="DensityPlanar.save">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.maicos.html#Scripts.DatabankLib.maicos.DensityPlanar.save">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># perform unit conversion from Å to nm and e/Å^3 to e/nm^3</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save performing unit conversion from Å to nm and e/Å^3 to e/nm^3&quot;&quot;&quot;</span>
         <span class="n">outdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span>
             <span class="p">[</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">bin_pos</span> <span class="o">/</span> <span class="mi">10</span><span class="p">,</span>
@@ -253,9 +449,12 @@
 <div class="viewcode-block" id="DielectricPlanar">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.maicos.html#Scripts.DatabankLib.maicos.DielectricPlanar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DielectricPlanar</span><span class="p">(</span><span class="n">maicos</span><span class="o">.</span><span class="n">DielectricPlanar</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dielectric profile for planar system.&quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="DielectricPlanar.save">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.maicos.html#Scripts.DatabankLib.maicos.DielectricPlanar.save">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save performing unit conversion from Å to nm for the distance.&quot;&quot;&quot;</span>
         <span class="n">outdata_perp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span>
             <span class="p">[</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">bin_pos</span> <span class="o">/</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># Convert from Å to nm</span>
@@ -284,9 +483,12 @@
 <div class="viewcode-block" id="DiporderPlanar">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.maicos.html#Scripts.DatabankLib.maicos.DiporderPlanar">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DiporderPlanar</span><span class="p">(</span><span class="n">maicos</span><span class="o">.</span><span class="n">DiporderPlanar</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dipole order parameter profile for planar system.&quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="DiporderPlanar.save">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.DatabankLib.maicos.html#Scripts.DatabankLib.maicos.DiporderPlanar.save">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save performing unit conversion from Å to nm for the distance.&quot;&quot;&quot;</span>
         <span class="n">outdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span>
             <span class="p">[</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">bin_pos</span> <span class="o">/</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># Convert from Å to nm</span>
