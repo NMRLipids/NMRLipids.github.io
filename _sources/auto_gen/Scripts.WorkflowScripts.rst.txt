@@ -12,4 +12,5 @@ Python files
 
    Scripts.WorkflowScripts.ProcessInfoFile
    Scripts.WorkflowScripts.RunAnalysis
+   Scripts.WorkflowScripts.ValidateData
    Scripts.WorkflowScripts.Workflow_utils

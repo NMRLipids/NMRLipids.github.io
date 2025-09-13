@@ -81,7 +81,7 @@
 <span class="sd">.. note::</span>
 <span class="sd">   This file is only meant to be used by automated workflows.</span>
 <span class="sd">   Users of the Databank repository can safely ignore it.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>  <span class="c1"># noqa: INP001</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -90,37 +90,13 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">DatabankLib</span><span class="w"> </span><span class="kn">import</span> <span class="n">NMLDB_ROOT_PATH</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">WorkflowScripts.Workflow_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">delete_info_file</span><span class="p">,</span> <span class="n">get_databank_paths</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">run_python_script</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Executes standard pipeline of processing for an info file.</span>
 
-<span class="sd">.. note::</span>
-<span class="sd">   This file is only meant to be used by automated workflows.</span>
-<span class="sd">   Users of the Databank repository can safely ignore it.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-
-<div class="viewcode-block" id="main">
-<a class="viewcode-back" href="../../../auto_gen/Scripts.WorkflowScripts.ProcessInfoFile.html#Scripts.WorkflowScripts.ProcessInfoFile.main">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">info_file_path</span> <span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run methods AddData and simulation analysis scripts.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="run_analysis">
+<a class="viewcode-back" href="../../../auto_gen/Scripts.WorkflowScripts.ProcessInfoFile.html#Scripts.WorkflowScripts.ProcessInfoFile.run_analysis">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_analysis</span><span class="p">(</span><span class="n">info_file_path</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run full analysis of info-file&quot;&quot;&quot;</span>
+    <span class="n">work_directory_real</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">setup_folders</span><span class="p">()</span>
     <span class="n">path_dict</span> <span class="o">=</span> <span class="n">get_databank_paths</span><span class="p">(</span><span class="n">NMLDB_ROOT_PATH</span><span class="p">)</span>
-    <span class="n">parent_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">NMLDB_ROOT_PATH</span><span class="p">)</span>
-
-    <span class="n">base_tmp</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent_folder</span><span class="p">,</span> <span class="s2">&quot;databank_workdir&quot;</span><span class="p">)</span>
-    <span class="n">work_directory_dry</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_tmp</span><span class="p">,</span> <span class="s2">&quot;dry&quot;</span><span class="p">)</span>
-    <span class="n">work_directory_real</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_tmp</span><span class="p">,</span> <span class="s2">&quot;real&quot;</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">work_directory_dry</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">work_directory_real</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failed to create work directories.&quot;</span><span class="p">)</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">run_python_script</span><span class="p">(</span>
-        <span class="n">path_dict</span><span class="p">[</span><span class="s2">&quot;adddata_path&quot;</span><span class="p">],</span>
-        <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">info_file_path</span><span class="p">,</span> <span class="s2">&quot;-w&quot;</span><span class="p">,</span> <span class="n">work_directory_dry</span><span class="p">,</span> <span class="s2">&quot;--dry-run&quot;</span><span class="p">],</span>
-        <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;AddData dry run failed&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
     <span class="n">run_python_script</span><span class="p">(</span>
         <span class="n">path_dict</span><span class="p">[</span><span class="s2">&quot;adddata_path&quot;</span><span class="p">],</span>
         <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">info_file_path</span><span class="p">,</span> <span class="s2">&quot;-w&quot;</span><span class="p">,</span> <span class="n">work_directory_real</span><span class="p">],</span>
@@ -128,20 +104,50 @@
     <span class="p">)</span>
     <span class="n">run_python_script</span><span class="p">(</span>
         <span class="n">path_dict</span><span class="p">[</span><span class="s2">&quot;compute_databank_path&quot;</span><span class="p">],</span>
-        <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;--nmrpca&quot;</span><span class="p">,</span> <span class="s2">&quot;--maicos&quot;</span><span class="p">,</span> <span class="s2">&quot;--op&quot;</span><span class="p">,</span> <span class="s2">&quot;--thickness&quot;</span><span class="p">,</span> <span class="s2">&quot;--apl&quot;</span><span class="p">,</span> <span class="s2">&quot;--range&quot;</span><span class="p">,</span> <span class="s2">&quot;*-0&quot;</span><span class="p">],</span>
+        <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;--nmrpca&quot;</span><span class="p">,</span> <span class="s2">&quot;--ff&quot;</span><span class="p">,</span> <span class="s2">&quot;--op&quot;</span><span class="p">,</span> <span class="s2">&quot;--thickness&quot;</span><span class="p">,</span> <span class="s2">&quot;--apl&quot;</span><span class="p">,</span> <span class="s2">&quot;--range&quot;</span><span class="p">,</span> <span class="s2">&quot;*-0&quot;</span><span class="p">],</span>
         <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Compute_databank failed&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">delete_info_file</span><span class="p">(</span><span class="n">info_file_path</span><span class="p">)</span></div>
 
 
 
-<span class="c1"># Gets arguments from parser</span>
+<div class="viewcode-block" id="run_dry_run">
+<a class="viewcode-back" href="../../../auto_gen/Scripts.WorkflowScripts.ProcessInfoFile.html#Scripts.WorkflowScripts.ProcessInfoFile.run_dry_run">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_dry_run</span><span class="p">(</span><span class="n">info_file_path</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run AddData dry-run for pre-analysis of info file to rule out errors&quot;&quot;&quot;</span>
+    <span class="n">_</span><span class="p">,</span><span class="n">work_directory_dry</span> <span class="o">=</span> <span class="n">setup_folders</span><span class="p">()</span>
+    <span class="n">path_dict</span> <span class="o">=</span> <span class="n">get_databank_paths</span><span class="p">(</span><span class="n">NMLDB_ROOT_PATH</span><span class="p">)</span>
+    <span class="n">run_python_script</span><span class="p">(</span>
+            <span class="n">path_dict</span><span class="p">[</span><span class="s2">&quot;adddata_path&quot;</span><span class="p">],</span>
+            <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">info_file_path</span><span class="p">,</span> <span class="s2">&quot;-w&quot;</span><span class="p">,</span> <span class="n">work_directory_dry</span><span class="p">,</span> <span class="s2">&quot;--dry-run&quot;</span><span class="p">],</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;AddData dry run failed&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="setup_folders">
+<a class="viewcode-back" href="../../../auto_gen/Scripts.WorkflowScripts.ProcessInfoFile.html#Scripts.WorkflowScripts.ProcessInfoFile.setup_folders">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_folders</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set up folders for processing info file&quot;&quot;&quot;</span>
+    <span class="n">parent_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">NMLDB_ROOT_PATH</span><span class="p">)</span>
+    <span class="n">base_tmp</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent_folder</span><span class="p">,</span> <span class="s2">&quot;databank_workdir&quot;</span><span class="p">)</span>
+    <span class="n">work_directory_dry</span>  <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_tmp</span><span class="p">,</span> <span class="s2">&quot;dry&quot;</span><span class="p">)</span>
+    <span class="n">work_directory_real</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_tmp</span><span class="p">,</span> <span class="s2">&quot;real&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">work_directory_dry</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">work_directory_real</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failed to create work directories&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">work_directory_real</span><span class="p">,</span><span class="n">work_directory_dry</span></div>
+
+
+
 <div class="viewcode-block" id="get_args">
 <a class="viewcode-back" href="../../../auto_gen/Scripts.WorkflowScripts.ProcessInfoFile.html#Scripts.WorkflowScripts.ProcessInfoFile.get_args">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_args</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return arguments from parser.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve arguments from parser&quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Run NMRLipids data pipeline on a YAML info file.&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--info_file_path&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the info.yml file.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--info_file_path&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the info.yml file&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--dry-run&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Only run preanalysis (no compute/commit)&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span></div>
 
 
@@ -152,7 +158,11 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">info_file_path</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No path provided, exiting.&quot;</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">main</span><span class="p">(</span><span class="n">info_file_path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">dry_run</span><span class="p">:</span>
+        <span class="n">run_dry_run</span><span class="p">(</span><span class="n">info_file_path</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">run_analysis</span><span class="p">(</span><span class="n">info_file_path</span><span class="p">)</span>
+
 </pre></div>
 
            </div>
