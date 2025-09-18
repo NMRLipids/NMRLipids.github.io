@@ -76,8 +76,9 @@
              
   <h1>Source code for Scripts.DatabankLib.settings.elements</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Elements assigneer functions. Helps Molecule to define brutto formula</span>
-<span class="sd">from existing mapping files and element guesser.</span>
+<span class="sd">Elements assigneer functions.</span>
+
+<span class="sd">Helps Molecule to define brutto formula from existing mapping files and element guesser.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
@@ -93,7 +94,7 @@
 
 <div class="viewcode-block" id="uname2element">
 <a class="viewcode-back" href="../../../../auto_gen/Scripts.DatabankLib.settings.elements.html#Scripts.DatabankLib.settings.elements.uname2element">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">uname2element</span><span class="p">(</span><span class="n">mapping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">uname2element</span><span class="p">(</span><span class="n">mapping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Guess element name from universal atom name.</span>
 
 <span class="sd">    :param mapping_name: name of the mapping, e.g. &#39;M_C1&#39;, &#39;M_G&#39;</span>
@@ -109,14 +110,13 @@
 
     <span class="k">if</span> <span class="n">name2</span> <span class="o">==</span> <span class="s2">&quot;G&quot;</span><span class="p">:</span>  <span class="c1"># G is a glycerol carbon so change G to C</span>
         <span class="n">name2</span> <span class="o">=</span> <span class="s2">&quot;C&quot;</span>
-    <span class="k">elif</span> <span class="n">name2</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span>  <span class="c1"># X is a placeholder for unknown element, we use &#39;X&#39; as element name</span>
-        <span class="n">name2</span> <span class="o">=</span> <span class="s2">&quot;Dummy&quot;</span>  <span class="c1"># Dummy is used for unknown elements in MDAnalysis</span>
-        <span class="k">return</span> <span class="n">name2</span>
-
+    <span class="k">elif</span> <span class="n">name2</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">]:</span>  <span class="c1"># X is dummy, D is a drude particle</span>
+        <span class="k">return</span> <span class="s2">&quot;Dummy&quot;</span>  <span class="c1"># Dummy is used for unknown elements in MDAnalysis</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">_</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">periodictable</span><span class="p">,</span> <span class="n">name2</span><span class="p">)</span><span class="o">.</span><span class="n">number</span>
     <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;This mapping name cannot be read by our rules: </span><span class="si">{mapping_name}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;This mapping name cannot be read by our rules: </span><span class="si">{</span><span class="n">mapping_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">name2</span></div>
 
@@ -125,8 +125,7 @@
 <div class="viewcode-block" id="guess_elements">
 <a class="viewcode-back" href="../../../../auto_gen/Scripts.DatabankLib.settings.elements.html#Scripts.DatabankLib.settings.elements.guess_elements">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">guess_elements</span><span class="p">(</span><span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">mda</span><span class="o">.</span><span class="n">Universe</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Assigns elements to atoms in the MDAnalysis universe based on the system&#39;s</span>
-<span class="sd">    composition.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Assign elements to atoms in the MDAnalysis Universe based on the system&#39;s composition.</span>
 
 <span class="sd">    :param system: Databank System object</span>
 <span class="sd">    :type system: System</span>
@@ -149,10 +148,7 @@
             <span class="n">ua_dict</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="k">for</span> <span class="n">uname</span><span class="p">,</span> <span class="n">props</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">mapping_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">res</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;RESIDUE&quot;</span><span class="p">])</span>
-            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                <span class="n">res</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">props</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;RESIDUE&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
             <span class="n">_residue</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;resname </span><span class="si">{</span><span class="n">mol_simu_name</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">res</span><span class="si">}</span><span class="s2"> and &quot;</span>
             <span class="n">_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;name </span><span class="si">{</span><span class="n">props</span><span class="p">[</span><span class="s1">&#39;ATOMNAME&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="n">selstr</span> <span class="o">=</span> <span class="n">_moltype</span> <span class="o">+</span> <span class="n">_residue</span> <span class="o">+</span> <span class="n">_name</span>
@@ -170,7 +166,9 @@
                     <span class="n">elname</span> <span class="o">=</span> <span class="n">uname2element</span><span class="p">(</span><span class="n">uname</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># if not united-atom, ALL atoms must be present</span>
-                <span class="k">assert</span> <span class="n">selection</span><span class="o">.</span><span class="n">n_atoms</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Selection &#39;</span><span class="si">{</span><span class="n">selstr</span><span class="si">}</span><span class="s2">&#39; did not match any atoms in the universe.&quot;</span>
+                <span class="k">if</span> <span class="n">selection</span><span class="o">.</span><span class="n">n_atoms</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Selection &#39;</span><span class="si">{</span><span class="n">selstr</span><span class="si">}</span><span class="s2">&#39; did not match any atoms in the universe.&quot;</span>
+                    <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                 <span class="n">elname</span> <span class="o">=</span> <span class="n">uname2element</span><span class="p">(</span><span class="n">uname</span><span class="p">)</span>
             <span class="n">selection</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="n">selection</span><span class="o">.</span><span class="n">n_atoms</span> <span class="o">*</span> <span class="p">[</span><span class="n">elname</span><span class="p">]</span></div>
 
