@@ -15,4 +15,3 @@ Subfolders
    Scripts.DatabankLib
    Scripts.WorkflowScripts
    Scripts.tests
-   Scripts.updateGUI
