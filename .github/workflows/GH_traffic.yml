@@ -20,7 +20,7 @@ jobs:
       uses: sangonzal/repository-traffic-action@v.0.1.6
       env:
         TRAFFIC_ACTION_TOKEN: ${{ secrets.TRAFFIC_ACTION_TOKEN }}
-        REPOSITORY_NAME: "NMRLipids/Databank"
+        REPOSITORY_NAME: "NMRLipids/FAIRMD_lipids"
      
     # Commits files to repository
     - name: Commit changes
