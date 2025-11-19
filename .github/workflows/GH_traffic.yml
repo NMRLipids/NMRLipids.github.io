@@ -13,7 +13,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v5
     
     # Calculates traffic and clones and stores in CSV file
     - name: GitHub traffic 
@@ -24,7 +24,7 @@ jobs:
      
     # Commits files to repository
     - name: Commit changes
-      uses: EndBug/add-and-commit@v4
+      uses: EndBug/add-and-commit@v9
       with:
         author_name: GitHub action
         message: "GitHub traffic"
