@@ -16,10 +16,10 @@ jobs:
     
     steps:
     - name: Check out repo
-      uses: actions/checkout@v5 
+      uses: actions/checkout@v6 
       
     - name: Check out NMRLipids/BilayerData
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         repository: NMRLipids/BilayerData
         path: NMRLipidsDB
