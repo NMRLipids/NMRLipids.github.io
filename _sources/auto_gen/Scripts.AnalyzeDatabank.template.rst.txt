@@ -1,7 +1,0 @@
-Scripts.AnalyzeDatabank.template module
-=======================================
-
-.. automodule:: Scripts.AnalyzeDatabank.template
-   :members:
-   :show-inheritance:
-   :undoc-members:

@@ -1,7 +1,0 @@
-Scripts.AnalyzeDatabank.calcOrderParameters module
-==================================================
-
-.. automodule:: Scripts.AnalyzeDatabank.calcOrderParameters
-   :members:
-   :show-inheritance:
-   :undoc-members:

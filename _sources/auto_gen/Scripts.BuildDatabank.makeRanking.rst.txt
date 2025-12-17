@@ -1,7 +1,0 @@
-Scripts.BuildDatabank.makeRanking module
-========================================
-
-.. automodule:: Scripts.BuildDatabank.makeRanking
-   :members:
-   :show-inheritance:
-   :undoc-members:

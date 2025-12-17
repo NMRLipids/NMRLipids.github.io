@@ -1,7 +1,0 @@
-Scripts.BuildDatabank.check\_bonds module
-=========================================
-
-.. automodule:: Scripts.BuildDatabank.check_bonds
-   :members:
-   :show-inheritance:
-   :undoc-members:

@@ -1,7 +1,0 @@
-Scripts.DatabankLib.settings.dic\_lipids\_UA module
-===================================================
-
-.. automodule:: Scripts.DatabankLib.settings.dic_lipids_UA
-   :members:
-   :show-inheritance:
-   :undoc-members:

@@ -1,7 +1,0 @@
-Scripts.DatabankLib.jpyroutines module
-======================================
-
-.. automodule:: Scripts.DatabankLib.jpyroutines
-   :members:
-   :show-inheritance:
-   :undoc-members:

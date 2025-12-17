@@ -1,7 +1,0 @@
-Scripts.BuildDatabank.check\_mappings module
-============================================
-
-.. automodule:: Scripts.BuildDatabank.check_mappings
-   :members:
-   :show-inheritance:
-   :undoc-members:

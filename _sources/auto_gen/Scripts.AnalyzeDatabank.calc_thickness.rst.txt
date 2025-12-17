@@ -1,7 +1,0 @@
-Scripts.AnalyzeDatabank.calc\_thickness module
-==============================================
-
-.. automodule:: Scripts.AnalyzeDatabank.calc_thickness
-   :members:
-   :show-inheritance:
-   :undoc-members:

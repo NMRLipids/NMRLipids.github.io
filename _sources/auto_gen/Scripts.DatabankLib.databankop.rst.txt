@@ -1,7 +1,0 @@
-Scripts.DatabankLib.databankop module
-=====================================
-
-.. automodule:: Scripts.DatabankLib.databankop
-   :members:
-   :show-inheritance:
-   :undoc-members:

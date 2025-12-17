@@ -1,7 +1,0 @@
-Scripts.WorkflowScripts.ProcessInfoFile module
-==============================================
-
-.. automodule:: Scripts.WorkflowScripts.ProcessInfoFile
-   :members:
-   :show-inheritance:
-   :undoc-members:

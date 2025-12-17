@@ -1,7 +1,0 @@
-Scripts.updateGUI.createPDBs module
-===================================
-
-.. automodule:: Scripts.updateGUI.createPDBs
-   :members:
-   :show-inheritance:
-   :undoc-members:

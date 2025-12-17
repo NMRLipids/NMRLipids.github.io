@@ -1,7 +1,0 @@
-Scripts.DatabankLib.settings.engines module
-===========================================
-
-.. automodule:: Scripts.DatabankLib.settings.engines
-   :members:
-   :show-inheritance:
-   :undoc-members:

@@ -1,7 +1,0 @@
-Scripts.AnalyzeDatabank.compute\_databank module
-================================================
-
-.. automodule:: Scripts.AnalyzeDatabank.compute_databank
-   :members:
-   :show-inheritance:
-   :undoc-members:

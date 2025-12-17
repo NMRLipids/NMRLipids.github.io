@@ -1,7 +1,0 @@
-Scripts.DatabankLib.plottings module
-====================================
-
-.. automodule:: Scripts.DatabankLib.plottings
-   :members:
-   :show-inheritance:
-   :undoc-members:

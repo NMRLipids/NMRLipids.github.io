@@ -1,7 +1,0 @@
-Scripts.DatabankLib.form\_factor module
-=======================================
-
-.. automodule:: Scripts.DatabankLib.form_factor
-   :members:
-   :show-inheritance:
-   :undoc-members:
